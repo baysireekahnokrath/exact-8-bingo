@@ -1,0 +1,14 @@
+{
+  "rules": {
+    ".read": true,
+    "game": {
+      ".write": true
+    },
+    "players": {
+      ".write": true,
+      "$pid": {
+        "name": { ".validate": "newData.isString() && newData.val().length <= 30" }
+      }
+    }
+  }
+}
