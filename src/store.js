@@ -11,7 +11,9 @@ let impl;
 
 if (!isLocalMode) {
   const database = db.getDatabase(initializeApp(firebaseConfig));
-  const r = (path) => db.ref(database, path);
+  // ?emu = ใช้ Firebase Emulator ในเครื่อง (สำหรับนักพัฒนาทดสอบเท่านั้น)
+  if (new URLSearchParams(location.search).has("emu")) db.connectDatabaseEmulator(database, "127.0.0.1", 9000);
+  const r = (path) => (path ? db.ref(database, path) : db.ref(database));
   impl = {
     subscribe(path, cb) {
       return db.onValue(r(path), (snap) => cb(snap.val()));

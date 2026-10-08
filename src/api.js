@@ -28,9 +28,21 @@ export function usePlayers() {
   return Object.entries(raw || {}).map(([pid, p]) => ({ pid, ...p }));
 }
 
+// แจ้งเตือนเมื่อหลุดการเชื่อมต่อเกิน 3 วินาที (ไม่ให้แถบกระพริบตอนเปิดหน้าเว็บ)
 export function useConnected() {
   const [ok, setOk] = useState(true);
-  useEffect(() => store.onConnection(setOk), []);
+  useEffect(() => {
+    let t;
+    const off = store.onConnection((connected) => {
+      clearTimeout(t);
+      if (connected) setOk(true);
+      else t = setTimeout(() => setOk(false), 3000);
+    });
+    return () => {
+      clearTimeout(t);
+      off();
+    };
+  }, []);
   return ok;
 }
 
