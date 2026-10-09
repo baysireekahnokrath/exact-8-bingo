@@ -162,11 +162,11 @@ export default function Screen() {
 
         <aside className="side">
           <div className="panel winners">
-            <h3>🏆 BINGO!</h3>
+            <h3>🏆 BINGO! {result.winners.length > 0 && <span className="count">{result.winners.length}</span>}</h3>
             {result.winners.length === 0 && <p className="muted">ยังไม่มีผู้ชนะ</p>}
-            <ol>
-              {result.winners.map((w) => (
-                <li key={w.pid}><b>{w.name}</b> <small>ชื่อที่ {w.bingoAt}</small></li>
+            <ol className={result.winners.length > 5 ? "many" : ""}>
+              {result.winners.map((w, k) => (
+                <li key={w.pid}><span className="no">{k + 1}.</span> <b>{w.name}</b> <small>ชื่อที่ {w.bingoAt}</small></li>
               ))}
             </ol>
           </div>
@@ -184,7 +184,7 @@ export default function Screen() {
           </div>
           {!lobby && (
             <div className="panel mini-qr">
-              <Qr url={joinUrl} size={96} />
+              <Qr url={joinUrl} size={80} />
               <span>มาช้า? สแกนเข้าร่วมได้</span>
             </div>
           )}
