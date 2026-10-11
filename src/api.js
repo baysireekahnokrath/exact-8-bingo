@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { isLocalMode, store } from "./store.js";
-import { MEMBERS } from "./members.js";
+import { MEMBERS, MEMBER_BY_ID } from "./members.js";
 import { toList } from "./bingo.js";
 
 // ---------- hooks ----------
@@ -135,3 +135,22 @@ export function resetAll(game) {
     game: { round: (game?.round || 1) + 1, accepting: true },
   });
 }
+
+// ---------- ขอเพลง (Halloween) ----------
+export function useSongs() {
+  const raw = useValue("songs");
+  if (raw === undefined) return undefined;
+  return Object.entries(raw || {})
+    .map(([sid, s]) => ({
+      sid,
+      ...s,
+      by: Number(s.by),
+      singers: toList(s.singers).map(Number).filter((id) => MEMBER_BY_ID[id]),
+    }))
+    .sort((a, b) => b.at - a.at);
+}
+
+export const addSong = (req) =>
+  store.set(`songs/s${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, req);
+export const removeSong = (sid) => store.remove(`songs/${sid}`);
+export const setSongDone = (sid, on) => store.set(`songs/${sid}/done`, on ? true : null);

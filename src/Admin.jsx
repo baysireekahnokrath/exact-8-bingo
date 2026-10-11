@@ -49,6 +49,7 @@ export default function Admin() {
         <nav>
           <a href="/screen" target="_blank" rel="noreferrer">เปิดจอใหญ่ ↗</a>
           <a href="/" target="_blank" rel="noreferrer">หน้าผู้เล่น ↗</a>
+          <a href="/songs/list" target="_blank" rel="noreferrer">🎃 คำขอเพลง ↗</a>
         </nav>
       </header>
 

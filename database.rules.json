@@ -7,7 +7,27 @@
     "players": {
       ".write": true,
       "$pid": {
-        "name": { ".validate": "newData.isString() && newData.val().length <= 30" }
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 30"
+        }
+      }
+    },
+    "songs": {
+      ".write": true,
+      "$sid": {
+        ".validate": "newData.hasChildren(['by', 'song', 'singers', 'at'])",
+        "song": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+        },
+        "by": {
+          ".validate": "newData.isNumber()"
+        },
+        "at": {
+          ".validate": "newData.isNumber()"
+        },
+        "done": {
+          ".validate": "newData.isBoolean()"
+        }
       }
     }
   }
