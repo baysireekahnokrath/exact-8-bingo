@@ -2,3 +2,8 @@ node_modules
 dist
 .DS_Store
 *.local
+
+# ข้อมูลเบอร์โทรจริง ห้ามขึ้น git
+contacts/*.csv
+!contacts/contacts.example.csv
+*.vcf
