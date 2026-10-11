@@ -4,7 +4,8 @@
 // ค่าเริ่มต้น: contacts/contacts.csv → contacts/EXACT8-contacts.vcf
 //
 // คอลัมน์ CSV (แถวแรกเป็นหัวตาราง ตาม contacts/contacts.example.csv):
-//   ชื่อเล่น, ชื่อ, นามสกุล, เบอร์โทร, กลุ่ม, อีเมล, หมายเหตุ
+//   ชื่อเล่น, ชื่อ, นามสกุล, เบอร์โทร, กลุ่ม, อีเมล, หน่วยงาน, ตำแหน่ง, หมายเหตุ
+// (ไม่ต้องครบทุกคอลัมน์ และสลับลำดับได้ — Download จาก Google Sheets เป็น CSV ได้เลย)
 // ต้องมีอย่างน้อย ชื่อเล่น หรือ ชื่อ และ เบอร์โทร (ใส่หลายเบอร์คั่นด้วย / ได้)
 
 import { readFileSync, writeFileSync } from "node:fs";
@@ -54,6 +55,8 @@ const COLS = {
   phone: ["เบอร์โทร", "เบอร์", "phone", "mobile"],
   group: ["กลุ่ม", "group"],
   email: ["อีเมล", "email"],
+  company: ["หน่วยงาน", "บริษัท", "company"],
+  position: ["ตำแหน่ง", "position", "title"],
   note: ["หมายเหตุ", "note"],
 };
 
@@ -84,17 +87,20 @@ rows.forEach((r, i) => {
   // ใส่ทั้งหมดไว้ในช่องชื่อ (N) เพื่อให้ iPhone และ Android แสดงเหมือนกัน
   const display = [PREFIX, nick, first, last].filter(Boolean).join(" ");
   const group = get("group"), email = get("email"), note = get("note");
+  const company = get("company").replace(/…$/, "").trim(), position = get("position");
+  const notes = [`${ORG}${group ? " · กลุ่ม" + group : ""}`, note].filter(Boolean).join("\n");
   const lines = [
     "BEGIN:VCARD",
     "VERSION:3.0",
     `N:;${esc(display)};;;`,
     `FN:${esc(display)}`,
     nick && `NICKNAME:${esc(nick)}`,
-    `ORG:${esc(ORG)}${group ? ";" + esc(group) : ""}`,
+    `ORG:${esc(company || ORG)}`,
+    position && `TITLE:${esc(position)}`,
     ...phones.map((p) => `TEL;TYPE=CELL:${p}`),
     email && `EMAIL;TYPE=INTERNET:${esc(email)}`,
     `CATEGORIES:${esc(ORG)}`,
-    note && `NOTE:${esc(note)}`,
+    `NOTE:${esc(notes)}`,
     "END:VCARD",
   ].filter(Boolean);
   cards.push(lines.join("\r\n"));
