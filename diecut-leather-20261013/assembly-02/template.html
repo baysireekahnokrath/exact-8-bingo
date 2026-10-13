@@ -1,0 +1,235 @@
+<title>กล่องกลีบดอก 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Bai+Jamjuree:wght@600;700&display=swap">
+<style>
+/* Layout: assembly sheet. 3D stage on top, then numbered steps as figure + text rows (stack on phone) */
+:root{
+  --bg:#F7F8F6; --sheet:#FFFFFF; --ink:#1D2125; --muted:#5B636B; --rule:#D9DDDC;
+  --dim:#1F5FBF; --slit:#D12F2F; --leather:#8A5A35; --stage:#ECE9E4;
+  --l-base:#8F5228; --l-light:#C48A52; --l-dark:#4A2F1D; --on-light:#1D1A17; --on-dark:#F5EDE4;
+  --display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --stage:#1E2226; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --stage:#1E2226; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,46px)}
+h2{font-size:24px}
+h3{font-size:20px}
+p{margin:0;max-width:62ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--leather)}
+.lede{font-size:18px;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:16px}
+
+.stage{position:relative;background:var(--stage);border:1px solid var(--rule);aspect-ratio:16/10;max-width:100%;overflow:hidden}
+.stage canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+.stage canvas:active{cursor:grabbing}
+.stage .hint{position:absolute;left:14px;bottom:10px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.stage .fallback{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted)}
+
+.spec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);background:var(--sheet)}
+.spec div{padding:10px 14px;border-right:1px solid var(--rule);min-width:0}
+.spec div:last-child{border-right:0}
+.spec b{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.spec span{font-weight:600;font-variant-numeric:tabular-nums}
+
+section{display:flex;flex-direction:column;gap:20px}
+.steps{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.step{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;padding:28px 0;border-bottom:1px solid var(--rule);align-items:center}
+.fig{background:var(--sheet);border:1px solid var(--rule);padding:12px;min-width:0}
+.fig svg,.fig img{display:block;width:100%;height:auto;max-width:100%}
+.fig img{aspect-ratio:4/3;object-fit:cover;background:var(--stage)}
+.txt{display:flex;flex-direction:column;gap:10px;min-width:0}
+.num{font-family:var(--mono);font-size:13px;color:var(--dim);letter-spacing:.08em}
+.txt ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.key{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.key i{display:inline-block;width:20px;vertical-align:middle;margin-right:6px;border-top:1.5px solid var(--ink)}
+.key i.d{border-top-style:dashed}
+.key i.b{border-top:1.5px dashed var(--dim)}
+.key i.r{border-top-color:var(--slit)}
+
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.card{background:var(--sheet);border:1px solid var(--rule);padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h3{font-size:17px}
+.card ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.note{font-size:14px;color:var(--muted)}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px}
+
+/* svg drawing styles (units = mm) */
+.pc{stroke:var(--ink);stroke-width:.35;stroke-linejoin:round}
+.hid{fill:none;stroke:var(--ink);stroke-width:.3;stroke-dasharray:1.6 1.1}
+.fd{fill:none;stroke:var(--dim);stroke-width:.35;stroke-dasharray:2 1.2}
+.sl{stroke:var(--slit);stroke-width:.7;stroke-linecap:round}
+.co{stroke:var(--muted);stroke-width:.25}
+.cod{fill:var(--muted)}
+.lb{font-family:var(--body);font-size:4.3px;fill:var(--ink)}
+.lbb{font-family:var(--display);font-size:5px;font-weight:700;fill:var(--ink)}
+.bd{fill:var(--sheet);stroke:var(--ink);stroke-width:.35}
+.big{font-family:var(--display);font-size:9px;font-weight:700;fill:var(--on-light)}
+.big.inv{fill:var(--on-dark)}
+
+@media (max-width:720px){
+  .step,.grid2{grid-template-columns:minmax(0,1fr);gap:16px}
+  .spec{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .spec div:nth-child(2){border-right:0}
+  .spec div:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+  .stage{aspect-ratio:1/1}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Pattern 02 · No-sew assembly</div>
+  <h1>กล่องกลีบดอก จากชิ้น 02</h1>
+  <p class="lede">ใช้ชิ้นหนังแบบ 02 จำนวน 5 ชิ้น สานกลีบเข้าหากันเป็นกล่องเปิดด้านบน ขอบด้านบนเป็นกลีบดอก ไม่ต้องเย็บและไม่ต้องใช้กาว</p>
+</header>
+
+<div class="stage" id="stage">
+  <canvas id="hero" aria-label="ภาพ 3D ของกล่องกลีบดอกที่ประกอบเสร็จ ลากเพื่อหมุนดูได้"></canvas>
+  <div class="fallback" id="fallback" hidden>ไม่สามารถแสดงภาพ 3D บนอุปกรณ์นี้ได้ ขั้นตอนประกอบด้านล่างยังดูได้ตามปกติ</div>
+  <span class="hint">ลากเพื่อหมุน · ซูมด้วยนิ้วหรือ scroll</span>
+</div>
+
+<div class="spec">
+  <div><b>ใช้ชิ้น</b><span>02 × 5 ชิ้น</span></div>
+  <div><b>ขนาดกล่อง</b><span>54 × 54 × 54 mm</span></div>
+  <div><b>สูงรวมกลีบ</b><span>ประมาณ 71 mm</span></div>
+  <div><b>ยึดด้วย</b><span>สานล็อก ไม่เย็บ</span></div>
+</div>
+
+<section>
+  <h2>ขั้นตอนประกอบ</h2>
+  <div class="key"><span><i></i>ขอบหนัง</span><span><i class="d"></i>ส่วนที่สอดอยู่ข้างใต้</span><span><i class="b"></i>แนวพับ / แนวต่อ</span><span><i class="r"></i>slot</span></div>
+  <div class="steps">
+    <div class="step">
+      <div class="fig">__STEP1__</div>
+      <div class="txt"><span class="num">STEP 1</span><h3>เตรียมชิ้นหนัง 5 ชิ้น</h3>
+        <ul><li>ตัดชิ้น 02 จำนวน 5 ชิ้น ใช้เป็นฐาน 1 ชิ้น และผนัง 4 ชิ้น</li>
+        <li><b>หงายด้านผิวหนังขึ้นทุกชิ้น</b> slot ทุกชิ้นต้องวนทิศเดียวกันคือตามเข็มนาฬิกา ไม่อย่างนั้นรอยต่อจะไม่เข้าคู่กัน</li>
+        <li>ถ้าใช้หนัง 2 สีสลับกันระหว่างผนังที่อยู่ติดกัน จะเห็นลายสานชัด</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig">__STEP2__</div>
+      <div class="txt"><span class="num">STEP 2</span><h3>เข้าใจรอยต่อ 1 จุด</h3>
+        <p>กล่องนี้มีรอยต่อ 8 จุด ทุกจุดใช้วิธีเดียวกัน</p>
+        <ul><li>วางชิ้น A กับ B ให้ขอบตัวชิ้นชนกัน กลีบของแต่ละชิ้นจะไปซ้อนอยู่บนอีกชิ้น</li>
+        <li><b>ครึ่งล่าง:</b> กลีบของ A ทับอยู่บน B ส่วนกลีบของ B สอดอยู่ใต้ A</li>
+        <li><b>ครึ่งบน:</b> สลับกัน กลีบของ B ทับบน A ส่วนกลีบของ A สอดอยู่ใต้ B</li>
+        <li>กลีบไขว้ผ่านกันตรงกลาง ช่วงที่ slot ของสองชิ้นซ้อนกันประมาณ 4.5 mm ตรงนี้ทำให้สองชิ้นล็อกกันเอง</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig">__STEP3__</div>
+      <div class="txt"><span class="num">STEP 3</span><h3>ต่อผนังทั้ง 4 เข้ากับฐาน</h3>
+        <ul><li>วางฐานไว้ตรงกลาง แล้ววางผนัง 1–4 รอบทั้ง 4 ด้าน สลับสีอ่อนกับสีเข้ม</li>
+        <li>ต่อแต่ละด้านแบบ STEP 2 ทั้งหมด 4 จุด</li>
+        <li>ทำตอนชิ้นงานยังวางราบบนโต๊ะ จะสานง่ายที่สุด</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><img id="s4" alt="ผนังทั้ง 4 กำลังถูกพับขึ้นจากฐาน กลีบด้านข้างยังกางอยู่" width="800" height="600"></div>
+      <div class="txt"><span class="num">STEP 4</span><h3>พับผนังขึ้น</h3>
+        <ul><li>ยกผนังทั้ง 4 ขึ้นตามแนวต่อกับฐานจนตั้งฉาก</li>
+        <li>กลีบด้านข้างของผนังยังกางอยู่ เตรียมไว้ต่อมุมในขั้นถัดไป</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><img id="s5" alt="ต่อมุมทั้ง 4 แล้ว กลีบด้านข้างอ้อมไปสานกับผนังข้างเคียง" width="800" height="600"></div>
+      <div class="txt"><span class="num">STEP 5</span><h3>ต่อมุมทั้ง 4 มุม</h3>
+        <ul><li>กลีบข้างของผนังแต่ละชิ้นอ้อมมุมไปซ้อนกับผนังข้างเคียง</li>
+        <li>สานแบบ STEP 2 คือครึ่งหนึ่งทับอยู่ด้านนอก อีกครึ่งสอดเข้าด้านใน</li>
+        <li>ทำทีละมุมจนครบ 4 มุม ตอนนี้ตัวกล่องจะแข็งแรงและตั้งได้เอง</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><img id="s6" alt="กล่องกลีบดอกที่ประกอบเสร็จ กลีบด้านบนบานออก" width="800" height="600"></div>
+      <div class="txt"><span class="num">STEP 6</span><h3>จัดกลีบด้านบน เสร็จ</h3>
+        <ul><li>กลีบบนของผนังทั้ง 4 ไม่มีชิ้นให้ต่อ ให้ดัดบานออกเล็กน้อยเป็นขอบกลีบดอก</li>
+        <li>ใส่กระถางแคคตัสจิ๋ว ปากกา แปรง หรือของจุกจิกได้เลย</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>ต่อยอดจากรอยต่อเดียวกัน</h2>
+  <div class="grid2">
+    <div class="card"><h3>เปลี่ยนจำนวนชิ้น ได้สินค้าใหม่</h3>
+      <ul><li><b>6 ชิ้น</b> ปิดด้านบนด้วยอีก 1 ชิ้น ได้กล่องของขวัญหรือลูกเต๋าหนัง</li>
+      <li><b>4 ชิ้นต่อเป็นวง</b> ไม่ใส่ฐาน ได้ปลอกแก้วหรือที่ครอบกระถาง</li>
+      <li><b>ต่อเป็นแผ่น</b> เช่น 3 × 4 ชิ้น ได้แผ่นรองจานลายสาน</li></ul></div>
+    <div class="card"><h3>ข้อควรรู้</h3>
+      <ul><li>ภาพ 3D เป็นภาพจำลองจากการคำนวณรูปทรงของชิ้น 02 ยังไม่ได้ลองพับกับหนังจริง</li>
+      <li>ลองตัดกระดาษแข็งตามแบบ 1:1 แล้วประกอบดูก่อนสั่งทำ die</li>
+      <li>หนังที่หนาขึ้นจะทำให้มุมกล่องโค้งมนขึ้น และขนาดจริงต่างจากแบบเล็กน้อย</li>
+      <li>ถ้ารอยต่อหลวม ลองลดความยาว slot ลงทีละ 1 mm</li></ul></div>
+  </div>
+</section>
+
+<footer>แบบประกอบโดย Claude Code · ชิ้น 02 Pinwheel 4-lobe · 13 ต.ค. 2026</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+__MODEL_JS__
+</script>
+<script>
+(function () {
+  const fallback = document.getElementById('fallback');
+  if (!window.THREE || !window.PetalCube) { fallback.hidden = false; return; }
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TARGET = new THREE.Vector3(0, 30, 0);
+
+  function renderer(canvas, w, h) {
+    const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: !!canvas.dataset.still });
+    r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    r.setSize(w, h, false); r.outputEncoding = THREE.sRGBEncoding;
+    r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+    return r;
+  }
+
+  // step stills
+  try {
+    const cv = document.createElement('canvas'); cv.dataset.still = '1';
+    const r = renderer(cv, 800, 600); r.setPixelRatio(1); r.setSize(800, 600, false);
+    const shots = [
+      ['s4', { fold: 72, corners: false, flare: 0 }, [135, 125, 175], new THREE.Vector3(0, 24, 0)],
+      ['s5', { fold: 90, corners: true, flare: 0 }, [115, 105, 150], TARGET],
+      ['s6', { fold: 90, corners: true, flare: 18 }, [115, 105, 150], TARGET],
+    ];
+    shots.forEach(([id, state, pos, target]) => {
+      const scene = PetalCube.makeScene(state);
+      const cam = new THREE.PerspectiveCamera(30, 4 / 3, 1, 2000);
+      cam.position.set(...pos); cam.lookAt(target);
+      r.render(scene, cam);
+      document.getElementById(id).src = cv.toDataURL('image/png');
+    });
+    r.dispose();
+  } catch (e) { /* stills are optional */ }
+
+  // interactive hero
+  try {
+    const stage = document.getElementById('stage'), canvas = document.getElementById('hero');
+    const r = renderer(canvas, stage.clientWidth, stage.clientHeight);
+    const scene = PetalCube.makeScene({ fold: 90, corners: true, flare: 18, plant: true });
+    const cam = new THREE.PerspectiveCamera(30, stage.clientWidth / stage.clientHeight, 1, 2000);
+    cam.position.set(120, 110, 160);
+    const ctl = new THREE.OrbitControls(cam, canvas);
+    ctl.target.copy(TARGET); ctl.enableDamping = true; ctl.minDistance = 110; ctl.maxDistance = 420;
+    ctl.maxPolarAngle = Math.PI * 0.62; ctl.autoRotate = !reduce; ctl.autoRotateSpeed = 0.8;
+    canvas.addEventListener('pointerdown', () => { ctl.autoRotate = false; });
+    function fit() {
+      const w = stage.clientWidth, h = stage.clientHeight;
+      r.setSize(w, h, false); cam.aspect = w / h;
+      cam.position.setLength(w / h < 1.2 ? 260 : 215); cam.updateProjectionMatrix();
+    }
+    fit(); new ResizeObserver(fit).observe(stage);
+    (function loop() { ctl.update(); r.render(scene, cam); requestAnimationFrame(loop); })();
+  } catch (e) { fallback.hidden = false; }
+})();
+</script>

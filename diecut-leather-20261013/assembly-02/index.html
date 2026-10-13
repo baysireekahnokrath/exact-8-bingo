@@ -1,0 +1,383 @@
+<title>กล่องกลีบดอก 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Bai+Jamjuree:wght@600;700&display=swap">
+<style>
+/* Layout: assembly sheet. 3D stage on top, then numbered steps as figure + text rows (stack on phone) */
+:root{
+  --bg:#F7F8F6; --sheet:#FFFFFF; --ink:#1D2125; --muted:#5B636B; --rule:#D9DDDC;
+  --dim:#1F5FBF; --slit:#D12F2F; --leather:#8A5A35; --stage:#ECE9E4;
+  --l-base:#8F5228; --l-light:#C48A52; --l-dark:#4A2F1D; --on-light:#1D1A17; --on-dark:#F5EDE4;
+  --display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --stage:#1E2226; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --stage:#1E2226; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,46px)}
+h2{font-size:24px}
+h3{font-size:20px}
+p{margin:0;max-width:62ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--leather)}
+.lede{font-size:18px;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:16px}
+
+.stage{position:relative;background:var(--stage);border:1px solid var(--rule);aspect-ratio:16/10;max-width:100%;overflow:hidden}
+.stage canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+.stage canvas:active{cursor:grabbing}
+.stage .hint{position:absolute;left:14px;bottom:10px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.stage .fallback{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted)}
+
+.spec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);background:var(--sheet)}
+.spec div{padding:10px 14px;border-right:1px solid var(--rule);min-width:0}
+.spec div:last-child{border-right:0}
+.spec b{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.spec span{font-weight:600;font-variant-numeric:tabular-nums}
+
+section{display:flex;flex-direction:column;gap:20px}
+.steps{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.step{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;padding:28px 0;border-bottom:1px solid var(--rule);align-items:center}
+.fig{background:var(--sheet);border:1px solid var(--rule);padding:12px;min-width:0}
+.fig svg,.fig img{display:block;width:100%;height:auto;max-width:100%}
+.fig img{aspect-ratio:4/3;object-fit:cover;background:var(--stage)}
+.txt{display:flex;flex-direction:column;gap:10px;min-width:0}
+.num{font-family:var(--mono);font-size:13px;color:var(--dim);letter-spacing:.08em}
+.txt ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.key{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.key i{display:inline-block;width:20px;vertical-align:middle;margin-right:6px;border-top:1.5px solid var(--ink)}
+.key i.d{border-top-style:dashed}
+.key i.b{border-top:1.5px dashed var(--dim)}
+.key i.r{border-top-color:var(--slit)}
+
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.card{background:var(--sheet);border:1px solid var(--rule);padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h3{font-size:17px}
+.card ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.note{font-size:14px;color:var(--muted)}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px}
+
+/* svg drawing styles (units = mm) */
+.pc{stroke:var(--ink);stroke-width:.35;stroke-linejoin:round}
+.hid{fill:none;stroke:var(--ink);stroke-width:.3;stroke-dasharray:1.6 1.1}
+.fd{fill:none;stroke:var(--dim);stroke-width:.35;stroke-dasharray:2 1.2}
+.sl{stroke:var(--slit);stroke-width:.7;stroke-linecap:round}
+.co{stroke:var(--muted);stroke-width:.25}
+.cod{fill:var(--muted)}
+.lb{font-family:var(--body);font-size:4.3px;fill:var(--ink)}
+.lbb{font-family:var(--display);font-size:5px;font-weight:700;fill:var(--ink)}
+.bd{fill:var(--sheet);stroke:var(--ink);stroke-width:.35}
+.big{font-family:var(--display);font-size:9px;font-weight:700;fill:var(--on-light)}
+.big.inv{fill:var(--on-dark)}
+
+@media (max-width:720px){
+  .step,.grid2{grid-template-columns:minmax(0,1fr);gap:16px}
+  .spec{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .spec div:nth-child(2){border-right:0}
+  .spec div:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+  .stage{aspect-ratio:1/1}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Pattern 02 · No-sew assembly</div>
+  <h1>กล่องกลีบดอก จากชิ้น 02</h1>
+  <p class="lede">ใช้ชิ้นหนังแบบ 02 จำนวน 5 ชิ้น สานกลีบเข้าหากันเป็นกล่องเปิดด้านบน ขอบด้านบนเป็นกลีบดอก ไม่ต้องเย็บและไม่ต้องใช้กาว</p>
+</header>
+
+<div class="stage" id="stage">
+  <canvas id="hero" aria-label="ภาพ 3D ของกล่องกลีบดอกที่ประกอบเสร็จ ลากเพื่อหมุนดูได้"></canvas>
+  <div class="fallback" id="fallback" hidden>ไม่สามารถแสดงภาพ 3D บนอุปกรณ์นี้ได้ ขั้นตอนประกอบด้านล่างยังดูได้ตามปกติ</div>
+  <span class="hint">ลากเพื่อหมุน · ซูมด้วยนิ้วหรือ scroll</span>
+</div>
+
+<div class="spec">
+  <div><b>ใช้ชิ้น</b><span>02 × 5 ชิ้น</span></div>
+  <div><b>ขนาดกล่อง</b><span>54 × 54 × 54 mm</span></div>
+  <div><b>สูงรวมกลีบ</b><span>ประมาณ 71 mm</span></div>
+  <div><b>ยึดด้วย</b><span>สานล็อก ไม่เย็บ</span></div>
+</div>
+
+<section>
+  <h2>ขั้นตอนประกอบ</h2>
+  <div class="key"><span><i></i>ขอบหนัง</span><span><i class="d"></i>ส่วนที่สอดอยู่ข้างใต้</span><span><i class="b"></i>แนวพับ / แนวต่อ</span><span><i class="r"></i>slot</span></div>
+  <div class="steps">
+    <div class="step">
+      <div class="fig"><svg viewBox="0 0 190 112" role="img" aria-label="ชิ้น 02 พร้อมชื่อส่วนต่าง ๆ"><g transform="translate(40,12)"><path d="M72.000,72.000 A29.25,29.25 0 0 0 72.000,18.000 A29.25,29.25 0 0 0 18.000,18.000 A29.25,29.25 0 0 0 18.000,72.000 A29.25,29.25 0 0 0 72.000,72.000 Z" fill="var(--l-light)" class="pc"/><rect x="18" y="18" width="54" height="54" class="fd"/><line x1="18.00" y1="18.00" x2="47.25" y2="18.00" class="sl"/><line x1="72.00" y1="18.00" x2="72.00" y2="47.25" class="sl"/><line x1="72.00" y1="72.00" x2="42.75" y2="72.00" class="sl"/><line x1="18.00" y1="72.00" x2="18.00" y2="42.75" class="sl"/><line x1="30" y1="6" x2="-6" y2="-2" class="co"/><circle cx="30" cy="6" r="0.9" class="cod"/><text x="-7.2" y="-0.7" class="lb" text-anchor="end">กลีบ (lobe)</text><line x1="30" y1="18" x2="-6" y2="12" class="co"/><circle cx="30" cy="18" r="0.9" class="cod"/><text x="-7.2" y="13.3" class="lb" text-anchor="end">slot 29.25</text><line x1="72" y1="50" x2="104" y2="46" class="co"/><circle cx="72" cy="50" r="0.9" class="cod"/><text x="105.2" y="47.3" class="lb" text-anchor="start">แนวพับ / แนวต่อ</text><line x1="45" y1="45" x2="104" y2="62" class="co"/><circle cx="45" cy="45" r="0.9" class="cod"/><text x="105.2" y="63.3" class="lb" text-anchor="start">ตัวชิ้น 54 × 54</text></g><g transform="translate(165,92)"><rect x="-17" y="-9" width="34" height="14" class="bd"/><text x="0" y="1.2" class="lbb" text-anchor="middle">× 5 ชิ้น</text></g></svg></div>
+      <div class="txt"><span class="num">STEP 1</span><h3>เตรียมชิ้นหนัง 5 ชิ้น</h3>
+        <ul><li>ตัดชิ้น 02 จำนวน 5 ชิ้น ใช้เป็นฐาน 1 ชิ้น และผนัง 4 ชิ้น</li>
+        <li><b>หงายด้านผิวหนังขึ้นทุกชิ้น</b> slot ทุกชิ้นต้องวนทิศเดียวกันคือตามเข็มนาฬิกา ไม่อย่างนั้นรอยต่อจะไม่เข้าคู่กัน</li>
+        <li>ถ้าใช้หนัง 2 สีสลับกันระหว่างผนังที่อยู่ติดกัน จะเห็นลายสานชัด</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><svg viewBox="0 0 190 130" role="img" aria-label="รอยต่อระหว่างชิ้น A กับ B"><path d="M33.00,35.00 L33.00,35.00 L35.25,30.66 L37.50,27.56 L39.75,25.14 L42.00,23.19 L44.25,21.60 L46.50,20.30 L48.75,19.25 L51.00,18.42 L53.25,17.79 L55.50,17.35 L57.75,17.09 L60.00,17.00 L62.25,17.09 L64.50,17.35 L66.75,17.79 L69.00,18.42 L71.25,19.25 L73.50,20.30 L75.75,21.60 L78.00,23.19 L80.25,25.14 L82.50,27.56 L84.75,30.66 L87.00,35.00 L87.00,35.00 Z" fill="var(--l-light)" class="pc"/><path d="M33.00,89.00 L33.00,89.00 L28.66,86.75 L25.56,84.50 L23.14,82.25 L21.19,80.00 L19.60,77.75 L18.30,75.50 L17.25,73.25 L16.42,71.00 L15.79,68.75 L15.35,66.50 L15.09,64.25 L15.00,62.00 L15.09,59.75 L15.35,57.50 L15.79,55.25 L16.42,53.00 L17.25,50.75 L18.30,48.50 L19.60,46.25 L21.19,44.00 L23.14,41.75 L25.56,39.50 L28.66,37.25 L33.00,35.00 L33.00,35.00 Z" fill="var(--l-light)" class="pc"/><path d="M87.00,89.00 L87.00,89.00 L84.75,93.34 L82.50,96.44 L80.25,98.86 L78.00,100.81 L75.75,102.40 L73.50,103.70 L71.25,104.75 L69.00,105.58 L66.75,106.21 L64.50,106.65 L62.25,106.91 L60.00,107.00 L57.75,106.91 L55.50,106.65 L53.25,106.21 L51.00,105.58 L48.75,104.75 L46.50,103.70 L44.25,102.40 L42.00,100.81 L39.75,98.86 L37.50,96.44 L35.25,93.34 L33.00,89.00 L33.00,89.00 Z" fill="var(--l-light)" class="pc"/><path d="M141.00,35.00 L141.00,35.00 L145.34,37.25 L148.44,39.50 L150.86,41.75 L152.81,44.00 L154.40,46.25 L155.70,48.50 L156.75,50.75 L157.58,53.00 L158.21,55.25 L158.65,57.50 L158.91,59.75 L159.00,62.00 L158.91,64.25 L158.65,66.50 L158.21,68.75 L157.58,71.00 L156.75,73.25 L155.70,75.50 L154.40,77.75 L152.81,80.00 L150.86,82.25 L148.44,84.50 L145.34,86.75 L141.00,89.00 L141.00,89.00 Z" fill="var(--l-dark)" class="pc"/><path d="M87.00,35.00 L87.00,35.00 L89.25,30.66 L91.50,27.56 L93.75,25.14 L96.00,23.19 L98.25,21.60 L100.50,20.30 L102.75,19.25 L105.00,18.42 L107.25,17.79 L109.50,17.35 L111.75,17.09 L114.00,17.00 L116.25,17.09 L118.50,17.35 L120.75,17.79 L123.00,18.42 L125.25,19.25 L127.50,20.30 L129.75,21.60 L132.00,23.19 L134.25,25.14 L136.50,27.56 L138.75,30.66 L141.00,35.00 L141.00,35.00 Z" fill="var(--l-dark)" class="pc"/><path d="M141.00,89.00 L141.00,89.00 L138.75,93.34 L136.50,96.44 L134.25,98.86 L132.00,100.81 L129.75,102.40 L127.50,103.70 L125.25,104.75 L123.00,105.58 L120.75,106.21 L118.50,106.65 L116.25,106.91 L114.00,107.00 L111.75,106.91 L109.50,106.65 L107.25,106.21 L105.00,105.58 L102.75,104.75 L100.50,103.70 L98.25,102.40 L96.00,100.81 L93.75,98.86 L91.50,96.44 L89.25,93.34 L87.00,89.00 L87.00,89.00 Z" fill="var(--l-dark)" class="pc"/><rect x="33.0" y="35.0" width="54.0" height="54.0" fill="var(--l-light)" class="pc" /><rect x="87.0" y="35.0" width="54.0" height="54.0" fill="var(--l-dark)" class="pc" /><path d="M87.00,35.00 L87.00,35.00 L89.39,36.12 L91.34,37.25 L93.00,38.38 L94.44,39.50 L95.72,40.62 L96.86,41.75 L97.88,42.88 L98.81,44.00 L99.64,45.12 L100.40,46.25 L101.08,47.38 L101.70,48.50 L102.25,49.62 L102.75,50.75 L103.19,51.88 L103.58,53.00 L103.92,54.12 L104.21,55.25 L104.45,56.38 L104.65,57.50 L104.80,58.62 L104.91,59.75 L104.98,60.88 L105.00,62.00 L87.00,62.00 Z" class="hid"/><path d="M87.00,89.00 L87.00,89.00 L84.61,87.88 L82.66,86.75 L81.00,85.62 L79.56,84.50 L78.28,83.38 L77.14,82.25 L76.12,81.12 L75.19,80.00 L74.36,78.88 L73.60,77.75 L72.92,76.62 L72.30,75.50 L71.75,74.38 L71.25,73.25 L70.81,72.12 L70.42,71.00 L70.08,69.88 L69.79,68.75 L69.55,67.62 L69.35,66.50 L69.20,65.38 L69.09,64.25 L69.02,63.12 L69.00,62.00 L87.00,62.00 Z" class="hid"/><path d="M87.00,62.00 L105.00,62.00 L104.98,63.12 L104.91,64.25 L104.80,65.38 L104.65,66.50 L104.45,67.62 L104.21,68.75 L103.92,69.88 L103.58,71.00 L103.19,72.12 L102.75,73.25 L102.25,74.38 L101.70,75.50 L101.08,76.62 L100.40,77.75 L99.64,78.88 L98.81,80.00 L97.88,81.12 L96.86,82.25 L95.72,83.38 L94.44,84.50 L93.00,85.62 L91.34,86.75 L89.39,87.88 L87.00,89.00 L87.00,89.00 Z" fill="var(--l-light)" class="pc"/><path d="M87.00,62.00 L69.00,62.00 L69.02,60.88 L69.09,59.75 L69.20,58.62 L69.35,57.50 L69.55,56.38 L69.79,55.25 L70.08,54.12 L70.42,53.00 L70.81,51.88 L71.25,50.75 L71.75,49.62 L72.30,48.50 L72.92,47.38 L73.60,46.25 L74.36,45.12 L75.19,44.00 L76.12,42.88 L77.14,41.75 L78.28,40.62 L79.56,39.50 L81.00,38.38 L82.66,37.25 L84.61,36.12 L87.00,35.00 L87.00,35.00 Z" fill="var(--l-dark)" class="pc"/><text x="60" y="64" class="big" text-anchor="middle">A</text><text x="114" y="64" class="big inv" text-anchor="middle">B</text><line x1="90" y1="76" x2="8" y2="124" class="co"/><circle cx="90" cy="76" r="0.9" class="cod"/><text x="9.2" y="125.3" class="lb" text-anchor="start">ครึ่งล่าง: กลีบ A ทับบน B</text><line x1="84" y1="48" x2="8" y2="8" class="co"/><circle cx="84" cy="48" r="0.9" class="cod"/><text x="9.2" y="9.3" class="lb" text-anchor="start">ครึ่งบน: กลีบ B ทับบน A</text><line x1="87" y1="62" x2="140" y2="8" class="co"/><circle cx="87" cy="62" r="0.9" class="cod"/><text x="141.2" y="9.3" class="lb" text-anchor="start">จุดไขว้ตรงกลาง</text></svg></div>
+      <div class="txt"><span class="num">STEP 2</span><h3>เข้าใจรอยต่อ 1 จุด</h3>
+        <p>กล่องนี้มีรอยต่อ 8 จุด ทุกจุดใช้วิธีเดียวกัน</p>
+        <ul><li>วางชิ้น A กับ B ให้ขอบตัวชิ้นชนกัน กลีบของแต่ละชิ้นจะไปซ้อนอยู่บนอีกชิ้น</li>
+        <li><b>ครึ่งล่าง:</b> กลีบของ A ทับอยู่บน B ส่วนกลีบของ B สอดอยู่ใต้ A</li>
+        <li><b>ครึ่งบน:</b> สลับกัน กลีบของ B ทับบน A ส่วนกลีบของ A สอดอยู่ใต้ B</li>
+        <li>กลีบไขว้ผ่านกันตรงกลาง ช่วงที่ slot ของสองชิ้นซ้อนกันประมาณ 4.5 mm ตรงนี้ทำให้สองชิ้นล็อกกันเอง</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><svg viewBox="-6 -6 202 202" role="img" aria-label="วางผนัง 4 ชิ้นรอบฐานแล้วต่อเข้ากับฐาน"><path d="M176.00,68.00 L176.00,68.00 L180.34,70.25 L183.44,72.50 L185.86,74.75 L187.81,77.00 L189.40,79.25 L190.70,81.50 L191.75,83.75 L192.58,86.00 L193.21,88.25 L193.65,90.50 L193.91,92.75 L194.00,95.00 L193.91,97.25 L193.65,99.50 L193.21,101.75 L192.58,104.00 L191.75,106.25 L190.70,108.50 L189.40,110.75 L187.81,113.00 L185.86,115.25 L183.44,117.50 L180.34,119.75 L176.00,122.00 L176.00,122.00 Z" fill="var(--l-light)" class="pc"/><path d="M122.00,68.00 L122.00,68.00 L124.25,63.66 L126.50,60.56 L128.75,58.14 L131.00,56.19 L133.25,54.60 L135.50,53.30 L137.75,52.25 L140.00,51.42 L142.25,50.79 L144.50,50.35 L146.75,50.09 L149.00,50.00 L151.25,50.09 L153.50,50.35 L155.75,50.79 L158.00,51.42 L160.25,52.25 L162.50,53.30 L164.75,54.60 L167.00,56.19 L169.25,58.14 L171.50,60.56 L173.75,63.66 L176.00,68.00 L176.00,68.00 Z" fill="var(--l-light)" class="pc"/><path d="M176.00,122.00 L176.00,122.00 L173.75,126.34 L171.50,129.44 L169.25,131.86 L167.00,133.81 L164.75,135.40 L162.50,136.70 L160.25,137.75 L158.00,138.58 L155.75,139.21 L153.50,139.65 L151.25,139.91 L149.00,140.00 L146.75,139.91 L144.50,139.65 L142.25,139.21 L140.00,138.58 L137.75,137.75 L135.50,136.70 L133.25,135.40 L131.00,133.81 L128.75,131.86 L126.50,129.44 L124.25,126.34 L122.00,122.00 L122.00,122.00 Z" fill="var(--l-light)" class="pc"/><path d="M122.00,14.00 L122.00,14.00 L126.34,16.25 L129.44,18.50 L131.86,20.75 L133.81,23.00 L135.40,25.25 L136.70,27.50 L137.75,29.75 L138.58,32.00 L139.21,34.25 L139.65,36.50 L139.91,38.75 L140.00,41.00 L139.91,43.25 L139.65,45.50 L139.21,47.75 L138.58,50.00 L137.75,52.25 L136.70,54.50 L135.40,56.75 L133.81,59.00 L131.86,61.25 L129.44,63.50 L126.34,65.75 L122.00,68.00 L122.00,68.00 Z" fill="var(--l-dark)" class="pc"/><path d="M68.00,14.00 L68.00,14.00 L70.25,9.66 L72.50,6.56 L74.75,4.14 L77.00,2.19 L79.25,0.60 L81.50,-0.70 L83.75,-1.75 L86.00,-2.58 L88.25,-3.21 L90.50,-3.65 L92.75,-3.91 L95.00,-4.00 L97.25,-3.91 L99.50,-3.65 L101.75,-3.21 L104.00,-2.58 L106.25,-1.75 L108.50,-0.70 L110.75,0.60 L113.00,2.19 L115.25,4.14 L117.50,6.56 L119.75,9.66 L122.00,14.00 L122.00,14.00 Z" fill="var(--l-dark)" class="pc"/><path d="M68.00,68.00 L68.00,68.00 L63.66,65.75 L60.56,63.50 L58.14,61.25 L56.19,59.00 L54.60,56.75 L53.30,54.50 L52.25,52.25 L51.42,50.00 L50.79,47.75 L50.35,45.50 L50.09,43.25 L50.00,41.00 L50.09,38.75 L50.35,36.50 L50.79,34.25 L51.42,32.00 L52.25,29.75 L53.30,27.50 L54.60,25.25 L56.19,23.00 L58.14,20.75 L60.56,18.50 L63.66,16.25 L68.00,14.00 L68.00,14.00 Z" fill="var(--l-dark)" class="pc"/><path d="M14.00,68.00 L14.00,68.00 L16.25,63.66 L18.50,60.56 L20.75,58.14 L23.00,56.19 L25.25,54.60 L27.50,53.30 L29.75,52.25 L32.00,51.42 L34.25,50.79 L36.50,50.35 L38.75,50.09 L41.00,50.00 L43.25,50.09 L45.50,50.35 L47.75,50.79 L50.00,51.42 L52.25,52.25 L54.50,53.30 L56.75,54.60 L59.00,56.19 L61.25,58.14 L63.50,60.56 L65.75,63.66 L68.00,68.00 L68.00,68.00 Z" fill="var(--l-light)" class="pc"/><path d="M14.00,122.00 L14.00,122.00 L9.66,119.75 L6.56,117.50 L4.14,115.25 L2.19,113.00 L0.60,110.75 L-0.70,108.50 L-1.75,106.25 L-2.58,104.00 L-3.21,101.75 L-3.65,99.50 L-3.91,97.25 L-4.00,95.00 L-3.91,92.75 L-3.65,90.50 L-3.21,88.25 L-2.58,86.00 L-1.75,83.75 L-0.70,81.50 L0.60,79.25 L2.19,77.00 L4.14,74.75 L6.56,72.50 L9.66,70.25 L14.00,68.00 L14.00,68.00 Z" fill="var(--l-light)" class="pc"/><path d="M68.00,122.00 L68.00,122.00 L65.75,126.34 L63.50,129.44 L61.25,131.86 L59.00,133.81 L56.75,135.40 L54.50,136.70 L52.25,137.75 L50.00,138.58 L47.75,139.21 L45.50,139.65 L43.25,139.91 L41.00,140.00 L38.75,139.91 L36.50,139.65 L34.25,139.21 L32.00,138.58 L29.75,137.75 L27.50,136.70 L25.25,135.40 L23.00,133.81 L20.75,131.86 L18.50,129.44 L16.25,126.34 L14.00,122.00 L14.00,122.00 Z" fill="var(--l-light)" class="pc"/><path d="M122.00,122.00 L122.00,122.00 L126.34,124.25 L129.44,126.50 L131.86,128.75 L133.81,131.00 L135.40,133.25 L136.70,135.50 L137.75,137.75 L138.58,140.00 L139.21,142.25 L139.65,144.50 L139.91,146.75 L140.00,149.00 L139.91,151.25 L139.65,153.50 L139.21,155.75 L138.58,158.00 L137.75,160.25 L136.70,162.50 L135.40,164.75 L133.81,167.00 L131.86,169.25 L129.44,171.50 L126.34,173.75 L122.00,176.00 L122.00,176.00 Z" fill="var(--l-dark)" class="pc"/><path d="M68.00,176.00 L68.00,176.00 L63.66,173.75 L60.56,171.50 L58.14,169.25 L56.19,167.00 L54.60,164.75 L53.30,162.50 L52.25,160.25 L51.42,158.00 L50.79,155.75 L50.35,153.50 L50.09,151.25 L50.00,149.00 L50.09,146.75 L50.35,144.50 L50.79,142.25 L51.42,140.00 L52.25,137.75 L53.30,135.50 L54.60,133.25 L56.19,131.00 L58.14,128.75 L60.56,126.50 L63.66,124.25 L68.00,122.00 L68.00,122.00 Z" fill="var(--l-dark)" class="pc"/><path d="M122.00,176.00 L122.00,176.00 L119.75,180.34 L117.50,183.44 L115.25,185.86 L113.00,187.81 L110.75,189.40 L108.50,190.70 L106.25,191.75 L104.00,192.58 L101.75,193.21 L99.50,193.65 L97.25,193.91 L95.00,194.00 L92.75,193.91 L90.50,193.65 L88.25,193.21 L86.00,192.58 L83.75,191.75 L81.50,190.70 L79.25,189.40 L77.00,187.81 L74.75,185.86 L72.50,183.44 L70.25,180.34 L68.00,176.00 L68.00,176.00 Z" fill="var(--l-dark)" class="pc"/><rect x="68.0" y="68.0" width="54.0" height="54.0" fill="var(--l-base)" class="pc" /><rect x="122.0" y="68.0" width="54.0" height="54.0" fill="var(--l-light)" class="pc" /><rect x="68.0" y="14.0" width="54.0" height="54.0" fill="var(--l-dark)" class="pc" /><rect x="14.0" y="68.0" width="54.0" height="54.0" fill="var(--l-light)" class="pc" /><rect x="68.0" y="122.0" width="54.0" height="54.0" fill="var(--l-dark)" class="pc" /><path d="M122.00,68.00 L122.00,68.00 L124.39,69.12 L126.34,70.25 L128.00,71.38 L129.44,72.50 L130.72,73.62 L131.86,74.75 L132.88,75.88 L133.81,77.00 L134.64,78.12 L135.40,79.25 L136.08,80.38 L136.70,81.50 L137.25,82.62 L137.75,83.75 L138.19,84.88 L138.58,86.00 L138.92,87.12 L139.21,88.25 L139.45,89.38 L139.65,90.50 L139.80,91.62 L139.91,92.75 L139.98,93.88 L140.00,95.00 L122.00,95.00 Z" class="hid"/><path d="M68.00,68.00 L68.00,68.00 L69.12,65.61 L70.25,63.66 L71.38,62.00 L72.50,60.56 L73.62,59.28 L74.75,58.14 L75.88,57.12 L77.00,56.19 L78.12,55.36 L79.25,54.60 L80.38,53.92 L81.50,53.30 L82.62,52.75 L83.75,52.25 L84.88,51.81 L86.00,51.42 L87.12,51.08 L88.25,50.79 L89.38,50.55 L90.50,50.35 L91.62,50.20 L92.75,50.09 L93.88,50.02 L95.00,50.00 L95.00,68.00 Z" class="hid"/><path d="M68.00,122.00 L68.00,122.00 L65.61,120.88 L63.66,119.75 L62.00,118.62 L60.56,117.50 L59.28,116.38 L58.14,115.25 L57.12,114.12 L56.19,113.00 L55.36,111.88 L54.60,110.75 L53.92,109.62 L53.30,108.50 L52.75,107.38 L52.25,106.25 L51.81,105.12 L51.42,104.00 L51.08,102.88 L50.79,101.75 L50.55,100.62 L50.35,99.50 L50.20,98.38 L50.09,97.25 L50.02,96.12 L50.00,95.00 L68.00,95.00 Z" class="hid"/><path d="M122.00,122.00 L122.00,122.00 L120.88,124.39 L119.75,126.34 L118.62,128.00 L117.50,129.44 L116.38,130.72 L115.25,131.86 L114.12,132.88 L113.00,133.81 L111.88,134.64 L110.75,135.40 L109.62,136.08 L108.50,136.70 L107.38,137.25 L106.25,137.75 L105.12,138.19 L104.00,138.58 L102.88,138.92 L101.75,139.21 L100.62,139.45 L99.50,139.65 L98.38,139.80 L97.25,139.91 L96.12,139.98 L95.00,140.00 L95.00,122.00 Z" class="hid"/><path d="M122.00,122.00 L122.00,122.00 L119.61,120.88 L117.66,119.75 L116.00,118.62 L114.56,117.50 L113.28,116.38 L112.14,115.25 L111.12,114.12 L110.19,113.00 L109.36,111.88 L108.60,110.75 L107.92,109.62 L107.30,108.50 L106.75,107.38 L106.25,106.25 L105.81,105.12 L105.42,104.00 L105.08,102.88 L104.79,101.75 L104.55,100.62 L104.35,99.50 L104.20,98.38 L104.09,97.25 L104.02,96.12 L104.00,95.00 L122.00,95.00 Z" class="hid"/><path d="M122.00,68.00 L122.00,68.00 L120.88,70.39 L119.75,72.34 L118.62,74.00 L117.50,75.44 L116.38,76.72 L115.25,77.86 L114.12,78.88 L113.00,79.81 L111.88,80.64 L110.75,81.40 L109.62,82.08 L108.50,82.70 L107.38,83.25 L106.25,83.75 L105.12,84.19 L104.00,84.58 L102.88,84.92 L101.75,85.21 L100.62,85.45 L99.50,85.65 L98.38,85.80 L97.25,85.91 L96.12,85.98 L95.00,86.00 L95.00,68.00 Z" class="hid"/><path d="M68.00,68.00 L68.00,68.00 L70.39,69.12 L72.34,70.25 L74.00,71.38 L75.44,72.50 L76.72,73.62 L77.86,74.75 L78.88,75.88 L79.81,77.00 L80.64,78.12 L81.40,79.25 L82.08,80.38 L82.70,81.50 L83.25,82.62 L83.75,83.75 L84.19,84.88 L84.58,86.00 L84.92,87.12 L85.21,88.25 L85.45,89.38 L85.65,90.50 L85.80,91.62 L85.91,92.75 L85.98,93.88 L86.00,95.00 L68.00,95.00 Z" class="hid"/><path d="M68.00,122.00 L68.00,122.00 L69.12,119.61 L70.25,117.66 L71.38,116.00 L72.50,114.56 L73.62,113.28 L74.75,112.14 L75.88,111.12 L77.00,110.19 L78.12,109.36 L79.25,108.60 L80.38,107.92 L81.50,107.30 L82.62,106.75 L83.75,106.25 L84.88,105.81 L86.00,105.42 L87.12,105.08 L88.25,104.79 L89.38,104.55 L90.50,104.35 L91.62,104.20 L92.75,104.09 L93.88,104.02 L95.00,104.00 L95.00,122.00 Z" class="hid"/><path d="M122.00,95.00 L140.00,95.00 L139.98,96.12 L139.91,97.25 L139.80,98.38 L139.65,99.50 L139.45,100.62 L139.21,101.75 L138.92,102.88 L138.58,104.00 L138.19,105.12 L137.75,106.25 L137.25,107.38 L136.70,108.50 L136.08,109.62 L135.40,110.75 L134.64,111.88 L133.81,113.00 L132.88,114.12 L131.86,115.25 L130.72,116.38 L129.44,117.50 L128.00,118.62 L126.34,119.75 L124.39,120.88 L122.00,122.00 L122.00,122.00 Z" fill="var(--l-base)" class="pc"/><path d="M95.00,68.00 L95.00,50.00 L96.12,50.02 L97.25,50.09 L98.38,50.20 L99.50,50.35 L100.62,50.55 L101.75,50.79 L102.88,51.08 L104.00,51.42 L105.12,51.81 L106.25,52.25 L107.38,52.75 L108.50,53.30 L109.62,53.92 L110.75,54.60 L111.88,55.36 L113.00,56.19 L114.12,57.12 L115.25,58.14 L116.38,59.28 L117.50,60.56 L118.62,62.00 L119.75,63.66 L120.88,65.61 L122.00,68.00 L122.00,68.00 Z" fill="var(--l-base)" class="pc"/><path d="M68.00,95.00 L50.00,95.00 L50.02,93.88 L50.09,92.75 L50.20,91.62 L50.35,90.50 L50.55,89.38 L50.79,88.25 L51.08,87.12 L51.42,86.00 L51.81,84.88 L52.25,83.75 L52.75,82.62 L53.30,81.50 L53.92,80.38 L54.60,79.25 L55.36,78.12 L56.19,77.00 L57.12,75.88 L58.14,74.75 L59.28,73.62 L60.56,72.50 L62.00,71.38 L63.66,70.25 L65.61,69.12 L68.00,68.00 L68.00,68.00 Z" fill="var(--l-base)" class="pc"/><path d="M95.00,122.00 L95.00,140.00 L93.88,139.98 L92.75,139.91 L91.62,139.80 L90.50,139.65 L89.38,139.45 L88.25,139.21 L87.12,138.92 L86.00,138.58 L84.88,138.19 L83.75,137.75 L82.62,137.25 L81.50,136.70 L80.38,136.08 L79.25,135.40 L78.12,134.64 L77.00,133.81 L75.88,132.88 L74.75,131.86 L73.62,130.72 L72.50,129.44 L71.38,128.00 L70.25,126.34 L69.12,124.39 L68.00,122.00 L68.00,122.00 Z" fill="var(--l-base)" class="pc"/><path d="M122.00,95.00 L104.00,95.00 L104.02,93.88 L104.09,92.75 L104.20,91.62 L104.35,90.50 L104.55,89.38 L104.79,88.25 L105.08,87.12 L105.42,86.00 L105.81,84.88 L106.25,83.75 L106.75,82.62 L107.30,81.50 L107.92,80.38 L108.60,79.25 L109.36,78.12 L110.19,77.00 L111.12,75.88 L112.14,74.75 L113.28,73.62 L114.56,72.50 L116.00,71.38 L117.66,70.25 L119.61,69.12 L122.00,68.00 L122.00,68.00 Z" fill="var(--l-light)" class="pc"/><path d="M95.00,68.00 L95.00,86.00 L93.88,85.98 L92.75,85.91 L91.62,85.80 L90.50,85.65 L89.38,85.45 L88.25,85.21 L87.12,84.92 L86.00,84.58 L84.88,84.19 L83.75,83.75 L82.62,83.25 L81.50,82.70 L80.38,82.08 L79.25,81.40 L78.12,80.64 L77.00,79.81 L75.88,78.88 L74.75,77.86 L73.62,76.72 L72.50,75.44 L71.38,74.00 L70.25,72.34 L69.12,70.39 L68.00,68.00 L68.00,68.00 Z" fill="var(--l-dark)" class="pc"/><path d="M68.00,95.00 L86.00,95.00 L85.98,96.12 L85.91,97.25 L85.80,98.38 L85.65,99.50 L85.45,100.62 L85.21,101.75 L84.92,102.88 L84.58,104.00 L84.19,105.12 L83.75,106.25 L83.25,107.38 L82.70,108.50 L82.08,109.62 L81.40,110.75 L80.64,111.88 L79.81,113.00 L78.88,114.12 L77.86,115.25 L76.72,116.38 L75.44,117.50 L74.00,118.62 L72.34,119.75 L70.39,120.88 L68.00,122.00 L68.00,122.00 Z" fill="var(--l-light)" class="pc"/><path d="M95.00,122.00 L95.00,104.00 L96.12,104.02 L97.25,104.09 L98.38,104.20 L99.50,104.35 L100.62,104.55 L101.75,104.79 L102.88,105.08 L104.00,105.42 L105.12,105.81 L106.25,106.25 L107.38,106.75 L108.50,107.30 L109.62,107.92 L110.75,108.60 L111.88,109.36 L113.00,110.19 L114.12,111.12 L115.25,112.14 L116.38,113.28 L117.50,114.56 L118.62,116.00 L119.75,117.66 L120.88,119.61 L122.00,122.00 L122.00,122.00 Z" fill="var(--l-dark)" class="pc"/><text x="95" y="97" class="big inv" text-anchor="middle">ฐาน</text><text x="149" y="97" class="big" text-anchor="middle">1</text><text x="95" y="43" class="big inv" text-anchor="middle">2</text><text x="41" y="97" class="big" text-anchor="middle">3</text><text x="95" y="151" class="big inv" text-anchor="middle">4</text></svg></div>
+      <div class="txt"><span class="num">STEP 3</span><h3>ต่อผนังทั้ง 4 เข้ากับฐาน</h3>
+        <ul><li>วางฐานไว้ตรงกลาง แล้ววางผนัง 1–4 รอบทั้ง 4 ด้าน สลับสีอ่อนกับสีเข้ม</li>
+        <li>ต่อแต่ละด้านแบบ STEP 2 ทั้งหมด 4 จุด</li>
+        <li>ทำตอนชิ้นงานยังวางราบบนโต๊ะ จะสานง่ายที่สุด</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><img id="s4" alt="ผนังทั้ง 4 กำลังถูกพับขึ้นจากฐาน กลีบด้านข้างยังกางอยู่" width="800" height="600"></div>
+      <div class="txt"><span class="num">STEP 4</span><h3>พับผนังขึ้น</h3>
+        <ul><li>ยกผนังทั้ง 4 ขึ้นตามแนวต่อกับฐานจนตั้งฉาก</li>
+        <li>กลีบด้านข้างของผนังยังกางอยู่ เตรียมไว้ต่อมุมในขั้นถัดไป</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><img id="s5" alt="ต่อมุมทั้ง 4 แล้ว กลีบด้านข้างอ้อมไปสานกับผนังข้างเคียง" width="800" height="600"></div>
+      <div class="txt"><span class="num">STEP 5</span><h3>ต่อมุมทั้ง 4 มุม</h3>
+        <ul><li>กลีบข้างของผนังแต่ละชิ้นอ้อมมุมไปซ้อนกับผนังข้างเคียง</li>
+        <li>สานแบบ STEP 2 คือครึ่งหนึ่งทับอยู่ด้านนอก อีกครึ่งสอดเข้าด้านใน</li>
+        <li>ทำทีละมุมจนครบ 4 มุม ตอนนี้ตัวกล่องจะแข็งแรงและตั้งได้เอง</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><img id="s6" alt="กล่องกลีบดอกที่ประกอบเสร็จ กลีบด้านบนบานออก" width="800" height="600"></div>
+      <div class="txt"><span class="num">STEP 6</span><h3>จัดกลีบด้านบน เสร็จ</h3>
+        <ul><li>กลีบบนของผนังทั้ง 4 ไม่มีชิ้นให้ต่อ ให้ดัดบานออกเล็กน้อยเป็นขอบกลีบดอก</li>
+        <li>ใส่กระถางแคคตัสจิ๋ว ปากกา แปรง หรือของจุกจิกได้เลย</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>ต่อยอดจากรอยต่อเดียวกัน</h2>
+  <div class="grid2">
+    <div class="card"><h3>เปลี่ยนจำนวนชิ้น ได้สินค้าใหม่</h3>
+      <ul><li><b>6 ชิ้น</b> ปิดด้านบนด้วยอีก 1 ชิ้น ได้กล่องของขวัญหรือลูกเต๋าหนัง</li>
+      <li><b>4 ชิ้นต่อเป็นวง</b> ไม่ใส่ฐาน ได้ปลอกแก้วหรือที่ครอบกระถาง</li>
+      <li><b>ต่อเป็นแผ่น</b> เช่น 3 × 4 ชิ้น ได้แผ่นรองจานลายสาน</li></ul></div>
+    <div class="card"><h3>ข้อควรรู้</h3>
+      <ul><li>ภาพ 3D เป็นภาพจำลองจากการคำนวณรูปทรงของชิ้น 02 ยังไม่ได้ลองพับกับหนังจริง</li>
+      <li>ลองตัดกระดาษแข็งตามแบบ 1:1 แล้วประกอบดูก่อนสั่งทำ die</li>
+      <li>หนังที่หนาขึ้นจะทำให้มุมกล่องโค้งมนขึ้น และขนาดจริงต่างจากแบบเล็กน้อย</li>
+      <li>ถ้ารอยต่อหลวม ลองลดความยาว slot ลงทีละ 1 mm</li></ul></div>
+  </div>
+</section>
+
+<footer>แบบประกอบโดย Claude Code · ชิ้น 02 Pinwheel 4-lobe · 13 ต.ค. 2026</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+// Petal cube: 5 pieces of pattern 02 woven into an open box. Units: mm. Three.js r128 globals.
+(function () {
+  const H = 27, T = 1.4, R = 29.25, C = 11.25;           // half face, leather thickness, lobe circle
+  const UP = new THREE.Vector3(0, 1, 0);
+  const COLORS = { base: 0x8f5228, light: 0xc48a52, dark: 0x4a2f1d };
+
+  function grainTexture() {
+    const c = document.createElement('canvas'); c.width = c.height = 256;
+    const x = c.getContext('2d'), img = x.createImageData(256, 256);
+    for (let i = 0; i < img.data.length; i += 4) {
+      const v = 215 + Math.random() * 40;
+      img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255;
+    }
+    x.putImageData(img, 0, 0);
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(0.05, 0.05);
+    return t;
+  }
+  let grain = null;
+  const matCache = {};
+  // [grain face, burnished cut edge]
+  function mats(color) {
+    if (!grain) grain = grainTexture();
+    if (!matCache[color]) {
+      const face = new THREE.MeshStandardMaterial({
+        color, map: grain, bumpMap: grain, bumpScale: 0.25, roughness: 0.78, metalness: 0, side: THREE.DoubleSide });
+      const edge = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(color).multiplyScalar(0.55), roughness: 0.6, side: THREE.DoubleSide });
+      matCache[color] = [face, edge];
+    }
+    return matCache[color];
+  }
+
+  function capShape(s0, s1) {
+    const sh = new THREE.Shape(), N = 28;
+    sh.moveTo(s0, 0);
+    for (let i = 0; i <= N; i++) {
+      const s = s0 + (s1 - s0) * i / N;
+      sh.lineTo(s, Math.max(Math.sqrt(R * R - s * s) - C, 0));
+    }
+    sh.lineTo(s1, 0); sh.closePath();
+    return sh;
+  }
+
+  function place(geo, origin, sA, dA, nA, offset) {
+    const m = new THREE.Matrix4().makeBasis(sA, dA, nA);
+    m.setPosition(origin.clone().addScaledVector(nA, offset));
+    geo.applyMatrix4(m); return geo;
+  }
+
+  function addCap(group, color, s0, s1, origin, sA, dA, nA, offset) {
+    const g = new THREE.ExtrudeGeometry(capShape(s0, s1), { depth: T, bevelEnabled: false, curveSegments: 4 });
+    const mesh = new THREE.Mesh(place(g, origin, sA, dA, nA, offset), mats(color));
+    mesh.castShadow = mesh.receiveShadow = true; group.add(mesh);
+  }
+
+  // face = {c, a, b, n, color}; a x b = n, n points out of the box (grain side)
+  function edgeInfo(f, k) {
+    const dir = [f.a, f.b, f.a.clone().negate(), f.b.clone().negate()][k];
+    const t = [f.b.clone().negate(), f.a, f.b, f.a.clone().negate()][k]; // clockwise seen from outside
+    return { dir, t, mid: f.c.clone().addScaledVector(dir, H) };
+  }
+
+  function build(state) {
+    const th = THREE.MathUtils.degToRad(state.fold);
+    const group = new THREE.Group();
+    const base = { c: new THREE.Vector3(0, 0, 0), a: new THREE.Vector3(1, 0, 0), b: new THREE.Vector3(0, 0, 1),
+                   n: new THREE.Vector3(0, -1, 0), color: COLORS.base };
+    const dirs = [new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 1), new THREE.Vector3(-1, 0, 0), new THREE.Vector3(0, 0, -1)];
+    const walls = dirs.map((d, k) => {
+      const u = d.clone().multiplyScalar(Math.cos(th)).addScaledVector(UP, Math.sin(th));
+      const n = d.clone().multiplyScalar(Math.sin(th)).addScaledVector(UP, -Math.cos(th));
+      const c = d.clone().multiplyScalar(H).addScaledVector(u, H);
+      return { c, a: new THREE.Vector3().crossVectors(u, n), b: u, n, color: k % 2 ? COLORS.dark : COLORS.light, d };
+    });
+    const faces = [base, ...walls];
+    // seams: face index, edge -> neighbour face index
+    const seam = new Map();
+    dirs.forEach((d, k) => { seam.set(`0:${k}`, k + 1); seam.set(`${k + 1}:3`, 0); });
+    if (state.corners) {
+      walls.forEach((w, k) => {
+        const a90 = new THREE.Vector3().crossVectors(UP, w.d);
+        dirs.forEach((d2, j) => {
+          if (d2.dot(a90) > 0.9) { seam.set(`${k + 1}:0`, j + 1); }
+          if (d2.dot(a90) < -0.9) { seam.set(`${k + 1}:2`, j + 1); }
+        });
+      });
+    }
+    faces.forEach((f, i) => {
+      const [fm, em] = mats(f.color);
+      const slab = new THREE.Mesh(new THREE.BoxGeometry(2 * H, 2 * H, T), [em, em, em, em, fm, fm]);
+      slab.applyMatrix4(new THREE.Matrix4().makeBasis(f.a, f.b, f.n).setPosition(f.c));
+      slab.castShadow = slab.receiveShadow = true; group.add(slab);
+      for (let k = 0; k < 4; k++) {
+        const e = edgeInfo(f, k), nb = seam.get(`${i}:${k}`);
+        if (nb !== undefined) {
+          const g = faces[nb], dA = g.c.clone().sub(e.mid).normalize();
+          const eps = 0.04 * (i + 1);
+          addCap(group, f.color, -H, 0, e.mid, e.t, dA, g.n, -T / 2 - T - eps);   // free half: under
+          addCap(group, f.color, 0, H, e.mid, e.t, dA, g.n, T / 2 + eps);         // hinged half: over
+        } else {
+          const psi = THREE.MathUtils.degToRad(k === 1 && i > 0 ? state.flare : 0);
+          const dA = e.dir.clone().multiplyScalar(Math.cos(psi)).addScaledVector(f.n, Math.sin(psi));
+          const nA = f.n.clone().multiplyScalar(Math.cos(psi)).addScaledVector(e.dir, -Math.sin(psi));
+          addCap(group, f.color, -H, H, e.mid, e.t, dA, nA, -T / 2);
+        }
+      }
+    });
+    if (state.plant) group.add(plant());
+    return group;
+  }
+
+  function plant() {
+    const g = new THREE.Group();
+    const soil = new THREE.Mesh(new THREE.CylinderGeometry(23, 23, 2, 40),
+      new THREE.MeshStandardMaterial({ color: 0x3b2a1e, roughness: 1 }));
+    soil.position.y = 47; g.add(soil);
+    const leafMat = new THREE.MeshStandardMaterial({ color: 0x47794a, roughness: 0.5 });
+    const rings = [[10, 16, 70, 1.25], [8, 9, 52, 1.0], [5, 3, 30, 0.75]];
+    rings.forEach(([n, r, tilt, s], ri) => {
+      for (let i = 0; i < n; i++) {
+        const leaf = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), leafMat);
+        leaf.scale.set(4.2 * s, 2.2 * s, 10 * s);
+        const a = (i / n) * Math.PI * 2 + ri * 0.4;
+        const pivot = new THREE.Group(); pivot.rotation.y = a; pivot.position.y = 52 + ri * 2;
+        leaf.position.set(0, 0, r * 0.5 + 6 * s); leaf.rotation.x = -THREE.MathUtils.degToRad(90 - tilt);
+        leaf.castShadow = true; pivot.add(leaf); g.add(pivot);
+      }
+    });
+    return g;
+  }
+
+  function makeScene(state) {
+    const scene = new THREE.Scene();
+    scene.add(new THREE.HemisphereLight(0xfff6ec, 0x6b5a4c, 0.75));
+    const key = new THREE.DirectionalLight(0xffffff, 0.95);
+    key.position.set(-70, 160, 110); key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    Object.assign(key.shadow.camera, { left: -120, right: 120, top: 120, bottom: -120, near: 10, far: 400 });
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xffe2c4, 0.3); fill.position.set(120, 60, -60); scene.add(fill);
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.ShadowMaterial({ opacity: 0.16 }));
+    ground.rotation.x = -Math.PI / 2; ground.position.y = -2.4; ground.receiveShadow = true; scene.add(ground);
+    scene.add(build(state));
+    return scene;
+  }
+
+  window.PetalCube = { makeScene };
+})();
+
+</script>
+<script>
+(function () {
+  const fallback = document.getElementById('fallback');
+  if (!window.THREE || !window.PetalCube) { fallback.hidden = false; return; }
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TARGET = new THREE.Vector3(0, 30, 0);
+
+  function renderer(canvas, w, h) {
+    const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: !!canvas.dataset.still });
+    r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    r.setSize(w, h, false); r.outputEncoding = THREE.sRGBEncoding;
+    r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+    return r;
+  }
+
+  // step stills
+  try {
+    const cv = document.createElement('canvas'); cv.dataset.still = '1';
+    const r = renderer(cv, 800, 600); r.setPixelRatio(1); r.setSize(800, 600, false);
+    const shots = [
+      ['s4', { fold: 72, corners: false, flare: 0 }, [135, 125, 175], new THREE.Vector3(0, 24, 0)],
+      ['s5', { fold: 90, corners: true, flare: 0 }, [115, 105, 150], TARGET],
+      ['s6', { fold: 90, corners: true, flare: 18 }, [115, 105, 150], TARGET],
+    ];
+    shots.forEach(([id, state, pos, target]) => {
+      const scene = PetalCube.makeScene(state);
+      const cam = new THREE.PerspectiveCamera(30, 4 / 3, 1, 2000);
+      cam.position.set(...pos); cam.lookAt(target);
+      r.render(scene, cam);
+      document.getElementById(id).src = cv.toDataURL('image/png');
+    });
+    r.dispose();
+  } catch (e) { /* stills are optional */ }
+
+  // interactive hero
+  try {
+    const stage = document.getElementById('stage'), canvas = document.getElementById('hero');
+    const r = renderer(canvas, stage.clientWidth, stage.clientHeight);
+    const scene = PetalCube.makeScene({ fold: 90, corners: true, flare: 18, plant: true });
+    const cam = new THREE.PerspectiveCamera(30, stage.clientWidth / stage.clientHeight, 1, 2000);
+    cam.position.set(120, 110, 160);
+    const ctl = new THREE.OrbitControls(cam, canvas);
+    ctl.target.copy(TARGET); ctl.enableDamping = true; ctl.minDistance = 110; ctl.maxDistance = 420;
+    ctl.maxPolarAngle = Math.PI * 0.62; ctl.autoRotate = !reduce; ctl.autoRotateSpeed = 0.8;
+    canvas.addEventListener('pointerdown', () => { ctl.autoRotate = false; });
+    function fit() {
+      const w = stage.clientWidth, h = stage.clientHeight;
+      r.setSize(w, h, false); cam.aspect = w / h;
+      cam.position.setLength(w / h < 1.2 ? 260 : 215); cam.updateProjectionMatrix();
+    }
+    fit(); new ResizeObserver(fit).observe(stage);
+    (function loop() { ctl.update(); r.render(scene, cam); requestAnimationFrame(loop); })();
+  } catch (e) { fallback.hidden = false; }
+})();
+</script>
