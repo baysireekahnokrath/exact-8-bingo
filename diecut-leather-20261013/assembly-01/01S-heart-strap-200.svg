@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="200mm" height="24mm" viewBox="0 0 200 24">
+ <title>01S Heart strap 200 - 200x24 mm - 1:1</title>
+ <g id="CUT" fill="none" stroke="#000000" stroke-width="0.2">
+  <path d="M11.899,18.500 L188.101,18.500 L190.334,21.090 A5.5,5.5 0 1 0 194.500,12.000 A5.5,5.5 0 1 0 190.334,2.910 L188.101,5.500 L11.899,5.500 L9.666,2.910 A5.5,5.5 0 1 0 5.500,12.000 A5.5,5.5 0 1 0 9.666,21.090 L11.899,18.500 Z"/>
+ </g>
+ <g id="SLIT" fill="none" stroke="#FF0000" stroke-width="0.2">
+
+ </g>
+</svg>

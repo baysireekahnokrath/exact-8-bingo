@@ -1,0 +1,232 @@
+<title>พวงกุญแจหมีแก้มหัวใจ 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Bai+Jamjuree:wght@600;700&display=swap">
+<style>
+/* Layout: assembly sheet (pattern 01 bear charm). 3D stage on top, then numbered steps as figure + text rows (stack on phone) */
+:root{
+  --bg:#F7F8F6; --sheet:#FFFFFF; --ink:#1D2125; --muted:#5B636B; --rule:#D9DDDC;
+  --dim:#1F5FBF; --slit:#D12F2F; --warn:#B4541A; --leather:#8A5A35; --stage:#ECE9E4;
+  --l-base:#8F5228; --l-light:#C48A52; --l-dark:#4A2F1D; --l-red:#B8434F; --on-light:#1D1A17; --on-dark:#F5EDE4;
+  --display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --warn:#F0A060; --leather:#D19B6E; --stage:#1E2226; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --warn:#F0A060; --leather:#D19B6E; --stage:#1E2226; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,46px)}
+h2{font-size:24px}
+h3{font-size:20px}
+p{margin:0;max-width:62ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--leather)}
+.lede{font-size:18px;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:16px}
+
+.stage{position:relative;background:var(--stage);border:1px solid var(--rule);aspect-ratio:16/10;max-width:100%;overflow:hidden}
+.stage canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+.stage canvas:active{cursor:grabbing}
+.stage .hint{position:absolute;left:14px;bottom:10px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.stage .fallback{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted)}
+
+.spec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);background:var(--sheet)}
+.spec div{padding:10px 14px;border-right:1px solid var(--rule);min-width:0}
+.spec div:last-child{border-right:0}
+.spec b{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.spec span{font-weight:600;font-variant-numeric:tabular-nums}
+
+section{display:flex;flex-direction:column;gap:20px}
+.steps{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.step{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;padding:28px 0;border-bottom:1px solid var(--rule);align-items:center}
+.fig{background:var(--sheet);border:1px solid var(--rule);padding:12px;min-width:0}
+.fig svg,.fig img{display:block;width:100%;height:auto;max-width:100%}
+.fig img{aspect-ratio:4/3;object-fit:cover;background:var(--stage)}
+.txt{display:flex;flex-direction:column;gap:10px;min-width:0}
+.num{font-family:var(--mono);font-size:13px;color:var(--dim);letter-spacing:.08em}
+.txt ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.key{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.key i{display:inline-block;width:20px;vertical-align:middle;margin-right:6px;border-top:1.5px solid var(--ink)}
+.key i.d{border-top-style:dashed}
+.key i.b{border-top:1.5px dashed var(--dim)}
+.key i.r{border-top-color:var(--slit)}
+
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.card{background:var(--sheet);border:1px solid var(--rule);padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h3{font-size:17px}
+.card ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.note{font-size:14px;color:var(--muted)}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px}
+
+/* svg drawing styles (units = mm) */
+.pc{stroke:var(--ink);stroke-width:.35;stroke-linejoin:round}
+.hid{fill:none;stroke:var(--ink);stroke-width:.3;stroke-dasharray:1.6 1.1}
+.fd{fill:none;stroke:var(--dim);stroke-width:.35;stroke-dasharray:2 1.2}
+.sl{stroke:var(--slit);stroke-width:.7;stroke-linecap:round}
+.co{stroke:var(--muted);stroke-width:.25}
+.cod{fill:var(--muted)}
+.lb{font-family:var(--body);font-size:4.3px;fill:var(--ink)}
+.lbb{font-family:var(--display);font-size:5px;font-weight:700;fill:var(--ink)}
+.bd{fill:var(--sheet);stroke:var(--ink);stroke-width:.35}
+.big{font-family:var(--display);font-size:9px;font-weight:700;fill:var(--on-light)}
+.big.inv{fill:var(--on-dark)}
+
+.alert{border:1px solid var(--warn);background:var(--sheet);padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.alert b{color:var(--warn)}
+.ring{fill:none;stroke:var(--muted);stroke-width:.9}
+.leg{stroke:var(--l-red);stroke-width:13;stroke-opacity:.85}
+.legf{stroke:var(--l-red);stroke-width:13;stroke-opacity:.45}
+.dm{stroke:var(--dim);stroke-width:.3}
+.lbd{font-family:var(--mono);font-size:3.8px;fill:var(--dim)}
+.lbs{font-family:var(--body);font-size:3.8px;fill:var(--muted)}
+@media (max-width:720px){
+  .step,.grid2{grid-template-columns:minmax(0,1fr);gap:16px}
+  .spec{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .spec div:nth-child(2){border-right:0}
+  .spec div:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+  .stage{aspect-ratio:1/1}
+}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Pattern 01 · No-sew assembly</div>
+  <h1>พวงกุญแจหมีแก้มหัวใจ</h1>
+  <p class="lede">ชิ้นหมี 01 กับสายหนังปลายหัวใจ 1 เส้น สอดหัวใจผ่าน slit ทั้งสองข้างให้กลายเป็นแก้มชมพู แล้วสายด้านหลังจะเป็นห่วงคล้องพวงกุญแจ ไม่ต้องเย็บ ไม่ต้องใช้กาว ไม่ต้องตอกหมุด</p>
+</header>
+
+<div class="stage" id="stage">
+  <canvas id="hero" aria-label="ภาพ 3D ของพวงกุญแจหมีแก้มหัวใจ ลากเพื่อหมุนดูได้"></canvas>
+  <div class="fallback" id="fallback" hidden>ไม่สามารถแสดงภาพ 3D บนอุปกรณ์นี้ได้ ขั้นตอนประกอบด้านล่างยังดูได้ตามปกติ</div>
+  <span class="hint">ลากเพื่อหมุนดูด้านหลัง · ซูมด้วยนิ้วหรือ scroll</span>
+</div>
+
+<div class="spec">
+  <div><b>ใช้ชิ้น</b><span>01 × 1 · สาย 01-S × 1</span></div>
+  <div><b>ขนาดหมี</b><span>95 × 90 mm</span></div>
+  <div><b>สาย</b><span>13 × 200 mm</span></div>
+  <div><b>ยึดด้วย</b><span>หัวใจล็อกใน slit</span></div>
+</div>
+
+<div class="alert">
+  <b>ต้องทำชิ้นใหม่ 1 ชิ้น: สายหัวใจ 01-S</b>
+  <p>แบบ 01 มีแค่ slit 2 ช่อง ต้องมีสายหนังมาร้อย ผมออกแบบสายกว้าง 13 mm ปลายเป็นหัวใจกว้าง 22 mm ให้แล้ว หัวใจกว้างกว่า slit 17 mm จึงล็อกได้เอง มีไฟล์ DXF/SVG 2 ความยาว คือ 200 mm สำหรับห่วงพวงกุญแจ และ 250 mm สำหรับคล้องหูกระเป๋า สั่งทำ die เพิ่ม 1 อัน หรือตัดมือตามไฟล์ก็ได้</p>
+</div>
+
+<section>
+  <h2>ขั้นตอนประกอบ</h2>
+  <div class="key"><span><i></i>ขอบหนัง</span><span><i class="r"></i>slit</span><span><i class="b"></i>ขนาด</span></div>
+  <div class="steps">
+    <div class="step">
+      <div class="fig">__STEP1__</div>
+      <div class="txt"><span class="num">STEP 1</span><h3>เตรียมชิ้นส่วน</h3>
+        <ul><li>ชิ้นหมี 01 จำนวน 1 ชิ้น ใช้หนังสีอ่อน</li>
+        <li>สายหัวใจ 01-S จำนวน 1 เส้น ใช้หนังสีแดงหรือชมพูให้หัวใจเป็นแก้ม</li>
+        <li>ห่วงพวงกุญแจ Ø22–25 mm จำนวน 1 อัน ถ้าจะคล้องหูกระเป๋าแทน ใช้สายยาว 250 mm และไม่ต้องใช้ห่วง</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig">__STEP2__</div>
+      <div class="txt"><span class="num">STEP 2</span><h3>วิธีสอดหัวใจ 1 ข้าง</h3>
+        <ul><li>พับหัวใจครึ่งตามยาวให้แคบลง</li>
+        <li>ดันหัวใจผ่าน slit <b>จากด้านหลังมาด้านหน้า</b> ให้ด้านโค้งเข้าไปก่อน</li>
+        <li>ดึงหัวใจออกมาจนปลายแหลมพอดีกับ slit แล้วกางออก หัวใจกว้าง 22 mm ใหญ่กว่า slit 17 mm จึงดึงกลับไม่ได้</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig">__STEP3__</div>
+      <div class="txt"><span class="num">STEP 3</span><h3>ร้อยห่วงเข้ากลางสาย</h3>
+        <ul><li>ร้อยห่วงพวงกุญแจเข้าไปให้อยู่กลางสาย</li>
+        <li>ถ้าจะคล้องหูกระเป๋า ให้พันกลางสายรอบหูกระเป๋าแทน</li>
+        <li>หันด้านผิวของสายเข้าหาหลังหมี หัวใจที่โผล่ด้านหน้าจะได้เป็นด้านผิว</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig">__STEP4__</div>
+      <div class="txt"><span class="num">STEP 4</span><h3>สอดหัวใจข้างแรก</h3>
+        <ul><li>พลิกหมีให้หันหลัง สอดหัวใจข้างหนึ่งผ่าน slit ตามวิธีใน STEP 2</li>
+        <li>ให้สายแนบหลังหมี วิ่งเฉียงขึ้นไปที่กลางหัวระหว่างหูทั้งสอง</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><img id="s5" alt="ด้านหลังของพวงกุญแจ สายสองข้างแนบหลังหมีเป็นรูปตัว V ขึ้นไปที่ห่วง" width="800" height="600"></div>
+      <div class="txt"><span class="num">STEP 5</span><h3>สอดหัวใจข้างที่สอง</h3>
+        <ul><li>สอดหัวใจอีกข้างผ่าน slit ที่เหลือแบบเดียวกัน</li>
+        <li>ด้านหลังจะเห็นสายสองข้างเป็นรูปตัว V ห้อยจากห่วง</li></ul></div>
+    </div>
+    <div class="step">
+      <div class="fig"><img id="s6" alt="ด้านหน้าของพวงกุญแจหมีแก้มหัวใจที่ประกอบเสร็จ" width="800" height="600"></div>
+      <div class="txt"><span class="num">STEP 6</span><h3>จัดหัวใจ เสร็จ</h3>
+        <ul><li>กดหัวใจทั้งสองให้แบนราบ ด้านโค้งหันเข้าหากลางหน้า ปลายแหลมซ่อนอยู่ใน slit</li>
+        <li>ดึงห่วงขึ้นเบา ๆ ให้สายด้านหลังตึง หัวใจจะแนบสนิท</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>ต่อยอดเป็นสินค้า</h2>
+  <div class="grid2">
+    <div class="card"><h3>ใช้ทำอะไรได้บ้าง</h3>
+      <ul><li><b>ป้ายชื่อติดกระเป๋านักเรียน</b> ปั๊มชื่อเด็กที่หลังหมี ใช้สาย 250 mm คล้องหูกระเป๋า</li>
+      <li><b>พวงกุญแจหรือที่ห้อยกระเป๋า</b> ทำเป็นซีรีส์สีแก้ม เช่น ชมพู แดง ทอง</li>
+      <li><b>ปั๊มหน้าหมี</b> ตอกตาและจมูกด้วยตอกปั๊มหนัง ได้ตัวละครของแบรนด์</li>
+      <li><b>ชุด DIY สำหรับเด็ก</b> มีแค่ 2 ชิ้นและไม่ต้องใช้เครื่องมือ เด็กประกอบเองได้</li></ul></div>
+    <div class="card"><h3>ข้อควรรู้</h3>
+      <ul><li>ภาพ 3D เป็นภาพจำลองจากการคำนวณ ยังไม่ได้ลองประกอบกับหนังจริง</li>
+      <li>ความยาวสาย 200/250 mm เป็นค่าประมาณ ลองตัดกระดาษหรือหนังเศษแล้วปรับก่อนสั่งทำ die</li>
+      <li>สายวิ่งเฉียงผ่าน slit ประมาณ 31° ต้องการ slit ยาวอย่างน้อย 15.2 mm ซึ่ง slit 17 mm รองรับได้</li>
+      <li>หัวใจล็อกเกินขอบ slit ข้างละ 2.5 mm ถ้าหลุดง่าย ให้ใช้หนังสายที่หนาขึ้น หรือขยายหัวใจเป็น 24 mm</li></ul></div>
+  </div>
+  <p class="note">ไฟล์สาย: <span class="mono">diecut-leather-20261013/assembly-01/01S-heart-strap-200.dxf</span> และ <span class="mono">01S-heart-strap-250.dxf</span> (มี .svg ด้วย)</p>
+</section>
+
+<footer>แบบประกอบโดย Claude Code · ชิ้น 01 Bear head + สาย 01-S · 13 ต.ค. 2026</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+__MODEL_JS__
+</script>
+<script>
+(function () {
+  const fallback = document.getElementById('fallback');
+  if (!window.THREE || !window.BearCharm) { fallback.hidden = false; return; }
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TARGET = new THREE.Vector3(0, 10, 0);
+  function renderer(canvas, w, h, still) {
+    const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: !!still });
+    r.setPixelRatio(still ? 1 : Math.min(window.devicePixelRatio || 1, 2));
+    r.setSize(w, h, false); r.outputEncoding = THREE.sRGBEncoding;
+    r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap; return r;
+  }
+  try {
+    const cv = document.createElement('canvas'), r = renderer(cv, 800, 600, true);
+    [['s5', 'back', [-60, 25, -240]], ['s6', 'front', [55, 20, 240]]].forEach(([id, view, pos]) => {
+      const scene = BearCharm.makeScene({ view }), cam = new THREE.PerspectiveCamera(30, 4 / 3, 1, 2000);
+      cam.position.set(...pos); cam.lookAt(TARGET); r.render(scene, cam);
+      document.getElementById(id).src = cv.toDataURL('image/png');
+    });
+    r.dispose();
+  } catch (e) { /* stills are optional */ }
+  try {
+    const stage = document.getElementById('stage'), canvas = document.getElementById('hero');
+    const r = renderer(canvas, stage.clientWidth, stage.clientHeight, false);
+    const scene = BearCharm.makeScene({ view: 'front' });
+    const cam = new THREE.PerspectiveCamera(30, stage.clientWidth / stage.clientHeight, 1, 2000);
+    cam.position.set(70, 25, 230);
+    const ctl = new THREE.OrbitControls(cam, canvas);
+    ctl.target.copy(TARGET); ctl.enableDamping = true; ctl.minDistance = 120; ctl.maxDistance = 460;
+    ctl.autoRotate = !reduce; ctl.autoRotateSpeed = 1.2;
+    canvas.addEventListener('pointerdown', () => { ctl.autoRotate = false; });
+    function fit() {
+      const w = stage.clientWidth, h = stage.clientHeight;
+      r.setSize(w, h, false); cam.aspect = w / h;
+      cam.position.setLength(w / h < 1.2 ? 320 : 250); cam.updateProjectionMatrix();
+    }
+    fit(); new ResizeObserver(fit).observe(stage);
+    (function loop() { ctl.update(); r.render(scene, cam); requestAnimationFrame(loop); })();
+  } catch (e) { fallback.hidden = false; }
+})();
+</script>
