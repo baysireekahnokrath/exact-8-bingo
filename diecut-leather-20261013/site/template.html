@@ -1,0 +1,179 @@
+<title>แพทเทิร์นหนังไม่ต้องเย็บ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Bai+Jamjuree:wght@600;700&display=swap">
+<style>
+/* Layout: drafting sheet — single 920px column, pattern plates in a 3-up grid, title-block style meta strip */
+:root{
+  --bg:#F7F8F6; --sheet:#FFFFFF; --ink:#1D2125; --muted:#5B636B; --rule:#D9DDDC;
+  --dim:#1F5FBF; --slit:#D12F2F; --leather:#8A5A35; --ok:#2E7D4F; --warn:#B4541A;
+  --display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --ok:#6CC892; --warn:#F0A060; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --ok:#6CC892; --warn:#F0A060; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,46px);letter-spacing:-.01em}
+h2{font-size:24px;display:flex;align-items:baseline;gap:12px}
+h2 .tag{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+h3{font-size:18px}
+p{margin:0;max-width:65ch}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+section{display:flex;flex-direction:column;gap:20px}
+
+header{display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--leather)}
+.lede{font-size:18px;color:var(--muted)}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);background:var(--sheet)}
+.meta div{padding:10px 14px;border-right:1px solid var(--rule);min-width:0}
+.meta div:last-child{border-right:0}
+.meta b{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.meta span{font-weight:600}
+.status{color:var(--warn)}
+
+.plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.plate{background:var(--sheet);border:1px solid var(--rule);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.plate svg{width:100%;height:auto;aspect-ratio:1/1;max-width:100%}
+.plate .cut{fill:none;stroke:var(--ink);stroke-width:.45}
+.plate .slit line{stroke:var(--slit);stroke-width:.7;stroke-linecap:round}
+.plate header{gap:2px;flex-direction:row;justify-content:space-between;align-items:baseline}
+.plate .code{font-family:var(--mono);color:var(--dim);font-size:13px}
+.plate h3{font-size:16px}
+.plate .size{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.plate ul{margin:0;padding-left:18px;font-size:14px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:20px;font-size:14px;color:var(--muted)}
+.legend i{display:inline-block;width:22px;height:0;border-top:2px solid var(--ink);vertical-align:middle;margin-right:8px}
+.legend i.r{border-color:var(--slit)}
+
+.system{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.card{background:var(--sheet);border:1px solid var(--rule);padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card .k{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+
+.ideas{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.idea{display:grid;grid-template-columns:180px minmax(0,1fr);gap:20px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.idea .who{font-family:var(--display);font-weight:700}
+.idea .who small{display:block;font-family:var(--mono);font-weight:400;font-size:12px;color:var(--muted)}
+.idea ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.idea strong{color:var(--leather)}
+
+.tablebox{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--rule)}
+th{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border:1px solid currentColor}
+.pill.ok{color:var(--ok)} .pill.bad{color:var(--warn)}
+.note{font-size:14px;color:var(--muted)}
+
+.files{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.file{border-left:3px solid var(--dim);background:var(--sheet);padding:12px 16px;min-width:0}
+.file code{font-family:var(--mono);font-size:13px;color:var(--dim);word-break:break-all}
+.file p{font-size:14px;color:var(--muted)}
+
+ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:65ch}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px}
+
+@media (max-width:720px){
+  .plates{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .system,.files{grid-template-columns:minmax(0,1fr)}
+  .meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .meta div:nth-child(2){border-right:0}
+  .meta div:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+  .idea{grid-template-columns:minmax(0,1fr);gap:8px}
+}
+@media (max-width:440px){.plates{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Project 20261013 · Leather die-cut</div>
+  <h1>แพทเทิร์นหนังไม่ต้องเย็บ 6 แบบ</h1>
+  <p class="lede">แบบ technical drawing สเกล 1:1 สำหรับทำ die ตัดหนัง พร้อมไอเดียสินค้าที่ประกอบด้วยการสอดล็อก ไม่ต้องเย็บ</p>
+  <div class="meta">
+    <div><b>Patterns</b><span>6 แบบ</span></div>
+    <div><b>Scale</b><span class="mono">1 : 1 · mm</span></div>
+    <div><b>Date</b><span class="mono">13 Oct 2026</span></div>
+    <div><b>Status</b><span class="status">รอเทียบกับไฟล์ .ai</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>แบบทั้ง 6 ชิ้น <span class="tag">Patterns</span></h2>
+  <div class="legend"><span><i></i>CUT ตัดขอบ</span><span><i class="r"></i>SLIT ช่องเสียบ (ตัดทะลุ)</span></div>
+  <div class="plates">
+    __PLATES__
+  </div>
+  <p class="note">ขนาดทั้งหมดวัดจาก screenshot ของ artboard จึงคลาดได้ราว ±0.5 mm ก่อนสั่งทำ die ให้เทียบกับไฟล์ .ai ต้นฉบับก่อน</p>
+</section>
+
+<section>
+  <h2>ระบบล็อกที่ใช้ร่วมกัน <span class="tag">03 · 04 · 05 · 06</span></h2>
+  <p>แบบ 03, 04, 05 และ 06 มีเส้นพับเป็นสี่เหลี่ยมตรงกลางและมีปีก 4 ด้าน แต่ละชิ้นมีด้านเสียบ 2 ด้านและด้านรับ 2 ด้าน ถ้าหมุนชิ้นถัดไป 90° จะต่อกันได้เรื่อย ๆ แบบตารางหมากรุก</p>
+  <div class="system">
+    <div class="card"><span class="k">ด้านรับ · B</span><h3>slit กลางเส้นพับ</h3><p>มี 2 ด้านตรงข้ามกัน slit ตรงกลางเส้นพับเป็นช่องรับปีกจากอีกชิ้นหนึ่ง</p></div>
+    <div class="card"><span class="k">ด้านเสียบ · A</span><h3>slot ที่ปลายเส้นพับ</h3><p>slot ทำให้ปลายปีกแยกออกเป็นปีกนก เหลือคอตรงกลางที่ติดกับชิ้น สอดเข้า slit แล้วปีกนกจะกางล็อกเอง</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>ไอเดียสินค้า <span class="tag">Products</span></h2>
+  <div class="ideas">
+    <div class="idea"><div class="who">6 ชิ้น ประกอบเป็นลูกบาศก์<small>แบบ 03 · 04 · 05 · 06</small></div>
+      <ul><li>แบบ 05 ได้ <strong>ลูกบอลหรือกล่องกลม ๆ</strong> ขนาดราว 64 mm เป็นของเล่นเด็ก ลูกบอลแขวน กล่องของขวัญ</li><li>แบบ 03 ได้ <strong>ลูกเต๋าหนัง</strong> ขนาด 45 mm</li><li>แบบ 06 ได้ลูกบอลขอบนุ่ม ส่วนแบบ 04 ได้กล่องที่มีมุมเป็นปีกสามเหลี่ยม</li><li>เช็คแล้วว่าทุกขอบของลูกบาศก์จับคู่ด้านเสียบกับด้านรับได้ครบ</li></ul></div>
+    <div class="idea"><div class="who">ต่อเป็นแนวหรือเป็นแผ่น<small>แบบ 03 · 04 · 05 · 06</small></div>
+      <ul><li>2–4 ชิ้นต่อเป็นแนว ได้สายรัด สายนาฬิกา กำไล ที่รัดสายไฟ</li><li>ต่อเป็นแผ่น เช่น 4×6 ชิ้น ได้ <strong>แผ่นรองจาน</strong> table runner แผ่นตกแต่งผนัง ผนังข้างกระเป๋า</li><li>ใช้ชิ้นเดียวร้อยสายผ่าน slit 2 ช่อง ได้ที่ห้อยกระเป๋าหรือป้ายห้อยกระเป๋าเดินทาง</li></ul></div>
+    <div class="idea"><div class="who">Bear head<small>แบบ 01 · slit 17 mm</small></div>
+      <ul><li><strong>ป้ายชื่อห้อยกระเป๋านักเรียน</strong> หรือพวงกุญแจ ร้อยสายหนังกว้างไม่เกิน 15 mm</li><li>ห่วงรัดผ้าเช็ดปาก ห่วงรัดช้อนส้อมสำหรับของชำร่วย</li><li>ที่พันสายหูฟังโดยใช้ร่องใต้หูเป็นที่ยึด แล้วเหน็บปลายสายเข้า slit</li><li>ห่วงเหน็บปากกาติดสมุด</li></ul></div>
+    <div class="idea"><div class="who">Pinwheel<small>แบบ 02 · slot แบบกังหัน</small></div>
+      <ul><li>พับกลีบตั้งขึ้นได้ <strong>ถาดใบเล็ก 54×54 mm</strong> มุมขัดกันแบบกังหัน ใส่แหวน ต่างหู กุญแจ</li><li>พับลงแบนได้ซองการ์ดของขวัญ ซองอั่งเปา หรือกรอบรูปแบบห้อย</li><li>วางซ้อนหลายชิ้นใช้เป็นที่รองแก้วแบบมีขอบ</li></ul></div>
+    <div class="idea"><div class="who">มุมธุรกิจ<small>ทุกแบบ</small></div>
+      <ul><li>ทำเป็น <strong>ชุด DIY ไม่ต้องเย็บ</strong> สำหรับ workshop ครอบครัวหรือเด็ก กิจกรรมองค์กร และของชำร่วย</li><li>die 1 ชุดแตกได้หลาย SKU ตามจำนวนชิ้น เช่น 1 ชิ้นเป็นที่ห้อยกระเป๋า 6 ชิ้นเป็นลูกบอล 24 ชิ้นเป็นแผ่นรองจาน</li></ul></div>
+  </div>
+</section>
+
+<section>
+  <h2>ต้องเช็คก่อนสั่ง die <span class="tag">Fit check</span></h2>
+  <p>คอของปีกด้านเสียบควรกว้างไม่เกิน slit ที่รับ ไม่อย่างนั้นหนังจะตึงจนฉีกได้</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>แบบ</th><th>คอปีก A (mm)</th><th>slit B (mm)</th><th>ผล</th></tr></thead>
+    <tbody>
+      <tr><td>03 Capsule cross</td><td class="num">17.0</td><td class="num">30.0</td><td><span class="pill ok">ผ่าน</span></td></tr>
+      <tr><td>04 Rounded square</td><td class="num">33.6</td><td class="num">30.0</td><td><span class="pill bad">คับไป 3.6</span></td></tr>
+      <tr><td>05 Circle</td><td class="num">33.6</td><td class="num">30.0</td><td><span class="pill bad">คับไป 3.6</span></td></tr>
+      <tr><td>06 Soft cross</td><td class="num">~21.5</td><td class="num">15.0</td><td><span class="pill bad">คับไป ~6.5</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">แก้ได้สองทาง คือยืด slit ให้ยาวขึ้น หรือยืด slot ให้คอปีกแคบลง ตารางนี้มาจากการตีความกลไกจากรูป ยังไม่ได้ลองพับจริง</p>
+</section>
+
+<section>
+  <h2>ไฟล์ที่ส่งมอบ <span class="tag">Deliverables</span></h2>
+  <div class="files">
+    <div class="file"><code>diecut-drawings-1to1.pdf</code><p>แบบ A4 จำนวน 7 แผ่น สเกล 1:1 มีขนาด รัศมี พิกัด slit และหมายเหตุสำหรับช่างทำ die</p></div>
+    <div class="file"><code>dxf/*.dxf</code><p>ไฟล์สำหรับส่งช่างทำ die แยก layer CUT กับ SLIT ใช้เส้นโค้งจริง มีทั้งไฟล์แยกรายแบบและไฟล์รวม</p></div>
+    <div class="file"><code>svg/*.svg</code><p>ไฟล์ 1:1 สำหรับเปิดใน Illustrator หรือส่งตัดเลเซอร์ทำต้นแบบ</p></div>
+    <div class="file"><code>generate.py</code><p>แก้ตัวเลข เช่นความยาว slit แล้วรันใหม่ ไฟล์ทั้งหมดจะสร้างใหม่ให้</p></div>
+  </div>
+  <p class="note">ไฟล์ทั้งหมดอยู่ใน GitHub ที่ <span class="mono">baysireekahnokrath/exact-8-bingo</span> branch <span class="mono">claude/brave-faraday-2x1ygq</span> โฟลเดอร์ <span class="mono">diecut-leather-20261013/</span></p>
+</section>
+
+<section>
+  <h2>ขั้นต่อไป <span class="tag">Next</span></h2>
+  <ol class="steps">
+    <li>เทียบขนาดในแบบกับไฟล์ .ai ต้นฉบับ</li>
+    <li>พิมพ์ PDF แบบ 100% (Actual size) แล้ววัด scale bar ให้ได้ 50 mm</li>
+    <li>ตัดกระดาษแข็งหรือหนังเศษตามแบบ แล้วลองประกอบทุกไอเดีย โดยเฉพาะลูกบาศก์ 6 ชิ้น</li>
+    <li>ปรับความยาว slit หรือ slot ตามผลที่ลอง แล้วส่ง DXF ให้ช่างทำ die</li>
+  </ol>
+</section>
+
+<footer>สรุปโดย Claude Code · 13 ต.ค. 2026</footer>
+</div>
