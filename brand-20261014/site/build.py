@@ -281,13 +281,15 @@ def summary():
     rows = [("Brand Book", "brandbook", "ชื่อ เรื่องเล่า โลโก้ สี ฟอนต์ น้ำเสียง"),
             ("Launch Kit", "launch", "แผน 9 วัน โซเชียล Shopee สินค้า 30 ตัว พร้อมโพสต์ 5 ช่องทาง คู่มือลูกหมีขายของ"),
             ("สไลด์ของขวัญวันเกิด", "deck", "พรีเซนต์ทั้งหมดให้แม่หมี"),
-            ("Google Sheet ต้นทุน", "sheet", "ต้นทุน ราคาขาย กำไร 3 แท็บ")]
+            ("Google Sheet ต้นทุน", "sheet", "ต้นทุน ราคาขาย กำไร 3 แท็บ"),
+            ("ทางเลือกแบรนด์ Luxury", "alternatives", "อีก 5 ชื่อแนวเท่ หรู ยั่งยืน พร้อมโลโก้และราคา")]
     links = "".join(f'<div class="card"><h3>{link(k, E(t))}</h3><p class="cap" style="font-size:14px;margin-top:4px">{E(d)}</p></div>' for t, k, d in rows)
     files = [("brand-20261014/brand.py", "ข้อมูลทั้งหมดของแบรนด์ แก้ที่นี่ที่เดียว"),
              ("brand-20261014/logo/svg, logo/png", "โลโก้ 13 ไฟล์ แปลงตัวอักษรเป็นเส้นแล้ว"),
              ("brand-20261014/posters/png", "โปสเตอร์ How-to 30 ตัว × 2 ขนาด (60 ไฟล์)"),
              ("brand-20261014/site", "ต้นฉบับหน้าเว็บทั้งสาม"),
-             ("brand-20261014/deck", "ต้นฉบับสไลด์")]
+             ("brand-20261014/deck", "ต้นฉบับสไลด์"),
+             ("brand-20261014/alternatives", "ทางเลือกแบรนด์ 5 แบบ โลโก้และป้ายห้อย")]
     ftable = "".join(f'<tr><td class="mono" style="white-space:nowrap">{E(f)}</td><td>{E(d)}</td></tr>' for f, d in files)
     return f"""{head("ห้าหมี สรุปโปรเจกต์")}
 <div class="wrap"><header style="padding-top:28px;display:flex;flex-direction:column;gap:14px">
