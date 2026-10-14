@@ -48,6 +48,38 @@ def mark_quint(o):
 
 MARKS = dict(remnant=mark_remnant, unsewn=mark_unsewn, interlock=mark_interlock, aftercut=mark_aftercut, quint=mark_quint)
 
+def mark_khad(o):
+    """Three strips woven over and under: สานขัด."""
+    b = o["bg"]
+    return (f'<rect x="-31" y="-46" width="24" height="92" rx="12" fill="{o["fg"]}"/>'
+            f'<rect x="-46" y="-12" width="92" height="24" rx="12" fill="{o["acc"]}" stroke="{b}" stroke-width="5"/>'
+            f'<rect x="7" y="-46" width="24" height="92" rx="12" fill="{o["fg"]}" stroke="{b}" stroke-width="5"/>')
+
+def mark_sansfil(o):
+    return (f'<path d="M-40,40 L28,-28 Q36,-38 42,-42 Q38,-36 28,-28" fill="none" stroke="{o["fg"]}" stroke-width="5" stroke-linecap="round"/>'
+            f'<ellipse cx="30" cy="-30" rx="7" ry="2.4" transform="rotate(-45 30 -30)" fill="{o["bg"]}"/>'
+            f'<circle cx="-40" cy="40" r="3" fill="{o["acc"]}"/>')
+
+def mark_pointfive(o):
+    t = text(".5", 84, 0, 22, o["fg"], o["font"][0])
+    return (t + f'<line x1="-30" y1="40" x2="30" y2="40" stroke="{o["acc"]}" stroke-width="2.5"/>'
+            f'<line x1="-30" y1="32" x2="-30" y2="48" stroke="{o["acc"]}" stroke-width="2.5"/>'
+            f'<line x1="30" y1="32" x2="30" y2="48" stroke="{o["acc"]}" stroke-width="2.5"/>')
+
+def mark_praneet(o):
+    g = []
+    for k in range(5):
+        a = -90 + 72 * k
+        g.append(f'<ellipse cx="0" cy="-24" rx="11" ry="22" transform="rotate({a + 90})" fill="{o["acc"]}"/>')
+    g.append(f'<circle r="8" fill="{o["bg"]}"/><circle r="4" fill="{o["fg"]}"/>')
+    return "".join(g)
+
+def mark_monohide(o):
+    return (f'<circle r="44" fill="none" stroke="{o["fg"]}" stroke-width="3.2"/>'
+            f'<line x1="-15" y1="0" x2="15" y2="0" stroke="{o["acc"]}" stroke-width="4.5" stroke-linecap="round"/>')
+
+MARKS.update(khad=mark_khad, sansfil=mark_sansfil, pointfive=mark_pointfive, praneet=mark_praneet, monohide=mark_monohide)
+
 def svg(w, h, body, bg):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
             f'<rect width="{w}" height="{h}" fill="{bg}"/>{body}</svg>')
