@@ -228,11 +228,68 @@ def tag_maison(o):
             text("No. 001 / 100", 22, 280, 740, o["fg"], o["font"][0], .1)]
     return svg(W, H, "".join(body), "#E7E3DC")
 
+def concept_board(o):
+    W, H = 1200, 720
+    k = o["key"]; fg, acc, bg = o["fg"], o["acc"], o["bg"]
+    body = []
+    if k == "clicker":
+        body.append(f'<g transform="translate(600,150)"><rect x="-70" y="-40" width="140" height="22" rx="4" fill="{fg}"/>'
+                    f'<rect x="-8" y="-60" width="16" height="22" fill="{fg}"/>'
+                    f'<path d="M-46,28 L46,28" stroke="{acc}" stroke-width="5" stroke-linecap="round" stroke-dasharray="14 9"/>'
+                    f'<path d="M-62,0 L-80,-10 M62,0 L80,-10 M0,8 L0,-6" stroke="{fg}" stroke-width="3" stroke-linecap="round"/></g>')
+        body.append(text(o["word"], 150, 600, 410, fg, o["font"][0], o["tracking"]))
+    elif k == "makedo":
+        cols = [o["pal"][2][1], o["pal"][3][1], "#D9A441", fg]
+        for i, (x, y) in enumerate(((-46, -46), (2, -46), (-46, 2), (2, 2))):
+            body.append(f'<rect x="{600 + x}" y="{150 + y}" width="44" height="44" rx="6" fill="{cols[i]}"/>')
+        body.append(text(o["word"], 150, 600, 410, fg, o["font"][0], o["tracking"]))
+    elif k == "d2310":
+        d, w, (x0, y0, x1, y1) = text_path("23", 230, o["font"][0])
+        d2, w2, (a0, b0, a1, b1) = text_path("10", 230, o["font"][0])
+        gap = 80; total = (x1 - x0) + gap + (a1 - a0); x = 600 - total / 2
+        body.append(f'<path transform="translate({x - x0:.1f},400)" d="{d}" fill="{fg}"/>')
+        body.append(f'<circle cx="{x + (x1 - x0) + gap / 2:.1f}" cy="320" r="18" fill="{acc}"/>')
+        body.append(f'<path transform="translate({x + (x1 - x0) + gap - a0:.1f},400)" d="{d2}" fill="{fg}"/>')
+    elif k == "initials":
+        cols = [c for _, c in o["pal"]]
+        for i, c in enumerate(cols):
+            x = 600 - 2.5 * 150 + i * 150 + 8
+            body.append(f'<rect x="{x}" y="170" width="134" height="180" rx="22" fill="{c}"/>')
+            body.append(text("?", 110, x + 67, 300, "#FFFFFF" if i in (0, 1, 4) else fg, o["font"][0]))
+        for i, lab in enumerate(["พ่อ", "แม่", "คนโต", "คนกลาง", "คนเล็ก"]):
+            body.append(text(lab, 28, 600 - 2.5 * 150 + i * 150 + 75, 400, fg, o["thfont"][0]))
+    elif k == "soi5":
+        body.append(f'<rect x="250" y="120" width="700" height="330" rx="30" fill="{bg}" stroke="#FFFFFF" stroke-width="10"/>')
+        body.append(text("ซอย ๕", 130, 600, 285, fg, o["thfont"][0]))
+        body.append(text("SOI 5", 92, 600, 410, fg, o["font"][0], .08))
+        return svg(W, H, "".join(body) + text(o["tag_en"], 34, 600, 540, "#3A3A3A", o["font"][0], .04)
+                   + text(o["tag_th"], 30, 600, 610, "#3A3A3A", o["thfont"][0]), "#E9E6DF")
+    body.append(text(o["tag_en"], 34, 600, 520, fg, o["font"][0], .04))
+    body.append(text(o["tag_th"], 30, 600, 600, fg, o["thfont"][0]))
+    return svg(W, H, "".join(body), bg)
+
+def concept_tag(o):
+    """Same hang tag as the others, with the concept board shrunk into its top half."""
+    W, H = 560, 860
+    h = o["heroes"][0]
+    inner = re.search(r'<svg[^>]*>(.*)</svg>', concept_board(o), re.S).group(1)
+    shape = (f'<path d="M80,40 H480 Q520,40 520,80 V780 Q520,820 480,820 H80 Q40,820 40,780 V80 Q40,40 80,40 Z" fill="{o["bg"] if o["key"] != "soi5" else "#E9E6DF"}"/>'
+             f'<circle cx="280" cy="90" r="16" fill="#E7E3DC"/>')
+    tfg = o["fg"] if o["key"] != "soi5" else "#3A3A3A"
+    body = [shape, f'<svg x="50" y="120" width="460" height="276" viewBox="0 0 1200 720"><g>{inner}</g></svg>',
+            f'<line x1="120" y1="440" x2="440" y2="440" stroke="{o["acc"]}" stroke-width="1.5"/>',
+            text(h["name"], 32, 280, 515, tfg, o["thfont"][0]),
+            text(f"{h['price']:,} THB", 40, 280, 590, o["acc"] if o["key"] != "soi5" else "#1F4E9C", o["font"][0], .04),
+            text("ทำจากเศษหนังแท้ · ไม่มีด้าย · ไม่มีกาว", 22, 280, 690, tfg, o["thfont"][0])]
+    return svg(W, H, "".join(body), "#E7E3DC")
+
 def board(o):
     if o.get("acro"):
         return board_acro(o)
     if o.get("maison"):
         return board_maison(o)
+    if o.get("concept"):
+        return concept_board(o)
     W, H = 1200, 720
     m = f'<g transform="translate(600,190) scale(1.7)">{MARKS[o["key"]](o)}</g>'
     size = 116 if len(o["name"]) <= 7 else 96
@@ -259,6 +316,8 @@ def tag(o):
         return tag_acro(o)
     if o.get("maison"):
         return tag_maison(o)
+    if o.get("concept"):
+        return concept_tag(o)
     """Hang tag 500 x 800 with a punched hole, the way it would hang on a product."""
     W, H = 560, 860
     h = o["heroes"][0]

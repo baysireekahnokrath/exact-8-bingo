@@ -46,6 +46,11 @@ th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);verti
 th{font-weight:500;font-size:12.5px;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
 td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 tr:last-child td{border-bottom:0}
+.chipx{font-size:13px;background:var(--chip);border-radius:99px;padding:3px 11px}
+.ini{display:flex;gap:10px;flex-wrap:wrap}.ini label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.ini input{width:56px;height:56px;font-size:26px;text-align:center;text-transform:uppercase;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font-family:var(--body)}
+.ini input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.word{font-size:20px;font-weight:500;letter-spacing:.12em;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-variant-numeric:tabular-nums}
 .taken{font-size:13px;letter-spacing:.04em;background:#8E2B23;color:#FBF6EE;border-radius:99px;padding:2px 10px}
 .risk{font-size:14px;color:var(--muted);border-left:3px solid var(--accent);padding-left:12px}
 .pick{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:10px}
@@ -56,6 +61,42 @@ ul,ol{margin:0;padding-left:1.3em}
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap">')
 
+def concept_card(o):
+    if not o.get("concept"):
+        return ""
+    chips = "".join(f'<span class="chipx">{E(m)}</span>' for m in o["more"])
+    return (f'<div class="pick" style="gap:8px"><span class="k">แนวคิด · {E(o["concept"])}</span><p>{E(o["approach"])}</p>'
+            f'<p class="k" style="text-transform:none;letter-spacing:.02em">ชื่ออื่นในแนวเดียวกัน</p><div class="sw">{chips}</div></div>')
+
+INITIALS_TOOL = """<div class="pick" id="tool" style="gap:12px"><span class="k">ลองตั้งชื่อจากอักษรแรกของห้าคน</span>
+<p>พิมพ์อักษรตัวแรกของชื่อแต่ละคน (อังกฤษหรือไทยก็ได้) หน้านี้จะเรียงให้ครบทุกแบบ แบบที่สลับสระกับพยัญชนะ อ่านออกเสียงง่าย จะขึ้นก่อน ตัวอักษรที่ใส่ไว้ตอนนี้เป็นตัวอย่าง</p>
+<div class="ini">
+<label>พ่อ<input id="ini1" maxlength="1" value="P"></label><label>แม่<input id="ini2" maxlength="1" value="A"></label>
+<label>คนโต<input id="ini3" maxlength="1" value="N"></label><label>คนกลาง<input id="ini4" maxlength="1" value="I"></label>
+<label>คนเล็ก<input id="ini5" maxlength="1" value="K"></label></div>
+<p class="k" id="ini-count" style="text-transform:none;letter-spacing:0"></p>
+<div class="sw" id="ini-out"></div>
+<details><summary class="k" style="cursor:pointer;text-transform:none;letter-spacing:0">ดูทุกแบบ</summary><p id="ini-all" style="font-size:14px;line-height:2;word-spacing:.6em"></p></details>
+</div>
+<script>
+(function(){
+const V=new Set("AEIOUY".split(""));
+const isV=c=>V.has(c)||/[\u0E30-\u0E45\u0E47-\u0E4E]/.test(c);
+function perms(a){if(a.length<2)return[a];const out=[];a.forEach((x,i)=>perms(a.slice(0,i).concat(a.slice(i+1))).forEach(p=>out.push([x].concat(p))));return out}
+function score(w){let s=0,run=1;for(let i=1;i<w.length;i++){const a=isV(w[i-1]),b=isV(w[i]);if(a!==b){s+=2;run=1}else{run++;s-=run>2?3:1}}return s+(isV(w[0])?0:1)}
+function draw(){
+ const L=[1,2,3,4,5].map(n=>(document.getElementById("ini"+n).value||"").trim().toUpperCase()).filter(Boolean);
+ const out=document.getElementById("ini-out"),all=document.getElementById("ini-all"),cnt=document.getElementById("ini-count");
+ if(L.length<2){out.textContent="ใส่อักษรอย่างน้อยสองตัว";all.textContent="";cnt.textContent="";return}
+ const words=[...new Set(perms(L).map(p=>p.join("")))].sort((a,b)=>score(b)-score(a)||a.localeCompare(b));
+ cnt.textContent="ทั้งหมด "+words.length+" แบบ · 12 แบบที่อ่านง่ายที่สุด";
+ out.innerHTML="";words.slice(0,12).forEach(w=>{const s=document.createElement("span");s.className="word";s.textContent=w;out.appendChild(s)});
+ all.textContent=words.join(" ");
+}
+document.querySelectorAll(".ini input").forEach(i=>i.addEventListener("input",draw));draw();
+})();
+</script>"""
+
 def option(i, o):
     rows = "".join(
         f'<tr><td>{E(h["name"])}</td><td class="n">{h["base"]}</td><td class="n"><b>{h["price"]:,}</b></td>'
@@ -65,7 +106,7 @@ def option(i, o):
 <div class="head"><span class="num">{i:02d}</span><h2>{E(o['name'])}</h2><span style="color:var(--muted)">{E(o['th'])}</span>{'<span class="taken">มีคนใช้แล้ว</span>' if o.get('taken') else ''}</div>
 <div class="boards"><img src="img/{o['key']}-board.png" alt="โลโก้ {E(o['name'])} บนสีหลักของแบรนด์" width="1200" height="720">
 <img src="img/{o['key']}-tag.png" alt="ป้ายห้อยสินค้า {E(o['name'])} ตัวอย่างกับ{E(o['heroes'][0]['name'])}" width="560" height="860"></div>
-<div class="spec">
+{concept_card(o)}<div class="spec">
 <div><span class="k">ความหมาย</span><p>{E(o['mean'])}</p><p><b>{E(o['tag_en'])}</b><br>{E(o['tag_th'])}</p></div>
 <div><span class="k">ลุค</span><p>{E(o['vibe'])}</p><div class="sw">{sw}</div>
 <p class="k" style="letter-spacing:.04em;text-transform:none">ฟอนต์ {E(o['font'][1])} · ภาษาไทย {E(o['thfont'][1])} · @{E(o['handle'])}</p></div>
@@ -74,10 +115,11 @@ def option(i, o):
 </div>
 <div class="tbl"><table><thead><tr><th>สินค้าหลัก</th><th>ราคาห้าหมี</th><th>ราคาแบรนด์นี้</th><th>ต้นทุน</th><th>กำไร</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="risk">{E(o['risk'])}</p>
+{INITIALS_TOOL if o['key'] == 'initials' else ''}
 </section>"""
 
 def page():
-    nav = "".join(f'<a href="#{o["key"]}">{E(o["name"])}</a>' for o in OPTIONS[35:40] + OPTIONS[40:45] + OPTIONS[25:30] + OPTIONS[30:35] + OPTIONS[20:25] + OPTIONS[15:20] + OPTIONS[10:15] + OPTIONS[:10])
+    nav = "".join(f'<a href="#{o["key"]}">{E(o["name"])}</a>' for o in OPTIONS[45:50] + OPTIONS[35:40] + OPTIONS[40:45] + OPTIONS[25:30] + OPTIONS[30:35] + OPTIONS[20:25] + OPTIONS[15:20] + OPTIONS[10:15] + OPTIONS[:10])
     comp = [("REMNANT", "มินิมอล หรูเงียบ", "เล่าในโพสต์เบื้องหลัง", "กลาง", "300–700"),
             ("UNSEWN", "งานฝีมือ ดีไซน์", "ลูก ๆ เป็นทีมประกอบ", "กลาง", "350–600"),
             ("INTERLOCK", "เท่ สตรีท DIY", "คลิปลูกต่อแข่งเวลา", "ยาก ต้องใช้คู่โลโก้", "290–890"),
@@ -122,12 +164,20 @@ def page():
             ("kid. คิด", "ตระกูล mom.", "ลูก ๆ เป็นนักออกแบบ", "คำทั่วไป แบรนด์เด็กใช้เยอะ", "189–590"),
             ("sis.", "ตระกูล mom.", "ลูกสาวสองคน", "คำแสลงทั่วไป", "159–189"),
             ("fam.", "ตระกูล mom.", "ห้าคนรอบตัวฉัน", "คำแสลงทั่วไป", "299–390"),
-            ("us.", "ตระกูล mom.", "พ่อกับแม่เป็นคู่แรก", "คำทั่วไปมาก ชื่อบัญชีหายาก", "159–390")]
+            ("us.", "ตระกูล mom.", "พ่อกับแม่เป็นคู่แรก", "คำทั่วไปมาก ชื่อบัญชีหายาก", "159–390"),
+            ("CLICKER", "ศัพท์ช่างหนัง", "พ่อกดบล็อกตัดเอง", "ค้นเว็บไม่เจอแบรนด์ชื่อนี้", "250–390"),
+            ("MAKE DO", "สำนวนอังกฤษ", "สอนลูกให้ใช้สิ่งที่มี", "ใกล้ Make Smith, MW Makes", "390–490"),
+            ("23·10", "วันสำคัญ", "วันแรกที่ลูกขายเอง", "ตัวเลขจดยาก ต้องจดเป็นโลโก้", "199–490"),
+            ("อักษรแรกห้าคน", "ชื่อทุกคนในบ้าน", "มีตัวอักษรของทุกคน", "น่าจะจดง่ายที่สุด เพราะเป็นคำที่ตั้งขึ้นใหม่", "189–390"),
+            ("SOI 5", "สถานที่", "ซอยบ้านเรา", "คำทั่วไป ต้องจดเป็นโลโก้ป้ายซอย", "59–189")]
     crow = "".join(f"<tr><td><b>{a}</b></td><td>{b}</td><td>{c}</td><td>{d}</td><td class='n'>{e}</td></tr>" for a, b, c, d, e in comp)
-    set8 = ('<p class="eyebrow">ชุดที่ 8 · ใหม่ · แบบ one. อ่านเป็นคำไทยได้</p>'
+    set10 = ('<p class="eyebrow">ชุดที่ 10 · ใหม่ · ห้าแนวคิดใหม่</p>'
+            '<p style="font-size:14px;color:var(--muted)">แต่ละแนวคิดเป็นวิธีตั้งชื่อแบบใหม่ ไม่ใช่แค่ชื่อเดียว มีชื่อตัวอย่างที่ทำโลโก้ให้แล้ว และชื่ออื่นในแนวเดียวกันให้เลือกต่อ</p>'
+            + "".join(option(i, o) for i, o in enumerate(OPTIONS[45:50], 46)))
+    set8 = ('<p class="eyebrow">ชุดที่ 8 · แบบ one. อ่านเป็นคำไทยได้</p>'
             '<p style="font-size:14px;color:var(--muted)">คำอังกฤษสั้น ๆ ที่อ่านออกเสียงแล้วเป็นคำไทยที่มีความหมาย เหมือน one. ที่อ่านว่า วัน</p>'
             + "".join(option(i, o) for i, o in enumerate(OPTIONS[35:40], 36)))
-    set9 = ('<p class="eyebrow">ชุดที่ 9 · ใหม่ · แบบ mom. ครบทั้งครอบครัว</p>'
+    set9 = ('<p class="eyebrow">ชุดที่ 9 · แบบ mom. ครบทั้งครอบครัว</p>'
             '<p style="font-size:14px;color:var(--muted)">ใช้ฟอนต์เดียวกับ mom. ทุกตัว จึงใช้เป็นไลน์สินค้าย่อยของแบรนด์เดียวกันได้ ทั้ง dad. kid. sis. fam. us.</p>'
             + "".join(option(i, o) for i, o in enumerate(OPTIONS[40:45], 41)))
     set6 = ('<p class="eyebrow">ชุดที่ 6 · แบบ dot เพิ่มอีก 5</p>'
@@ -150,19 +200,20 @@ def page():
 <div class="wrap">
 <header style="padding-top:28px;display:flex;flex-direction:column;gap:14px">
 <span class="eyebrow">Brand directions · 14 ต.ค. 2569</span>
-<h1>สี่สิบห้าทางเลือก แนวเท่ หรู ยั่งยืน และของใช้ทุกวัน</h1>
+<h1>ห้าสิบทางเลือก กับสิบวิธีตั้งชื่อแบรนด์</h1>
 <p class="lead">สินค้า บล็อกตัด และครอบครัวเดิมทั้งหมด สิ่งที่เปลี่ยนคือชื่อ ลุค และระดับราคา ทุกโลโก้ในหน้านี้เป็นไฟล์จริงที่แปลงตัวอักษรเป็นเส้นแล้ว ส่วนป้ายห้อยเป็นตัวอย่างการใช้งานบนสินค้า</p>
 <p style="font-size:14px;color:var(--muted)">ต้นทุนในตารางใช้สูตรเดียวกับ Google Sheet แต่เปลี่ยนถุง 5 บาทเป็นกล่องพรีเมียมประมาณ {PREMIUM_PACK:.0f} บาท ราคาแบรนด์หรูต้องมาพร้อมงานเก็บขอบหนัง การคัดหนังเกรดดี และบรรจุภัณฑ์ที่ดีขึ้น</p>
 </header>
+{set10}
+<section class="opt pick" id="pick"><span class="eyebrow">คำแนะนำรอบนี้</span><h2>ตั้งชื่อจากอักษรแรกของห้าคน ถ้าอยากให้เป็นของขวัญที่สุด</h2>
+<p>ชื่อที่ได้เป็นคำใหม่ที่มีบ้านเราบ้านเดียว ไม่มีใครใช้ก่อน จดเครื่องหมายการค้าได้ง่ายกว่าคำทั่วไปทุกแนวที่ผ่านมา และมีตัวอักษรของภรรยาอยู่ในชื่อแบรนด์ตลอดไป ใช้ร่วมกับแนวอื่นได้ด้วย เช่น ใส่จุดท้ายแบบ mom. หรือใส่ Maison ข้างหน้า ลองพิมพ์อักษรจริงในเครื่องมือของแนวคิดนี้ได้เลย</p>
+<p>ถ้าอยากได้ชื่อที่พร้อมใช้ทันที CLICKER เท่ที่สุดในชุดนี้ เป็นคำจริงของช่างตัดหนัง ค้นเว็บแล้วไม่เจอแบรนด์ที่ใช้ และเล่าว่าพ่อเป็นคนกดบล็อกตัดเองได้ทันที</p>
+<p>ชื่อแบบ 23·10 และ SOI 5 เหมาะเป็นชื่อรุ่นหรือคอลเลกชันมากกว่าชื่อแบรนด์ เพราะตัวเลขและคำทั่วไปจดเครื่องหมายยาก เช่น ห้าหมี รุ่น 23·10</p>
+<ol><li>ลองพิมพ์อักษรแรกของทุกคนในเครื่องมือ แล้วเลือกคำที่ชอบ 2–3 คำ</li><li>ค้นเครื่องหมายการค้าและชื่อบัญชี</li>
+<li>บอกผม แล้วผมจะทำโลโก้ชุดเต็ม Brand Book โปสเตอร์ 30 ตัว และสไลด์ในลุคนั้นให้ใหม่ทั้งชุด</li></ol></section>
 {set8}
 {set9}
-<section class="opt pick" id="pick"><span class="eyebrow">คำแนะนำรอบนี้</span><h2>mom. เป็นแบรนด์หลัก แล้วแตกไลน์ตามคนในบ้าน</h2>
-<p>ชุด mom. ใช้ฟอนต์เดียวกันทุกตัว จึงทำเป็นแบรนด์เดียวที่มีไลน์ย่อยได้ mom. ของขวัญผู้หญิง dad. ของขวัญผู้ชาย kid. ของเด็ก fam. ของทั้งบ้าน ไลน์ละหนึ่งเทศกาลขายใหญ่ วันแม่ 12 สิงหาคม วันพ่อ 5 ธันวาคม วันเด็กเสาร์ที่สองของมกราคม และปีใหม่ ร้านเดียวขายได้ทั้งปี และเป็นเรื่องของครอบครัวห้าคนตรงที่สุด</p>
-<p>dad. อ่านว่า แดด และ kid. อ่านว่า คิด ได้ความหมายไทยแบบเดียวกับ one. ที่อ่านว่า วัน</p>
-<p>ถ้าอยากได้ชื่อเดี่ยวแบบ one. ผมแนะนำ mai. ที่อ่านว่า ใหม่ เพราะเล่าเรื่องเศษหนังที่ได้ชีวิตใหม่ได้ตรงที่สุด และค้นเว็บไม่เจอแบรนด์เครื่องหนังที่ใช้ชื่อนี้</p>
-<p>ทุกชื่อในสองชุดนี้เป็นคำทั่วไป ต้องจดเครื่องหมายทั้งชุด คือคำ จุดสี และคำเต็มที่ย่อมา ก่อนพิมพ์ของให้ค้นในฐานข้อมูลกรมทรัพย์สินทางปัญญาและเช็กชื่อบัญชี</p>
-<ol><li>เลือกว่าจะใช้แบบชื่อเดี่ยว หรือแบบแบรนด์หลักมีไลน์ย่อย</li><li>ค้นเครื่องหมายการค้าและชื่อบัญชี</li>
-<li>บอกผม แล้วผมจะทำโลโก้ชุดเต็ม Brand Book โปสเตอร์ 30 ตัว และสไลด์ในลุคนั้นให้ใหม่ทั้งชุด</li></ol></section>
+
 {set6}
 {set7}
 
@@ -173,7 +224,7 @@ def page():
 {set3}
 
 {opts}
-<section class="opt"><h2>เทียบกันทั้งสี่สิบห้า</h2>
+<section class="opt"><h2>เทียบกันทั้งห้าสิบ</h2>
 <div class="tbl"><table><thead><tr><th>แบรนด์</th><th>โทน</th><th>เรื่องครอบครัว</th><th>จดชื่อ</th><th>ราคาสินค้าหลัก (บาท)</th></tr></thead><tbody>{crow}</tbody></table></div></section>
 
 </div>"""
