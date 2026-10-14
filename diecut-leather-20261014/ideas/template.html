@@ -66,6 +66,7 @@ svg .slit line{stroke:var(--slit);stroke-width:2.2;stroke-linecap:round}
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px}
 .prod{display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--ink);padding-top:24px}
 .prod h3{margin-top:8px}
+.sheetlink{border-left:3px solid var(--ok);background:var(--sheet);padding:10px 14px;max-width:none}
 ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:70ch}
 .tablebox{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule)}
 table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
@@ -127,6 +128,7 @@ tr:last-child td{border-bottom:0}
   </table></div>
 
   <h3>3. ตัวคำนวณต้นทุนหนังและค่าแรง</h3>
+  <p class="sheetlink"><b>ตัวคำนวณแบบละเอียดบน Google Sheets:</b> <a href="https://docs.google.com/spreadsheets/d/1RbQpJ2O8hw9ovUywjqVO5s2eurW_Xm2Xh6lvOM9x1sE/edit">ต้นทุนและราคาขาย สินค้าหนังไม่ต้องเย็บ</a> ใช้ราคาเศษหนังจริง (เศษใหญ่ 95 บาท/กก. เศษเล็ก 15 บาท/กก.) คำนวณต้นทุนต่อชิ้น ราคาขาย และกำไรของทั้ง 20 สินค้า ตัวคำนวณด้านล่างเป็นแบบย่อ คิดจากราคาต่อตารางฟุต</p>
   <div class="calc">
     <label>ราคาหนัง (บาท / ตร.ฟุต)<input id="c-price" type="number" min="0" step="1" value="120"></label>
     <label>เผื่อตำหนิหนัง (%)<input id="c-waste" type="number" min="0" step="1" value="15"></label>
