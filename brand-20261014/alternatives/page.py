@@ -46,6 +46,7 @@ th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);verti
 th{font-weight:500;font-size:12.5px;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
 td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 tr:last-child td{border-bottom:0}
+.taken{font-size:13px;letter-spacing:.04em;background:#8E2B23;color:#FBF6EE;border-radius:99px;padding:2px 10px}
 .risk{font-size:14px;color:var(--muted);border-left:3px solid var(--accent);padding-left:12px}
 .pick{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:10px}
 ul,ol{margin:0;padding-left:1.3em}
@@ -61,7 +62,7 @@ def option(i, o):
         f'<td class="n">{h["cost"]:.0f}</td><td class="n">{h["margin"]:.0%}</td></tr>' for h in o["heroes"])
     sw = "".join(f'<span><i style="background:{hx}"></i>{E(n)} <span class="k" style="letter-spacing:0">{hx}</span></span>' for n, hx in o["pal"])
     return f"""<section class="opt" id="{o['key']}">
-<div class="head"><span class="num">{i:02d}</span><h2>{E(o['name'])}</h2><span style="color:var(--muted)">{E(o['th'])}</span></div>
+<div class="head"><span class="num">{i:02d}</span><h2>{E(o['name'])}</h2><span style="color:var(--muted)">{E(o['th'])}</span>{'<span class="taken">มีคนใช้แล้ว</span>' if o.get('taken') else ''}</div>
 <div class="boards"><img src="img/{o['key']}-board.png" alt="โลโก้ {E(o['name'])} บนสีหลักของแบรนด์" width="1200" height="720">
 <img src="img/{o['key']}-tag.png" alt="ป้ายห้อยสินค้า {E(o['name'])} ตัวอย่างกับ{E(o['heroes'][0]['name'])}" width="560" height="860"></div>
 <div class="spec">
@@ -76,7 +77,7 @@ def option(i, o):
 </section>"""
 
 def page():
-    nav = "".join(f'<a href="#{o["key"]}">{E(o["name"])}</a>' for o in OPTIONS)
+    nav = "".join(f'<a href="#{o["key"]}">{E(o["name"])}</a>' for o in OPTIONS[10:] + OPTIONS[:10])
     comp = [("REMNANT", "มินิมอล หรูเงียบ", "เล่าในโพสต์เบื้องหลัง", "กลาง", "300–700"),
             ("UNSEWN", "งานฝีมือ ดีไซน์", "ลูก ๆ เป็นทีมประกอบ", "กลาง", "350–600"),
             ("INTERLOCK", "เท่ สตรีท DIY", "คลิปลูกต่อแข่งเวลา", "ยาก ต้องใช้คู่โลโก้", "290–890"),
@@ -85,30 +86,38 @@ def page():
             ("KHAD", "เท่แบบไทยร่วมสมัย", "คำที่พูดกันในบ้าน", "กลาง ต้องจดคู่โลโก้", "259–290"),
             ("SANSFIL", "หรูแบบผู้หญิง", "แบรนด์ที่ตั้งให้แม่หมี", "กลาง", "290–790"),
             ("POINT FIVE", "เท่แบบวิศวกร", "ห้า = ห้าคน, 0.5 = งานของพ่อ", "กลาง ต้องค้นหมวดเครื่องหนัง", "390–790"),
-            ("PRANEET", "หรูแบบไทย", "ดอกห้ากลีบ = ห้าคน", "ยาก คำทั่วไป ต้องจดคู่โลโก้", "190–890"),
-            ("MONO/HIDE", "ยั่งยืนแบบดิบ", "ลูก ๆ แกะชิ้นให้ดูว่ามีแต่หนัง", "กลาง ต้องจดคู่ HIDE", "250–450")]
+            ("PRANEET", "หรูแบบไทย", "ดอกห้ากลีบ = ห้าคน", "มีคนใช้แล้ว", "190–890"),
+            ("MONO/HIDE", "ยั่งยืนแบบดิบ", "ลูก ๆ แกะชิ้นให้ดูว่ามีแต่หนัง", "กลาง ต้องจดคู่ HIDE", "250–450"),
+            ("ละเมียด LAMIAD", "หรูแบบไทย ต่อจาก PRANEET", "ดอกห้ากลีบ = ห้าคน", "ค้นเว็บไม่เจอแบรนด์ชื่อนี้", "190–890"),
+            ("เบญจ BENJA", "เบญจรงค์ร่วมสมัย", "เบญจ = ห้า ห้าสีห้าคน", "คำทั่วไป เจอชื่อซ้ำในกระเป๋าและเฟอร์นิเจอร์", "490–590"),
+            ("บรรจง BANJONG", "ลายรดน้ำ ดำทอง", "พ่อออกแบบ ลูกประกอบ", "ชื่อคนทั่วไป ต้องจดคู่โลโก้", "290–790"),
+            ("กนก KANOK", "ลายไทย แดงทอง", "ช่างไทยรุ่นใหม่ในบ้าน", "ชื่อคนทั่วไป ใกล้ Kanita", "150–590"),
+            ("หัตถ์ HATTHA", "ศิลาดล", "ห้าคู่มือ", "ค้นเว็บไม่เจอแบรนด์ชื่อนี้", "290–790")]
     crow = "".join(f"<tr><td><b>{a}</b></td><td>{b}</td><td>{c}</td><td>{d}</td><td class='n'>{e}</td></tr>" for a, b, c, d, e in comp)
+    set3 = ('<p class="eyebrow">ชุดที่ 3 · ใหม่ · แนวเดียวกับ PRANEET</p>'
+            + "".join(option(i, o) for i, o in enumerate(OPTIONS[10:], 11)))
     opts = ('<p class="eyebrow">ชุดที่ 1</p>' + "".join(option(i, o) for i, o in enumerate(OPTIONS[:5], 1))
-            + '<p class="eyebrow">ชุดที่ 2</p>' + "".join(option(i, o) for i, o in enumerate(OPTIONS[5:], 6)))
+            + '<p class="eyebrow">ชุดที่ 2</p>' + "".join(option(i, o) for i, o in enumerate(OPTIONS[5:10], 6)))
     return f"""<title>ทางเลือกแบรนด์ Luxury</title><meta name="claude:viewport-fit-sides" content="cover">{FONTS}<style>{CSS}</style>
 <nav class="top" aria-label="ทางเลือก">{nav}<a href="#pick">คำแนะนำ</a></nav>
 <div class="wrap">
 <header style="padding-top:28px;display:flex;flex-direction:column;gap:14px">
 <span class="eyebrow">Brand directions · 14 ต.ค. 2569</span>
-<h1>สิบทางเลือก แนวเท่ หรู และยั่งยืน</h1>
+<h1>สิบห้าทางเลือก แนวเท่ หรู และยั่งยืน</h1>
 <p class="lead">สินค้า บล็อกตัด และครอบครัวเดิมทั้งหมด สิ่งที่เปลี่ยนคือชื่อ ลุค และระดับราคา ทุกโลโก้ในหน้านี้เป็นไฟล์จริงที่แปลงตัวอักษรเป็นเส้นแล้ว ส่วนป้ายห้อยเป็นตัวอย่างการใช้งานบนสินค้า</p>
 <p style="font-size:14px;color:var(--muted)">ต้นทุนในตารางใช้สูตรเดียวกับ Google Sheet แต่เปลี่ยนถุง 5 บาทเป็นกล่องพรีเมียมประมาณ {PREMIUM_PACK:.0f} บาท ราคาแบรนด์หรูต้องมาพร้อมงานเก็บขอบหนัง การคัดหนังเกรดดี และบรรจุภัณฑ์ที่ดีขึ้น</p>
 </header>
-{opts}
-<section class="opt"><h2>เทียบกันทั้งสิบ</h2>
-<div class="tbl"><table><thead><tr><th>แบรนด์</th><th>โทน</th><th>เรื่องครอบครัว</th><th>จดชื่อ</th><th>ราคาสินค้าหลัก (บาท)</th></tr></thead><tbody>{crow}</tbody></table></div></section>
-<section class="opt pick" id="pick"><span class="eyebrow">คำแนะนำ</span><h2>POINT FIVE ถ้าอยากได้ทั้งเท่และหรูในชื่อเดียว</h2>
-<p>POINT FIVE คือ 0.5 มม. ระยะที่ปีกเล็กกว่าร่อง ซึ่งเป็นงานออกแบบของพ่อจริง ๆ และคำว่า ไฟว์ ยังเท่ากับคนห้าคนในบ้าน ชื่อเดียวเล่าได้ทั้งความแม่นยำของงานและเรื่องครอบครัว ใช้ drawing ที่มีอยู่แล้วเป็นกราฟิกได้ทันที</p>
-<p>ถ้าอยากให้ชื่อแบรนด์เป็นของขวัญถึงภรรยาโดยตรง เลือก SANSFIL ที่สโลแกนจบด้วยคำว่า ด้วยความรัก หรือ QUINT ที่หรูแบบคลาสสิก ถ้าเรื่องรักษ์โลกคือจุดขายหลัก MONO/HIDE พูดเรื่องวัสดุเดียวได้ชัดกว่า AFTERCUT แต่ต้องตัดสินค้าที่มีไม้ก๊อก ห่วงโลหะ และริบบิ้นออกจากไลน์นี้</p>
-<p>สำหรับบูธวันที่ 23–25 ต.ค. ที่ลูก ๆ ขายเอง ห้าหมียังเหมาะที่สุด ทางที่ใช้ได้ทั้งสองแบบคือให้ห้าหมีเป็นไลน์ของลูก ๆ และของราคาเบา แล้วเปิดแบรนด์หรูที่เลือกเป็นไลน์พรีเมียมใน Shopee งานแต่ง และองค์กร โดยใช้บล็อกชุดเดียวกัน</p>
-<ol><li>คัดให้เหลือ 2–3 ชื่อ แล้วเช็กชื่อบัญชีและค้นฐานข้อมูลเครื่องหมายการค้าของกรมทรัพย์สินทางปัญญา</li>
-<li>เลือกหนึ่งชื่อ หรือเลือกโครงสองไลน์</li>
+{set3}
+<section class="opt pick" id="pick"><span class="eyebrow">คำแนะนำ</span><h2>ละเมียด LAMIAD แทน PRANEET</h2>
+<p>ละเมียดมีความหมายใกล้ ประณีต ที่สุด คือทำอย่างพิถีพิถันไม่รีบ ใช้ระบบภาพที่ชอบได้ทั้งหมด ทั้งดอกห้ากลีบ เขียวหัวเป็ด ทอง และแดงชาด ฝรั่งอ่านออกเสียงได้ และค้นเว็บแล้วไม่เจอแบรนด์ที่ใช้ชื่อนี้</p>
+<p>ถ้าอยากให้ชื่อเล่าเรื่องครอบครัวห้าคนชัดที่สุด เลือก เบญจ BENJA เพราะแปลว่าห้าและเป็นคำเดียวกับเบญจรงค์ แต่เป็นคำทั่วไปที่มีคนใช้อยู่บ้าง ต้องใช้ BENJA ATELIER และจดคู่กับโลโก้</p>
+<p>การค้นเว็บไม่ใช่การค้นเครื่องหมายการค้า ก่อนพิมพ์ของต้องค้นชื่อในฐานข้อมูลกรมทรัพย์สินทางปัญญา และเช็กชื่อบัญชีทุกช่องทาง สำหรับบูธวันที่ 23–25 ต.ค. ห้าหมียังเป็นไลน์ของลูก ๆ ได้เหมือนเดิม</p>
+<ol><li>ค้นชื่อ ละเมียด และ เบญจ ในฐานข้อมูลเครื่องหมายการค้า</li><li>เช็กชื่อบัญชี @lamiad.th หรือ @benja.atelier</li>
 <li>บอกผม แล้วผมจะทำโลโก้ชุดเต็ม Brand Book โปสเตอร์ 30 ตัว และสไลด์ในลุคนั้นให้ใหม่ทั้งชุด</li></ol></section>
+{opts}
+<section class="opt"><h2>เทียบกันทั้งสิบห้า</h2>
+<div class="tbl"><table><thead><tr><th>แบรนด์</th><th>โทน</th><th>เรื่องครอบครัว</th><th>จดชื่อ</th><th>ราคาสินค้าหลัก (บาท)</th></tr></thead><tbody>{crow}</tbody></table></div></section>
+
 </div>"""
 
 if __name__ == "__main__":

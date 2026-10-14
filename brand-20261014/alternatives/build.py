@@ -80,6 +80,35 @@ def mark_monohide(o):
 
 MARKS.update(khad=mark_khad, sansfil=mark_sansfil, pointfive=mark_pointfive, praneet=mark_praneet, monohide=mark_monohide)
 
+def mark_lamiad(o):
+    return mark_praneet(o)
+
+def mark_benja(o):
+    g = []
+    for k, c in enumerate(o["petals"]):
+        g.append(f'<ellipse cx="0" cy="-24" rx="11" ry="22" transform="rotate({72 * k})" fill="{c}"/>')
+    g.append(f'<circle r="8" fill="{o["bg"]}"/><circle r="4" fill="{o["acc"]}"/>')
+    return "".join(g)
+
+def mark_banjong(o):
+    return (f'<rect x="-44" y="-44" width="88" height="88" rx="14" fill="none" stroke="{o["fg"]}" stroke-width="2"/>'
+            f'<path d="M-16,26 L-16,-4 Q-16,-22 0,-22 Q16,-22 16,-4 L16,26" fill="none" stroke="{o["fg"]}" stroke-width="3"/>'
+            f'<line x1="-28" y1="4" x2="28" y2="4" stroke="{o["acc"]}" stroke-width="4" stroke-linecap="round"/>')
+
+def mark_kanok(o):
+    return (f'<path d="M-4,46 C-34,30 -36,-6 -12,-28 C-6,-34 -2,-42 -6,-50 C18,-38 32,-14 22,10 '
+            f'C16,24 4,24 2,14 C0,4 10,-2 8,-14 C-4,-4 -14,12 -8,30 C-6,38 -6,42 -4,46 Z" fill="{o["acc"]}"/>')
+
+def mark_hattha(o):
+    """Four fingers and a thumb on a gold palm line: five pairs of hands."""
+    g = [f'<rect x="-36" y="10" width="12" height="36" rx="6" transform="rotate(-38 -30 40)" fill="{o["fg"]}"/>']
+    for x, h in ((-13, 64), (2, 74), (17, 66), (32, 50)):
+        g.append(f'<rect x="{x-6}" y="{38-h}" width="12" height="{h}" rx="6" fill="{o["fg"]}"/>')
+    g.append(f'<rect x="-30" y="34" width="68" height="12" rx="6" fill="{o["acc"]}"/>')
+    return "".join(g)
+
+MARKS.update(lamiad=mark_lamiad, benja=mark_benja, banjong=mark_banjong, kanok=mark_kanok, hattha=mark_hattha)
+
 def svg(w, h, body, bg):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
             f'<rect width="{w}" height="{h}" fill="{bg}"/>{body}</svg>')
@@ -88,6 +117,11 @@ def board(o):
     W, H = 1200, 720
     m = f'<g transform="translate(600,190) scale(1.7)">{MARKS[o["key"]](o)}</g>'
     size = 116 if len(o["name"]) <= 7 else 96
+    if o.get("thai_first"):
+        t1 = text(o["th"], 150, 600, 450, o["fg"], o["thfont"][0])
+        t2 = text(o["name"], 38, 600, 525, o["acc"], o["font"][0], o["tracking"])
+        t3 = text(o["tag_th"], 34, 600, 615, o["fg"], o.get("thbody", o["thfont"])[0])
+        return svg(W, H, m + t1 + t2 + t3, o["bg"])
     t1 = text(o["name"], size, 600, 440, o["fg"], o["font"][0], o["tracking"])
     t2 = text(o["th"], 34, 600, 515, o["acc"], o["thfont"][0])
     t3 = text(o["tag_en"], 32, 600, 612, o["fg"], o["font"][0], .04)
@@ -102,11 +136,12 @@ def tag(o):
     m = f'<g transform="translate(280,250) scale(1.05)">{MARKS[o["key"]](o)}</g>'
     size = 58 if len(o["name"]) <= 7 else 48
     body = [shape, m,
-            text(o["name"], size, 280, 400, o["fg"], o["font"][0], o["tracking"] * .8),
+            (text(o["th"], 76, 280, 405, o["fg"], o["thfont"][0]) if o.get("thai_first")
+             else text(o["name"], size, 280, 400, o["fg"], o["font"][0], o["tracking"] * .8)),
             f'<line x1="120" y1="450" x2="440" y2="450" stroke="{o["acc"]}" stroke-width="1.5"/>',
-            text(h["name"], 34, 280, 520, o["fg"], o["thfont"][0]),
+            text(h["name"], 34, 280, 520, o["fg"], o.get("thbody", o["thfont"])[0]),
             text(f"{h['price']:,} THB", 44, 280, 600, o["acc"], o["font"][0], .06),
-            text("ทำจากเศษหนังแท้ · ไม่มีด้าย · ไม่มีกาว", 22, 280, 690, o["fg"], o["thfont"][0]),
+            text("ทำจากเศษหนังแท้ · ไม่มีด้าย · ไม่มีกาว", 22, 280, 690, o["fg"], o.get("thbody", o["thfont"])[0]),
             text("No. 001 / 100", 22, 280, 740, o["fg"], o["font"][0], .1)]
     return svg(W, H, "".join(body), "#E7E3DC")
 
