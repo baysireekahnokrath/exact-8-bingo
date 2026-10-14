@@ -109,6 +109,39 @@ def mark_hattha(o):
 
 MARKS.update(lamiad=mark_lamiad, benja=mark_benja, banjong=mark_banjong, kanok=mark_kanok, hattha=mark_hattha)
 
+def mark_prajam(o):
+    """ลายประจำยาม: four petals around a centre."""
+    g = [f'<path d="M0,-6 C-14,-20 -10,-40 0,-46 C10,-40 14,-20 0,-6 Z" transform="rotate({a})" fill="{o["fg"]}"/>' for a in (0, 90, 180, 270)]
+    g.append(f'<rect x="-9" y="-9" width="18" height="18" transform="rotate(45)" fill="{o["acc"]}"/>')
+    return "".join(g)
+
+def _heart(cx, cy, w):
+    s = w / 2
+    pts = [(0, .95), (-1.25, .05), (-1.0, -.95), (-.5, -.95), (-.2, -.95), (0, -.72), (0, -.45),
+           (0, -.72), (.2, -.95), (.5, -.95), (1.0, -.95), (1.25, .05), (0, .95)]
+    q = [f"{cx + x * s:.2f},{cy + y * s:.2f}" for x, y in pts]
+    return f"M{q[0]} C{q[1]} {q[2]} {q[3]} C{q[4]} {q[5]} {q[6]} C{q[7]} {q[8]} {q[9]} C{q[10]} {q[11]} {q[12]} Z"
+
+def mark_koojai(o):
+    return (f'<path d="{_heart(-16, 0, 52)}" fill="none" stroke="{o["fg"]}" stroke-width="4"/>'
+            f'<path d="{_heart(16, 0, 52)}" fill="{o["acc"]}" fill-opacity=".9"/>')
+
+def mark_chaidee(o):
+    return (f'<rect x="-46" y="-46" width="92" height="92" rx="26" fill="{o["fg"]}"/>'
+            f'<path d="M-24,2 L-6,20 L26,-18" fill="none" stroke="{o["acc"]}" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>')
+
+def mark_wanwan(o):
+    """Today's sun, filled, and tomorrow's, outlined, on one horizon."""
+    return (f'<path d="M-50,22 A34,34 0 0 1 18,22 Z" fill="{o["acc"]}"/>'
+            f'<path d="M-14,22 A34,34 0 0 1 54,22" fill="none" stroke="{o["fg"]}" stroke-width="5"/>'
+            f'<rect x="-56" y="22" width="114" height="6" rx="3" fill="{o["fg"]}"/>')
+
+def mark_khunmue(o):
+    return (f'<circle cx="0" cy="-14" r="20" fill="{o["fg"]}"/>'
+            f'<path d="M-44,8 Q-40,40 0,40 Q40,40 44,8" fill="none" stroke="{o["acc"]}" stroke-width="7" stroke-linecap="round"/>')
+
+MARKS.update(prajam=mark_prajam, koojai=mark_koojai, chaidee=mark_chaidee, wanwan=mark_wanwan, khunmue=mark_khunmue)
+
 def svg(w, h, body, bg):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
             f'<rect width="{w}" height="{h}" fill="{bg}"/>{body}</svg>')
@@ -119,13 +152,21 @@ def board(o):
     size = 116 if len(o["name"]) <= 7 else 96
     if o.get("thai_first"):
         t1 = text(o["th"], 150, 600, 450, o["fg"], o["thfont"][0])
-        t2 = text(o["name"], 38, 600, 525, o["acc"], o["font"][0], o["tracking"])
-        t3 = text(o["tag_th"], 34, 600, 615, o["fg"], o.get("thbody", o["thfont"])[0])
+        bottom = 450 + text_path(o["th"], 150, o["thfont"][0])[2][3]     # lowest point of the Thai word
+        ly = max(525, bottom + 62)
+        t2 = text(o["name"], 38, 600, ly, o["acc"], o["font"][0], o["tracking"])
+        t3 = text(o["tag_th"], 34, 600, min(ly + 90, 690), o["fg"], o.get("thbody", o["thfont"])[0])
         return svg(W, H, m + t1 + t2 + t3, o["bg"])
     t1 = text(o["name"], size, 600, 440, o["fg"], o["font"][0], o["tracking"])
     t2 = text(o["th"], 34, 600, 515, o["acc"], o["thfont"][0])
     t3 = text(o["tag_en"], 32, 600, 612, o["fg"], o["font"][0], .04)
     return svg(W, H, m + t1 + t2 + t3, o["bg"])
+
+def tag_line(o):
+    """Divider under the name, pushed down when a Thai descender would touch it."""
+    if not o.get("thai_first"):
+        return 450
+    return round(max(450, 405 + text_path(o["th"], 76, o["thfont"][0])[2][3] + 16))
 
 def tag(o):
     """Hang tag 500 x 800 with a punched hole, the way it would hang on a product."""
@@ -138,7 +179,7 @@ def tag(o):
     body = [shape, m,
             (text(o["th"], 76, 280, 405, o["fg"], o["thfont"][0]) if o.get("thai_first")
              else text(o["name"], size, 280, 400, o["fg"], o["font"][0], o["tracking"] * .8)),
-            f'<line x1="120" y1="450" x2="440" y2="450" stroke="{o["acc"]}" stroke-width="1.5"/>',
+            f'<line x1="120" y1="{tag_line(o)}" x2="440" y2="{tag_line(o)}" stroke="{o["acc"]}" stroke-width="1.5"/>',
             text(h["name"], 34, 280, 520, o["fg"], o.get("thbody", o["thfont"])[0]),
             text(f"{h['price']:,} THB", 44, 280, 600, o["acc"], o["font"][0], .06),
             text("ทำจากเศษหนังแท้ · ไม่มีด้าย · ไม่มีกาว", 22, 280, 690, o["fg"], o.get("thbody", o["thfont"])[0]),

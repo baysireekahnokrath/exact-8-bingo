@@ -8,9 +8,11 @@ from brand import PRODUCTS
 
 PREMIUM_PACK = 40.0   # rigid box, tissue, foil sticker: estimate per item, replaces the 5 THB bag
 
-def hero(n, price):
+EVERYDAY_PACK = 15.0  # kraft box and sticker for the everyday set
+
+def hero(n, price, pack=PREMIUM_PACK):
     p = next(q for q in PRODUCTS if q["n"] == n)
-    cost = round(p["cost"] - 5 + PREMIUM_PACK, 2)
+    cost = round(p["cost"] - 5 + pack, 2)
     return dict(n=n, name=p["name"], price=price, cost=cost, margin=(price - cost) / price, base=p["price"])
 
 OPTIONS = [
@@ -186,4 +188,69 @@ OPTIONS += [
       font=("alt/Italiana-Regular.ttf", "Italiana"), thfont=("alt/Taviraj-Medium.ttf", "Taviraj"),
       tracking=.3, handle="hattha.th",
       risk="ฝรั่งออกเสียงยาก (หัด-ถะ) ค้นเว็บไม่เจอแบรนด์ชื่อนี้ ยังต้องค้นในกรมทรัพย์สินทางปัญญา"),
+]
+
+# Set 4: everyday life. Things people use every day, so the name should feel at home on a desk or in a bag.
+E_ = EVERYDAY_PACK
+OPTIONS += [
+ dict(key="prajam", name="PRAJAM", th="ประจำ", thai_first=True, everyday=True,
+      mean="ประจำ คือของที่ใช้ทุกวันจนเป็นของประจำตัว และยังเป็นชื่อลายประจำยาม ลายดอกสี่กลีบของไทยที่หน้าตาเหมือนแบบ 02 กับ 06 ของเรา",
+      tag_en="Your everyday, in leather.", tag_th="ของประจำตัว ใช้ได้ทุกวัน",
+      vibe="ผ้าหม้อห้อมร่วมสมัย สีครามเข้ม ครีม และขมิ้น โลโก้เป็นลายประจำยามสี่กลีบ",
+      story="ของที่ครอบครัวเราใช้เองทุกวัน ที่เก็บสายชาร์จของพ่อ ปลอกแก้วกาแฟของแม่ ป้ายชื่อกระเป๋าของลูก ๆ เล่าผ่านวันธรรมดาของบ้านเรา",
+      who="คนทำงาน นักเรียน ของขวัญชิ้นเล็กที่ใช้ได้จริง",
+      heroes=[hero(1, 129, E_), hero(14, 219, E_), hero(15, 159, E_)],
+      pal=[("Indigo", "#23345C"), ("Cream", "#F4EDE0"), ("Turmeric", "#D9A441"), ("Brick", "#A4523A")],
+      bg="#23345C", fg="#F4EDE0", acc="#D9A441",
+      font=("alt/Manrope-ExtraBold.ttf", "Manrope"), thfont=("alt/Kanit-Bold.ttf", "Kanit"), thbody=("alt/Anuphan-Medium.ttf", "Anuphan"),
+      tracking=.24, handle="prajam.th",
+      risk="ค้นเว็บแล้วไม่เจอแบรนด์ชื่อนี้ ยังต้องค้นในกรมทรัพย์สินทางปัญญา คำว่า ประจำ เป็นคำทั่วไป ควรจดคู่กับโลโก้ลายประจำยาม"),
+ dict(key="koojai", name="KOOJAI", th="คู่ใจ", thai_first=True, everyday=True,
+      mean="คู่ใจ คือของที่หยิบติดตัวทุกวันจนขาดไม่ได้ เช่น กระเป๋าคู่ใจ พูดถึงความผูกพันกับของใช้ และยังเป็นคำที่ใช้กับคนที่รักได้ด้วย",
+      tag_en="The one you always carry.", tag_th="ของคู่ใจ ติดตัวทุกวัน",
+      vibe="อบอุ่นแบบบ้าน พื้นโอ๊ต โกโก้ และแดงหัวใจ ตัวอักษรไทยแบบลายมือ โลโก้เป็นหัวใจสองดวงต่อกัน",
+      story="หัวใจสองดวงคือพ่อกับแม่ ของคู่ใจของบ้านนี้คือกันและกัน ยังเป็นของขวัญถึงภรรยาได้ตรง ๆ และเชื่อมกับสายหัวใจแบบ 01-S ที่มีอยู่แล้ว",
+      who="คู่รัก วัยรุ่น คนที่ซื้อของขวัญชิ้นเล็กที่มีความหมาย",
+      heroes=[hero(23, 189, E_), hero(10, 229, E_), hero(16, 169, E_)],
+      pal=[("Oat", "#EFE6D8"), ("Cocoa", "#4A2C1D"), ("Heart", "#C8463D"), ("Caramel", "#B8743A")],
+      bg="#EFE6D8", fg="#4A2C1D", acc="#C8463D",
+      font=("alt/CormorantGaramond-Medium.ttf", "Cormorant Garamond"), thfont=("alt/Sriracha-Regular.ttf", "Sriracha"), thbody=("alt/Anuphan-Medium.ttf", "Anuphan"),
+      tracking=.28, handle="koojai.th",
+      risk="ค้นเว็บแล้วไม่เจอแบรนด์ชื่อนี้ สะกดภาษาอังกฤษได้หลายแบบ (KHUJAI, KUJAI) ควรจองชื่อบัญชีไว้ทุกแบบ"),
+ dict(key="chaidee", name="CHAIDEE", th="ใช้ดี", thai_first=True, everyday=True,
+      mean="ใช้ดี คือคำชมของที่ดีที่สุดในชีวิตประจำวัน และอ่านออกเสียงเหมือน ใจดี ได้สองความหมายในคำเดียว",
+      tag_en="Good to use. Kind at heart.", tag_th="ใช้ดี ทำด้วยใจดี",
+      vibe="สดใส เป็นมิตร พื้นเขียวอ่อน เขียวป่า และมัสตาร์ด โลโก้เป็นเครื่องหมายถูกที่ทำจากแถบหนัง",
+      story="ลูก ๆ เป็นคนทดลองใช้ก่อนขายทุกชิ้น ชิ้นไหนใช้ดีจริงถึงได้ติดโลโก้ เป็นเรื่องที่เด็กเล่าที่บูธได้เอง",
+      who="ครอบครัว นักเรียน คนที่ซื้อของใช้ในบ้าน ราคาจับต้องได้",
+      heroes=[hero(2, 99, E_), hero(4, 129, E_), hero(29, 299, E_)],
+      pal=[("Leaf", "#DCE5D3"), ("Forest", "#2E4A3A"), ("Mustard", "#E0A526"), ("Cream", "#F8F4EA")],
+      bg="#DCE5D3", fg="#2E4A3A", acc="#E0A526",
+      font=("alt/Archivo-ExtraBold.ttf", "Archivo"), thfont=("Mitr-SemiBold.ttf", "Mitr"), thbody=("IBMPlexSansThai-SemiBold.ttf", "IBM Plex Sans Thai"),
+      tracking=.08, handle="chaidee.th",
+      risk="ค้นเว็บเจอ Chaidee Mansion ซึ่งเป็นอพาร์ตเมนต์ คนละหมวดกับเครื่องหนัง และมีแบรนด์ชาชื่อใกล้กันคือ Chaidim ยังต้องค้นในกรมทรัพย์สินทางปัญญา"),
+ dict(key="wanwan", name="WANWAN", th="วันวัน", thai_first=True, everyday=True,
+      mean="วันวัน คือวันธรรมดาที่ผ่านไปทีละวัน ของที่อยู่ด้วยกันทุกวัน พูดง่าย จำง่าย เด็กพูดได้ และฟังดูน่ารักในทุกภาษา",
+      tag_en="For every single day.", tag_th="อยู่ด้วยกันทุกวัน",
+      vibe="สดชื่นยามเช้า สีข้าวสาร น้ำตาลเข้ม และส้ม โลโก้เป็นพระอาทิตย์ขึ้นสองดวงเรียงกัน",
+      story="พระอาทิตย์สองดวงคือวันนี้กับพรุ่งนี้ ของที่ลูก ๆ ใช้ไปโรงเรียนทุกเช้า ป้ายชื่อกระเป๋า ที่รองแก้วนม เล่าเรื่องผ่านกิจวัตรของเด็ก",
+      who="พ่อแม่ เด็กนักเรียน ของใช้ในบ้าน ของขวัญเปิดเทอม",
+      heroes=[hero(3, 189, E_), hero(22, 99, E_), hero(12, 259, E_)],
+      pal=[("Rice", "#F6E7C8"), ("Earth", "#3B2A20"), ("Sunrise", "#E07A32"), ("Sky", "#8DB6C9")],
+      bg="#F6E7C8", fg="#3B2A20", acc="#E07A32",
+      font=("alt/Unbounded-Bold.ttf", "Unbounded"), thfont=("alt/Itim-Regular.ttf", "Itim"), thbody=("alt/Anuphan-Medium.ttf", "Anuphan"),
+      tracking=.1, handle="wanwan.daily",
+      risk="ค้นเว็บไม่เจอแบรนด์เครื่องหนังไทยชื่อนี้ แต่มีแบรนด์เครื่องหนังมาเลเซียชื่อเสียงใกล้กันคือ Wanpi และ Wanwan เป็นชื่อเล่นที่พบได้ในภาษาจีน"),
+ dict(key="khunmue", name="KHUNMUE", th="คุ้นมือ", thai_first=True, everyday=True,
+      mean="คุ้นมือ คือของที่ใช้จนจับแล้วรู้สึกคุ้น หนังแท้ยิ่งใช้ยิ่งนุ่มและสีสวยขึ้น ชื่อนี้เล่าเสน่ห์ของหนังแท้ในชีวิตประจำวันได้ตรงที่สุด",
+      tag_en="Gets better in your hand.", tag_th="ยิ่งใช้ ยิ่งคุ้นมือ",
+      vibe="หนังแท้ที่ผ่านการใช้ สีแทน น้ำตาลเข้ม และครีม โลโก้เป็นฝ่ามือที่ประคองก้อนกลม ซึ่งดูเป็นหน้ายิ้มได้ด้วย",
+      story="ขายเสน่ห์ของหนังที่สีเข้มขึ้นตามการใช้งาน ถ่ายรูปของชิ้นเดียวกันวันแรกกับหลังใช้ไปหนึ่งเดือน ลูก ๆ เป็นคนถือในรูป",
+      who="คนชอบของที่ใช้นาน คนทำงาน ผู้ชาย ของขวัญที่ให้แล้วใช้ได้หลายปี",
+      heroes=[hero(16, 199, E_), hero(6, 159, E_), hero(14, 229, E_)],
+      pal=[("Tan", "#C9A07A"), ("Dark leather", "#3A2618"), ("Cream", "#F6EEE2"), ("Patina", "#8A5A34")],
+      bg="#C9A07A", fg="#3A2618", acc="#6E4426",
+      font=("alt/Italiana-Regular.ttf", "Italiana"), thfont=("alt/NotoSerifThai-Regular.ttf", "Noto Serif Thai"),
+      tracking=.3, handle="khunmue.th",
+      risk="ค้นเว็บไม่เจอแบรนด์ชื่อนี้ แต่มีแบรนด์กระเป๋าไทยชื่อ FEEMUE ที่ลงท้ายด้วย มือ เหมือนกัน และฝรั่งอ่านชื่อยาก ควรใช้ภาษาไทยเป็นหลัก"),
 ]
