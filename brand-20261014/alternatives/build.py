@@ -283,7 +283,44 @@ def concept_tag(o):
             text("ทำจากเศษหนังแท้ · ไม่มีด้าย · ไม่มีกาว", 22, 280, 690, tfg, o["thfont"][0])]
     return svg(W, H, "".join(body), "#E7E3DC")
 
+def flip_word(o, size, cx, base, rotate=False):
+    d, w, (x0, y0, x1, y1) = text_path(o["word_th"], size, o["font"][0])
+    x = cx - (x0 + x1) / 2
+    g = f'<path transform="translate({x:.1f},{base:.1f})" d="{d}" fill="{o["fg"]}"/>'
+    if rotate:
+        cy = base + (y0 + y1) / 2
+        g = f'<g transform="rotate(180 {cx} {cy:.1f})">{g}</g>'
+    return g
+
+def board_flip(o):
+    W, H = 1200, 720
+    fg, acc, bg = o["fg"], o["acc"], o["bg"]
+    body = [flip_word(o, 250, 320, 390), flip_word(o, 250, 880, 390, rotate=True),
+            f'<path d="M560,250 C600,210 640,210 680,250" fill="none" stroke="{acc}" stroke-width="5" stroke-linecap="round"/>'
+            f'<path d="M668,232 L682,252 L660,258" fill="none" stroke="{acc}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>',
+            text("หมุน 180°", 26, 620, 300, acc, o["thfont"][0]),
+            text(o["name"], 30, 320, 500, fg, o["thfont"][0]),
+            text(o["flipnote"], 30, 880, 500, acc, o["thfont"][0]),
+            text("คอลเลกชัน  " + "  ·  ".join(o["more"]), 30, 600, 615, fg, o["thfont"][0])]
+    return svg(W, H, "".join(body), bg)
+
+def tag_flip(o):
+    W, H = 560, 860
+    h = o["heroes"][0]
+    shape = (f'<path d="M80,40 H480 Q520,40 520,80 V780 Q520,820 480,820 H80 Q40,820 40,780 V80 Q40,40 80,40 Z" fill="{o["bg"]}"/>'
+             f'<circle cx="280" cy="100" r="16" fill="#E7E3DC"/>')
+    body = [shape, flip_word(o, 150, 280, 330),
+            text("คอลเลกชัน " + o["more"][0], 30, 280, 410, o["acc"], o["thfont"][0]),
+            f'<line x1="120" y1="450" x2="440" y2="450" stroke="{o["acc"]}" stroke-width="1.5"/>',
+            text(h["name"], 32, 280, 520, o["fg"], o["thfont"][0]),
+            text(f"{h['price']:,} THB", 40, 280, 595, o["fg"], "alt/IBMPlexMono-Medium.ttf", .04),
+            text("ทำจากเศษหนังแท้ · ไม่มีด้าย · ไม่มีกาว", 22, 280, 690, o["fg"], o["thfont"][0]),
+            f'<g opacity=".55">{flip_word(o, 44, 280, 760, rotate=True)}</g>']
+    return svg(W, H, "".join(body), "#E7E3DC")
+
 def board(o):
+    if o.get("flip"):
+        return board_flip(o)
     if o.get("acro"):
         return board_acro(o)
     if o.get("maison"):
@@ -312,6 +349,8 @@ def tag_line(o):
     return round(max(450, 405 + text_path(o["th"], 76, o["thfont"][0])[2][3] + 16))
 
 def tag(o):
+    if o.get("flip"):
+        return tag_flip(o)
     if o.get("acro"):
         return tag_acro(o)
     if o.get("maison"):
