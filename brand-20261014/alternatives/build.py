@@ -178,9 +178,61 @@ def tag_acro(o):
             text("no. 001 / 100", 22, 280, 740, o["fg"], "alt/IBMPlexMono-Medium.ttf", .08)]
     return svg(W, H, "".join(body), "#E7E3DC")
 
+STAMP = re.sub(r'<title>.*?</title>', '', open(os.path.join(ROOT, "logo", "svg", "mark-for-stamp.svg")).read())
+
+def maison_mark(o, size):
+    """Small mark above the word; drawn in a size x size box centred on 0,0."""
+    k, fg, acc, bg = o["maison"], o["fg"], o["acc"], o["bg"]
+    s = size / 100
+    if k == "ours":
+        inner = re.search(r'<svg[^>]*>(.*)</svg>', STAMP, re.S).group(1).replace("#000000", acc).replace("#FFFFFF", bg)
+        return f'<svg x="{-size/2}" y="{-size/2}" width="{size}" height="{size}" viewBox="0 0 400 400">{inner}</svg>'
+    if k == "cinq":
+        rs = [9, 8, 6.5, 6, 5.5]; x = -40; g = []
+        for r in rs:
+            g.append(f'<circle cx="{x * s:.1f}" cy="{(9 - r) * s:.1f}" r="{r * s:.1f}" fill="{acc}"/>'); x += 20
+        return "".join(g)
+    if k == "tuck":
+        return (f'<g transform="scale({s})"><path d="M-14,30 L-14,-6 Q-14,-22 0,-22 Q14,-22 14,-6 L14,30" fill="none" stroke="{fg}" stroke-width="3"/>'
+                f'<line x1="-30" y1="6" x2="30" y2="6" stroke="{acc}" stroke-width="4" stroke-linecap="round"/></g>')
+    if k == "fold":
+        return (f'<g transform="scale({s})"><path d="M-34,-34 H34 V8 L8,34 H-34 Z" fill="none" stroke="{fg}" stroke-width="3" stroke-linejoin="round"/>'
+                f'<path d="M34,8 L8,8 L8,34 Z" fill="{acc}"/></g>')
+    if k == "mend":
+        return (f'<g transform="scale({s})"><path d="M-6,-34 A34,34 0 0 0 -6,34" fill="none" stroke="{fg}" stroke-width="3"/>'
+                f'<path d="M6,-34 A34,34 0 0 1 6,34" fill="none" stroke="{fg}" stroke-width="3"/>'
+                f'<rect x="-14" y="-6" width="28" height="12" rx="6" fill="{acc}"/></g>')
+    return ""
+
+def board_maison(o):
+    W, H = 1200, 720
+    body = [f'<g transform="translate(600,140)">{maison_mark(o, 110)}</g>',
+            text("MAISON", 30, 600, 270, o["acc"], o["font"][0], .6),
+            text(o["word"], 170, 600, 450, o["fg"], o["font"][0], o["tracking"]),
+            text(o["tag_en"], 32, 600, 540, o["fg"], o["font"][0], .04),
+            text(o["th"], 30, 600, 620, o["acc"], o["thfont"][0])]
+    return svg(W, H, "".join(body), o["bg"])
+
+def tag_maison(o):
+    W, H = 560, 860
+    h = o["heroes"][0]
+    shape = (f'<path d="M80,40 H480 Q520,40 520,80 V780 Q520,820 480,820 H80 Q40,820 40,780 V80 Q40,40 80,40 Z" fill="{o["bg"]}"/>'
+             f'<circle cx="280" cy="100" r="16" fill="#E7E3DC"/><circle cx="280" cy="100" r="16" fill="none" stroke="{o["acc"]}" stroke-width="2"/>')
+    body = [shape, f'<g transform="translate(280,200)">{maison_mark(o, 70)}</g>',
+            text("MAISON", 20, 280, 290, o["acc"], o["font"][0], .6),
+            text(o["word"], 84, 280, 385, o["fg"], o["font"][0], o["tracking"]),
+            f'<line x1="120" y1="440" x2="440" y2="440" stroke="{o["acc"]}" stroke-width="1.5"/>',
+            text(h["name"], 32, 280, 515, o["fg"], o["thfont"][0]),
+            text(f"{h['price']:,} THB", 40, 280, 590, o["acc"], o["font"][0], .06),
+            text("ทำจากเศษหนังแท้ · ไม่มีด้าย · ไม่มีกาว", 22, 280, 690, o["fg"], o["thfont"][0]),
+            text("No. 001 / 100", 22, 280, 740, o["fg"], o["font"][0], .1)]
+    return svg(W, H, "".join(body), "#E7E3DC")
+
 def board(o):
     if o.get("acro"):
         return board_acro(o)
+    if o.get("maison"):
+        return board_maison(o)
     W, H = 1200, 720
     m = f'<g transform="translate(600,190) scale(1.7)">{MARKS[o["key"]](o)}</g>'
     size = 116 if len(o["name"]) <= 7 else 96
@@ -205,6 +257,8 @@ def tag_line(o):
 def tag(o):
     if o.get("acro"):
         return tag_acro(o)
+    if o.get("maison"):
+        return tag_maison(o)
     """Hang tag 500 x 800 with a punched hole, the way it would hang on a product."""
     W, H = 560, 860
     h = o["heroes"][0]
