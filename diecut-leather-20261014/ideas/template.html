@@ -64,7 +64,23 @@ svg .cut{fill:none;stroke:var(--ink);stroke-width:1.6}
 svg .slit line{stroke:var(--slit);stroke-width:2.2;stroke-linecap:round}
 .note{font-size:14px;color:var(--muted)}
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px}
+.prod{display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--ink);padding-top:24px}
+.prod h3{margin-top:8px}
+ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:70ch}
+.tablebox{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.mono{font-family:var(--mono);font-size:13px}
+tr:last-child td{border-bottom:0}
+.ptable td.cost{color:var(--leather);font-weight:600}
+.calc{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.calc label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+.calc input{font:inherit;font-family:var(--mono);font-size:15px;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);padding:6px 8px;width:100%}
+.calc input:focus-visible{outline:2px solid var(--dim);outline-offset:1px}
 @media (max-width:720px){
+  .calc{grid-template-columns:repeat(2,minmax(0,1fr))}
   .cards,.facts{grid-template-columns:minmax(0,1fr)}
   dl{grid-template-columns:minmax(0,1fr)}
 }
@@ -91,6 +107,62 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
 
   __GROUPS__
 
-<p class="note">ยังไม่ได้ทำ drawing หรือภาพ 3D ของสินค้าเหล่านี้ เลือกแบบที่สนใจแล้วผมจะทำวิธีประกอบให้ทีละแบบ ขนาดที่ระบุคำนวณจากขอบพับของแต่ละแบบ ขนาดจริงจะต่างไปเล็กน้อยตามความหนาของหนัง</p>
+<p class="note"><a href="#production">ดูส่วนการผลิตและตัวคำนวณต้นทุน</a> · ยังไม่ได้ทำ drawing หรือภาพ 3D ของสินค้าเหล่านี้ เลือกแบบที่สนใจแล้วผมจะทำวิธีประกอบให้ทีละแบบ ขนาดที่ระบุคำนวณจากขอบพับของแต่ละแบบ ขนาดจริงจะต่างไปเล็กน้อยตามความหนาของหนัง</p>
+<section class="prod" id="production">
+  <h2>จากไอเดียสู่การผลิต</h2>
+  <p>ตัวเลขพื้นที่หนังคำนวณจากเส้นตัดจริงในไฟล์ DXF ชุดล่าสุด ส่วนค่าใช้จ่ายมาจากราคาที่คุณกรอกด้านล่าง</p>
+
+  <h3>1. ลำดับการเริ่มผลิต</h3>
+  <ol class="steps">
+    <li><b>ทำต้นแบบด้วยเลเซอร์</b> ใช้ไฟล์ SVG ตัดหนังเศษแบบละ 6–12 ชิ้น ยังไม่ต้องสั่ง die ลองประกอบทั้ง 20 ไอเดีย แล้วจดว่าอันไหนแน่น หลวม หรือสวยกว่าที่คิด</li>
+    <li><b>เลือก 5 ไอเดีย</b> ทำชุดทดลองขาย 30–50 ชิ้นต่อแบบ ยังใช้ชิ้นที่ตัดด้วยเลเซอร์ได้ ให้ลูกค้าจริงลองใช้และดูราคาที่ขายได้</li>
+    <li><b>สั่ง die เฉพาะแบบที่ขายได้</b> เริ่มจาก die ที่ใช้กับหลายไอเดีย (ดูตารางด้านล่าง) แล้วค่อยเพิ่มทีหลัง</li>
+    <li><b>ผลิตจริง</b> เมื่อยอดขายนิ่งแล้ว ค่อยพิจารณาทำ die แบบหลายชิ้นต่อการตัดครั้งเดียว เพื่อลดเวลาตัด</li>
+  </ol>
+
+  <h3>2. die แต่ละอันใช้ทำสินค้าอะไรบ้าง</h3>
+  <div class="tablebox"><table>
+    <thead><tr><th>die</th><th>หนังต่อชิ้น (cm²)</th><th>ใช้ในกี่ไอเดีย</th><th>ไอเดีย</th></tr></thead>
+    <tbody>__DIES__</tbody>
+  </table></div>
+
+  <h3>3. ตัวคำนวณต้นทุนหนังและค่าแรง</h3>
+  <div class="calc">
+    <label>ราคาหนัง (บาท / ตร.ฟุต)<input id="c-price" type="number" min="0" step="1" value="120"></label>
+    <label>เผื่อตำหนิหนัง (%)<input id="c-waste" type="number" min="0" step="1" value="15"></label>
+    <label>ค่าแรง (บาท / นาที)<input id="c-labor" type="number" min="0" step="0.05" value="0.85"></label>
+    <label>เวลาตัดต่อครั้ง (นาที)<input id="c-strike" type="number" min="0" step="0.05" value="0.2"></label>
+    <label>เวลาต่อรอยต่อ (นาที)<input id="c-joint" type="number" min="0" step="0.05" value="0.5"></label>
+  </div>
+  <p class="note">ค่าที่ใส่ไว้เป็นตัวอย่างให้เห็นการคำนวณ แก้เป็นราคาและเวลาจริงของคุณได้เลย หน้านี้จะจำค่าไว้ในเบราว์เซอร์ของคุณ ต้นทุนในตารางยังไม่รวมชิ้นเสริม บรรจุภัณฑ์ และค่า die</p>
+  <div class="tablebox"><table class="ptable">
+    <thead><tr><th>#</th><th>สินค้า</th><th>ชิ้นที่ใช้</th><th>หนังสุทธิ (cm²)</th><th>หนังที่ต้องซื้อ (ตร.ฟุต)</th><th>ครั้งที่ตัด</th><th>รอยต่อที่ต้องประกอบ</th><th>หนัง + ค่าแรง (บาท)</th><th>ชิ้นเสริม</th></tr></thead>
+    <tbody>__PRODROWS__</tbody>
+  </table></div>
+  <p class="note">หนังที่ต้องซื้อคิดจากกรอบสี่เหลี่ยมของแต่ละชิ้นบวกระยะห่าง die 3 mm แล้วเผื่อตำหนิตามที่กรอก (1 ตร.ฟุต = 929 cm²) ตัวเลขจริงจะดีขึ้นถ้าวางชิ้นซ้อนเหลื่อมกันบนแผ่นหนัง</p>
+</section>
+
 <footer>รวบรวมโดย Claude Code · 14 ต.ค. 2026</footer>
 </div>
+<script>
+(function () {
+  const DATA = __PRODDATA__;
+  const ids = ["price", "waste", "labor", "strike", "joint"];
+  const el = id => document.getElementById("c-" + id);
+  try { const saved = JSON.parse(localStorage.getItem("leather-calc") || "{}"); ids.forEach(k => { if (saved[k] != null) el(k).value = saved[k]; }); } catch (e) {}
+  function num(k) { const v = parseFloat(el(k).value); return isFinite(v) && v >= 0 ? v : 0; }
+  function run() {
+    const price = num("price"), waste = num("waste") / 100, labor = num("labor"), strike = num("strike"), joint = num("joint");
+    DATA.forEach(d => {
+      const row = document.querySelector('tr[data-n="' + d.n + '"]'); if (!row) return;
+      const sq = d.box * (1 + waste);
+      const cost = sq * price + (d.strikes * strike + d.joints * joint) * labor;
+      row.querySelector(".sq").textContent = sq.toFixed(2);
+      row.querySelector(".cost").textContent = cost.toFixed(1);
+    });
+    try { const o = {}; ids.forEach(k => o[k] = el(k).value); localStorage.setItem("leather-calc", JSON.stringify(o)); } catch (e) {}
+  }
+  ids.forEach(k => el(k).addEventListener("input", run));
+  run();
+})();
+</script>

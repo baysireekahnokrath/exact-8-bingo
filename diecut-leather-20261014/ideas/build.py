@@ -42,6 +42,17 @@ GROUPS = [
  ]),
 ]
 
+# n -> (assembly actions at the factory, extra parts note)
+PROD = {
+ 1: (0, "-"), 2: (0, "-"), 3: (2, "สาย 01-S 250 mm"), 4: (2, "สาย 01-S 200 mm"),
+ 5: (4, "-"), 6: (4, "-"), 7: (4, "-"),
+ 8: (12, "-"), 9: (12, "-"), 10: (4, "-"), 11: (0, "ลูกค้าต่อเอง · ถุงหรือกล่องใส่ชุด"),
+ 12: (8, "-"), 13: (17, "-"),
+ 14: (4, "-"), 15: (4, "แผ่นไม้ก๊อก 60 × 60 mm"), 16: (3, "-"), 17: (12, "-"),
+ 18: (12, "-"), 19: (8, "-"), 20: (12, "ริบบิ้น"),
+}
+STRAP = {"01-S": (26.0, 200 * 22), "01-S 250": (32.5, 250 * 22)}   # heart strap: net cm2, nesting box mm2
+
 PICKS = [
  (1, "ใช้หนังชิ้นเดียว ไม่ต้องมีอุปกรณ์เสริม ต้นทุนต่ำที่สุด ขายเป็นของแถมได้"),
  (5, "ใช้หนังชิ้นเดียว และมีช่วงขายชัดเจน ของขวัญองค์กรสั่งทีละมาก"),
@@ -58,6 +69,38 @@ def minis():
         out[p["code"]] = (f'<svg viewBox="-3 -3 {W+6:.1f} {H+6:.1f}" aria-hidden="true">'
                           f'<path class="cut" d="{svg_d(p["segs"], H)}"/><g class="slit">{lines}</g></svg>')
     return out
+
+def areas():
+    from extract import sample
+    from shapely.geometry import Polygon
+    out = {}
+    for p in load(SRC):
+        net = Polygon(sample(p["segs"], 200)).area / 100           # cm2
+        box = (p["W"] + 3) * (p["H"] + 3)                          # mm2, 3 mm die gap
+        out[p["code"]] = (net, box)
+    out.update(STRAP)
+    return out
+
+def prod_rows(byn, ar):
+    import json
+    rows, data = [], []
+    for code, name, rule, items in GROUPS:
+        for n, title, parts, how, size, who, st in items:
+            pcs = [(c, q) for c, q in parts if c in ar and c != "01-S"]
+            if n == 3:
+                pcs.append(("01-S 250", 1))
+            if n == 4:
+                pcs.append(("01-S", 1))
+            net = sum(ar[c][0] * q for c, q in pcs)
+            box = sum(ar[c][1] * q for c, q in pcs) / 92903          # sq ft before defects
+            strikes = sum(q for c, q in pcs)
+            joints, extra = PROD[n]
+            data.append({"n": n, "box": round(box, 4), "strikes": strikes, "joints": joints})
+            pcs_txt = " + ".join(f"{c}×{q}" for c, q in pcs)
+            rows.append(f'<tr data-n="{n}"><td class="num">{n:02d}</td><td>{title}</td><td class="mono">{pcs_txt}</td>'
+                        f'<td class="num">{net:.0f}</td><td class="num sq"></td><td class="num">{strikes}</td><td class="num">{joints}</td>'
+                        f'<td class="num cost"></td><td>{extra}</td></tr>')
+    return "".join(rows), json.dumps(data)
 
 def main():
     m = minis()
@@ -82,9 +125,20 @@ def main():
       {"".join(cards)}
     </div>
   </section>''')
+    ar = areas()
+    byn0 = {n: t for _, _, _, items in GROUPS for n, t, *_ in items}
+    prows, pdata = prod_rows(byn0, ar)
+    dies = []
+    for code, label in [("01", "01 Bear head"), ("01-S", "01-S สายหัวใจ"), ("02", "02 Pinwheel"), ("03", "03 Capsule cross"),
+                        ("04", "04 Rounded square"), ("05", "05 Circle"), ("06", "06 Soft cross")]:
+        used = [n for _, _, _, items in GROUPS for n, t, parts, *_ in items
+                if any(c == code for c, q in parts) or (code == "01-S" and n in (3, 4))]
+        net = ar[code][0]
+        dies.append(f'<tr><td>{label}</td><td class="num">{net:.1f}</td><td class="num">{len(used)}</td><td class="mono">{", ".join(f"{u:02d}" for u in used)}</td></tr>')
     picks = "".join(f'<li><a href="#idea{n}"><b>{n:02d} {byn[n]}</b></a> <span>{why}</span></li>' for n, why in PICKS)
     t = open(os.path.join(HERE, "template.html")).read()
-    t = t.replace("__PICKS__", picks).replace("__GROUPS__", "\n  ".join(sections))
+    t = (t.replace("__PICKS__", picks).replace("__GROUPS__", "\n  ".join(sections))
+          .replace("__PRODROWS__", prows).replace("__PRODDATA__", pdata).replace("__DIES__", "".join(dies)))
     open(os.path.join(HERE, "index.html"), "w").write(t)
     print("ok", len(t))
 
