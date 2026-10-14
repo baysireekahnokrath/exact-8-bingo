@@ -1,0 +1,2068 @@
+<title>ห้าหมี Launch Kit</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&family=Mitr:wght@400;500;600&display=swap"><style>
+:root{
+  /* Layout: one reading column of cards on cream, like a craft-shop catalogue; wide tables scroll inside their box. */
+  --bg:#F7EEE2;--paper:#FFFDF9;--ink:#4A2C1D;--muted:#7A5A45;--line:#E6D3BE;
+  --caramel:#B8743A;--heart:#D6453D;--honey:#F0B43C;--peach:#F2A7A0;--sage:#6F9A8D;--cocoa:#4A2C1D;--cream:#F7EEE2;
+  --on-accent:#FFFFFF;--chip:#F1E2CF;
+  --display:"Mitr","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#21150F;--paper:#2C1D15;--ink:#F7EEE2;--muted:#CDB49E;--line:#46311F;--caramel:#D99158;--heart:#EC6A60;--chip:#3A281C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#21150F;--paper:#2C1D15;--ink:#F7EEE2;--muted:#CDB49E;--line:#46311F;--caramel:#D99158;--heart:#EC6A60;--chip:#3A281C;color-scheme:dark}
+*{box-sizing:border-box}
+img{max-width:100%;height:auto;display:block}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.25;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,7vw,46px)}h2{font-size:clamp(23px,5vw,30px)}h3{font-size:19px}
+p{margin:0}
+a{color:var(--caramel)}
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.top a{flex:none;font-family:var(--display);font-size:14px;text-decoration:none;color:var(--ink);background:var(--chip);
+  border-radius:99px;padding:5px 13px}
+nav.top a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--honey);outline-offset:2px}
+section{padding-top:44px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:60px}
+.eyebrow{font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--caramel)}
+.lead{font-size:18px;color:var(--muted);max-width:62ch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px}
+.paper{background:#FFFDF9;border-radius:18px;padding:18px;display:flex;align-items:center;justify-content:center}
+.paper.dark{background:#4A2C1D}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.grid.s{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.grid>*{min-width:0}
+.cap{font-size:13px;color:var(--muted)}
+.mono{font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-size:12.5px;border-radius:99px;padding:2px 10px;background:var(--chip)}
+.chip.ok{background:#DCEBE5;color:#2F5A4E}.chip.mid{background:#FBE7C2;color:#7A4E0E}.chip.ext{background:#F8DAD7;color:#8A2A23}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:500;font-size:13px;color:var(--muted);white-space:nowrap}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+ol,ul{margin:0;padding-left:1.3em}
+li+li{margin-top:4px}
+.copy{font-family:var(--display);font-size:13px;border:1px solid var(--line);background:var(--chip);color:var(--ink);
+  border-radius:99px;padding:4px 12px;cursor:pointer}
+pre.txt{white-space:pre-wrap;font-family:var(--body);font-size:14.5px;background:var(--bg);border-radius:12px;padding:12px;margin:0}
+details{border-top:1px solid var(--line)}
+details>summary{cursor:pointer;padding:10px 0;font-family:var(--display);font-size:15px}
+.ch{display:flex;flex-direction:column;gap:8px;padding-bottom:12px}
+.ch .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+</style>
+<div class="wrap">
+<nav class="top" aria-label="หัวข้อ"><a href="#plan">แผน 9 วัน</a><a href="#social">โซเชียลและ Shopee</a><a href="#products">สินค้า 30 ตัว</a>
+<a href="#stock">สต็อกไปงาน</a><a href="#kids">ลูกหมีขายของ</a><a href="#print">ของต้องพิมพ์</a><a href="#more">แนะนำเพิ่ม</a></nav>
+<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">LAUNCH KIT · บูธ 23–25 ต.ค. 2569</span>
+<h1>ห้าหมี พร้อมออกบูธ</h1>
+<p class="lead">ทุกอย่างที่ต้องทำก่อนวันงาน ข้อความโพสต์ของสินค้า 30 ตัวสำหรับ 5 ช่องทาง และคู่มือให้ลูกหมีขายของเอง กดปุ่มคัดลอกแล้ววางในแอปได้เลย</p>
+<div class="grid s">
+<div class="card"><p class="cap">สินค้า</p><b style="font-family:var(--display);font-size:28px">30 แบบ</b></div>
+<div class="card"><p class="cap">เตรียมไปงาน</p><b style="font-family:var(--display);font-size:28px" class="mono">333 ชิ้น</b></div>
+<div class="card"><p class="cap">ถ้าขายหมด</p><b style="font-family:var(--display);font-size:28px" class="mono">32,712 บาท</b></div>
+<div class="card"><p class="cap">ต้นทุนของทั้งหมด</p><b style="font-family:var(--display);font-size:28px" class="mono">5,601 บาท</b></div>
+</div>
+<p class="cap">ต้นทุนคิดแบบเดียวกับ <a href="https://docs.google.com/spreadsheets/d/1RbQpJ2O8hw9ovUywjqVO5s2eurW_Xm2Xh6lvOM9x1sE/edit">Google Sheet ต้นทุน</a> (หนัง ค่าตัด 1.50 ค่าบล็อกเฉลี่ย 0.95 ค่าประกอบ ค่าแพ็ค บรรจุภัณฑ์ 5 บาท) ยังไม่รวมค่าบูธ ค่าพิมพ์ และค่าบล็อกที่ต้องสั่งใหม่</p>
+</header>
+
+<section id="plan"><span class="eyebrow">แผน 9 วัน</span><h2>14 ถึง 26 ตุลาคม</h2>
+<div class="tbl"><table><tbody><tr><td style="white-space:nowrap"><b>14 ต.ค.</b> <span class="cap">พ.</span></td><td>ตัดสินใจชื่อ เช็กชื่อบัญชีว่าง สั่งทำบล็อกที่ยังไม่มี (ร้านบล็อกใช้ 2–5 วัน)</td></tr><tr><td style="white-space:nowrap"><b>15 ต.ค.</b> <span class="cap">พฤ.</span></td><td>เปิด Facebook Page, IG, TikTok, YouTube, Shopee ส่งไฟล์โลโก้ไปร้านพิมพ์ (สติกเกอร์ ป้าย ป้ายราคา)</td></tr><tr><td style="white-space:nowrap"><b>16 ต.ค.</b> <span class="cap">ศ.</span></td><td>ตัดหนังล็อตแรกด้วยบล็อกที่มีแล้ว โพสต์แรก เรื่องของห้าหมี</td></tr><tr><td style="white-space:nowrap"><b>17 ต.ค.</b> <span class="cap">ส.</span></td><td>ลูก ๆ ฝึกประกอบสินค้าหลัก 8 ตัว ถ่ายคลิปมือต่อหนังเก็บไว้</td></tr><tr><td style="white-space:nowrap"><b>18 ต.ค.</b> <span class="cap">อา.</span></td><td>ถ่ายรูปสินค้า ซ้อมขายที่บ้าน 1 รอบ (เล่นเป็นลูกค้า)</td></tr><tr><td style="white-space:nowrap"><b>19 ต.ค.</b> <span class="cap">จ.</span></td><td>รับบล็อกใหม่ ตัดและประกอบต่อ ลงสินค้า Shopee 8 ตัวแรก</td></tr><tr><td style="white-space:nowrap"><b>20 ต.ค.</b> <span class="cap">อ.</span></td><td>ประกอบให้ครบจำนวน โพสต์ How-to วันละ 1 ตัว</td></tr><tr><td style="white-space:nowrap"><b>21 ต.ค.</b> <span class="cap">พ.</span></td><td>รับงานพิมพ์ ติดป้ายราคา แพ็คสินค้าใส่กล่องตามหมวด</td></tr><tr><td style="white-space:nowrap"><b>22 ต.ค.</b> <span class="cap">พฤ.</span></td><td>จัดบูธจำลองที่บ้าน เช็กลิสต์ของ ซ้อมขายรอบสุดท้าย โพสต์ เจอกันพรุ่งนี้</td></tr><tr><td style="white-space:nowrap"><b>23–25 ต.ค.</b> <span class="cap">ศ.–อา.</span></td><td>ออกบูธ โพสต์สตอรี่ทุกวัน จดยอดขายทุกเย็น</td></tr><tr><td style="white-space:nowrap"><b>26 ต.ค.</b> <span class="cap">จ.</span></td><td>ขอบคุณลูกค้า สรุปยอด ให้ลูกหมีได้ส่วนแบ่งเข้ากระปุก</td></tr></tbody></table></div>
+<p class="cap">งานที่ช้าที่สุดคือบล็อกตัด ถ้ายังไม่มีบล็อกแบบไหน ให้สั่งวันนี้ แบบที่ได้ไม่ทันให้ขายแบบสั่งจองผ่าน Shopee แทน</p></section>
+
+<section id="social"><span class="eyebrow">โซเชียลมีเดียและร้าน Shopee</span><h2>ห้าช่องทาง ชื่อเดียวกัน</h2>
+<p class="lead">ทุกช่องใช้ชื่อ @fivebears.th รูปโปรไฟล์และปกอยู่ใน <a href="https://claude.ai/artifact/3asVqkM4vs6fGM3rihHSYp">Brand Book</a> บัญชีต้องเปิดในชื่อพ่อหรือแม่ เพราะทุกแพลตฟอร์มกำหนดอายุขั้นต่ำ 13 ปี และ Shopee ต้องใช้บัตรประชาชนกับบัญชีธนาคาร</p>
+<div class="grid"><div class="card" style="display:flex;flex-direction:column;gap:8px;min-width:0"><h3>Facebook Page</h3><p><span class="chip">ห้าหมี FIVE BEARS</span></p><p class="cap" style="font-size:14px">ใช้ชื่อเพจ ห้าหมี FIVE BEARS หมวด ร้านค้าปลีก หรือ งานศิลปะและหัตถกรรม · ปุ่มหลัก ส่งข้อความ</p><div class="ch"><div class="h"><span class="cap">ข้อความแนะนำร้าน</span><button class="copy" data-for="bio0">คัดลอก</button></div><pre class="txt" id="bio0">ห้าหมี · FIVE BEARS
+ของใช้จากเศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ทำโดยครอบครัวหมีห้าตัว พ่อ แม่ และลูกหมีสามตัว
+สั่งซื้อ: Shopee ร้านห้าหมี</pre></div></div><div class="card" style="display:flex;flex-direction:column;gap:8px;min-width:0"><h3>Instagram</h3><p><span class="chip">@fivebears.th</span></p><p class="cap" style="font-size:14px">เปลี่ยนเป็นบัญชีธุรกิจ เชื่อมกับเพจ Facebook · ลิงก์ในโปรไฟล์ไป Shopee</p><div class="ch"><div class="h"><span class="cap">ข้อความแนะนำร้าน</span><button class="copy" data-for="bio1">คัดลอก</button></div><pre class="txt" id="bio1">ห้าหมี · FIVE BEARS
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ทำโดยพ่อ แม่ และลูกหมีสามตัว
+สั่งซื้อที่ลิงก์ด้านล่าง</pre></div></div><div class="card" style="display:flex;flex-direction:column;gap:8px;min-width:0"><h3>TikTok</h3><p><span class="chip">@fivebears.th</span></p><p class="cap" style="font-size:14px">บัญชีธุรกิจ · เปิด TikTok Shop ภายหลังได้ · โพสต์คลิปมือต่อหนัง 15 วินาที</p><div class="ch"><div class="h"><span class="cap">ข้อความแนะนำร้าน</span><button class="copy" data-for="bio2">คัดลอก</button></div><pre class="txt" id="bio2">ต่อหนังแท้ไม่ต้องเย็บ ทำโดยลูกหมีสามตัว
+Shopee: ห้าหมี</pre></div></div><div class="card" style="display:flex;flex-direction:column;gap:8px;min-width:0"><h3>YouTube</h3><p><span class="chip">@fivebears.th</span></p><p class="cap" style="font-size:14px">เริ่มจาก Shorts ที่ตัดจากคลิป TikTok · คลิปยาวเดือนละครั้ง เช่น เบื้องหลังวันออกบูธ</p><div class="ch"><div class="h"><span class="cap">ข้อความแนะนำร้าน</span><button class="copy" data-for="bio3">คัดลอก</button></div><pre class="txt" id="bio3">ช่องของครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว
+ทำของใช้จากเศษหนังแท้ โดยไม่ต้องเย็บ</pre></div></div><div class="card" style="display:flex;flex-direction:column;gap:8px;min-width:0"><h3>Shopee</h3><p><span class="chip">ห้าหมี FIVE BEARS</span></p><p class="cap" style="font-size:14px">สมัคร Shopee Seller Centre ด้วยบัตรประชาชนและบัญชีธนาคารของพ่อหรือแม่ · ลงสินค้าชุดแรก 8 ตัว</p><div class="ch"><div class="h"><span class="cap">ข้อความแนะนำร้าน</span><button class="copy" data-for="bio4">คัดลอก</button></div><pre class="txt" id="bio4">ห้าหมี FIVE BEARS ของใช้จากเศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ ทุกชิ้นทำและแพ็คโดยครอบครัวหมีห้าตัว สีและลายของหนังแต่ละชิ้นต่างกันเล็กน้อย เพราะทำจากเศษหนังจริง</pre></div></div></div>
+<div class="card"><h3>9 โพสต์แรก</h3><ol style="margin-top:6px">
+<li>เรื่องของห้าหมี (ใช้ข้อความใน Brand Book + รูปครอบครัวหมี)</li><li>แนะนำลูกหมีสามตัว และหน้าที่ที่บูธ</li>
+<li>How-to ราวหมีห้าตัว</li><li>How-to ที่ห้อยกระเป๋าหมีหัวใจ</li><li>How-to ที่เก็บสายชาร์จหมี</li><li>How-to ที่รองแก้วหมี</li><li>How-to ชุดต่อเองกล่องลูกบาศก์</li><li>How-to กล่องของชำร่วยงานแต่ง</li>
+<li>เจอกันที่บูธ 23–25 ต.ค. พร้อมแผนที่และเลขบูธ</li></ol></div></section>
+
+<section id="products"><span class="eyebrow">สินค้า 30 ตัว</span><h2>โปสเตอร์และโพสต์ทุกช่องทาง</h2>
+<p class="lead">แตะรูปเพื่อเปิดโปสเตอร์ขนาดเต็ม แต่ละตัวมีภาพ story 1080 × 1920 สำหรับ TikTok, Reels และ Shorts อยู่ในโฟลเดอร์ posters/png</p>
+<p class="cap"><span class="chip ok">พร้อมผลิต</span> ตัดแล้วขายได้เลย · <span class="chip mid">ลองต้นแบบก่อน</span> ต่อตัวอย่างหนึ่งชิ้นก่อนผลิต · <span class="chip ext">มีชิ้นเสริม</span> ต้องซื้อของเสริม</p>
+<article class="card" id="p1" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/01-post.png" target="_blank" rel="noopener"><img src="posters/thumb/01.jpg" alt="โปสเตอร์ ที่เก็บสายชาร์จหมี" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#01</span><h3>ที่เก็บสายชาร์จหมี <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span></h3>
+<p class="cap" style="font-size:14px">หัวหมี 01 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">59 บาท</b>
+ <span class="cap">ต้นทุน 12.05 · กำไร 47 (80%) · เตรียมไปงาน 30 ชิ้น</span></p>
+<p><span class="chip ok">พร้อมผลิต</span></p>
+<p class="cap"><a href="posters/01-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/01-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb1">คัดลอก</button></div><pre class="txt" id="fb1">สายชาร์จพันกันในกระเป๋าทุกวัน หมีตัวนี้ช่วยได้
+
+ที่เก็บสายชาร์จหมี จากห้าหมี
+ใช้ หัวหมี 01 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. พันสายชาร์จรอบหัวหมี
+2. เหน็บหัวปลั๊กเข้าร่องข้างแก้ม
+3. เหน็บอีกปลายเข้าร่องล่าง
+
+ขนาด 10.4 × 10.4 ซม.
+ราคา 59 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig1">คัดลอก</button></div><pre class="txt" id="ig1">สายชาร์จพันกันในกระเป๋าทุกวัน หมีตัวนี้ช่วยได้
+
+ที่เก็บสายชาร์จหมี · 59 บาท
+พันสายชาร์จรอบหัวหมี → เหน็บหัวปลั๊กเข้าร่องข้างแก้ม → เหน็บอีกปลายเข้าร่องล่าง
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts1">คัดลอก</button></div><pre class="txt" id="tts1">0–2 วิ  ข้อความบนจอ: สายชาร์จพันกันในกระเป๋าทุกวัน หมีตัวนี้ช่วยได้  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: พันสายชาร์จรอบหัวหมี  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: เหน็บหัวปลั๊กเข้าร่องข้างแก้ม  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: เหน็บอีกปลายเข้าร่องล่าง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่เก็บสายชาร์จหมี 59 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc1">คัดลอก</button></div><pre class="txt" id="ttc1">สายชาร์จพันกันในกระเป๋าทุกวัน หมีตัวนี้ช่วยได้ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt1">คัดลอก</button></div><pre class="txt" id="ytt1">ที่เก็บสายชาร์จหมี ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd1">คัดลอก</button></div><pre class="txt" id="ytd1">สายชาร์จพันกันในกระเป๋าทุกวัน หมีตัวนี้ช่วยได้
+
+วิธีทำ
+1. พันสายชาร์จรอบหัวหมี
+2. เหน็บหัวปลั๊กเข้าร่องข้างแก้ม
+3. เหน็บอีกปลายเข้าร่องล่าง
+
+ชิ้นที่ใช้: หัวหมี 01 × 1
+ราคา 59 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt1">คัดลอก</button></div><pre class="txt" id="spt1">ที่เก็บสายชาร์จหมี หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd1">คัดลอก</button></div><pre class="txt" id="spd1">สายชาร์จพันกันในกระเป๋าทุกวัน หมีตัวนี้ช่วยได้
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: หัวหมี 01 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 10.4 × 10.4 ซม.
+• เหมาะกับ: นักเรียน คนทำงาน
+
+วิธีประกอบ
+1. พันสายชาร์จรอบหัวหมี
+2. เหน็บหัวปลั๊กเข้าร่องข้างแก้ม
+3. เหน็บอีกปลายเข้าร่องล่าง
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p2" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/02-post.png" target="_blank" rel="noopener"><img src="posters/thumb/02.jpg" alt="โปสเตอร์ ที่คั่นหนังสือหมี" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#02</span><h3>ที่คั่นหนังสือหมี</h3>
+<p class="cap" style="font-size:14px">หัวหมี 01 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">59 บาท</b>
+ <span class="cap">ต้นทุน 12.05 · กำไร 47 (80%) · เตรียมไปงาน 20 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/02-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/02-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb2">คัดลอก</button></div><pre class="txt" id="fb2">หมีเฝ้าหน้าที่อ่านค้างไว้ให้
+
+ที่คั่นหนังสือหมี จากห้าหมี
+ใช้ หัวหมี 01 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. หาร่องสองเส้นที่ตั้งฉากกัน
+2. เหน็บมุมหน้ากระดาษเข้าร่อง
+3. หมีโผล่ที่มุมหนังสือ
+
+ขนาด 10.4 × 10.4 ซม.
+ราคา 59 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig2">คัดลอก</button></div><pre class="txt" id="ig2">หมีเฝ้าหน้าที่อ่านค้างไว้ให้
+
+ที่คั่นหนังสือหมี · 59 บาท
+หาร่องสองเส้นที่ตั้งฉากกัน → เหน็บมุมหน้ากระดาษเข้าร่อง → หมีโผล่ที่มุมหนังสือ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts2">คัดลอก</button></div><pre class="txt" id="tts2">0–2 วิ  ข้อความบนจอ: หมีเฝ้าหน้าที่อ่านค้างไว้ให้  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: หาร่องสองเส้นที่ตั้งฉากกัน  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: เหน็บมุมหน้ากระดาษเข้าร่อง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: หมีโผล่ที่มุมหนังสือ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่คั่นหนังสือหมี 59 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc2">คัดลอก</button></div><pre class="txt" id="ttc2">หมีเฝ้าหน้าที่อ่านค้างไว้ให้ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt2">คัดลอก</button></div><pre class="txt" id="ytt2">ที่คั่นหนังสือหมี ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd2">คัดลอก</button></div><pre class="txt" id="ytd2">หมีเฝ้าหน้าที่อ่านค้างไว้ให้
+
+วิธีทำ
+1. หาร่องสองเส้นที่ตั้งฉากกัน
+2. เหน็บมุมหน้ากระดาษเข้าร่อง
+3. หมีโผล่ที่มุมหนังสือ
+
+ชิ้นที่ใช้: หัวหมี 01 × 1
+ราคา 59 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt2">คัดลอก</button></div><pre class="txt" id="spt2">ที่คั่นหนังสือหมี หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd2">คัดลอก</button></div><pre class="txt" id="spd2">หมีเฝ้าหน้าที่อ่านค้างไว้ให้
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: หัวหมี 01 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 10.4 × 10.4 ซม.
+• เหมาะกับ: นักอ่าน ของขวัญวันครู
+
+วิธีประกอบ
+1. หาร่องสองเส้นที่ตั้งฉากกัน
+2. เหน็บมุมหน้ากระดาษเข้าร่อง
+3. หมีโผล่ที่มุมหนังสือ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p3" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/03-post.png" target="_blank" rel="noopener"><img src="posters/thumb/03.jpg" alt="โปสเตอร์ ป้ายชื่อติดกระเป๋านักเรียน" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#03</span><h3>ป้ายชื่อติดกระเป๋านักเรียน</h3>
+<p class="cap" style="font-size:14px">หัวหมี 01 × 1 + สายหัวใจ 250 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">129 บาท</b>
+ <span class="cap">ต้นทุน 18.81 · กำไร 110 (85%) · เตรียมไปงาน 20 ชิ้น</span></p>
+<p><span class="chip ext">มีชิ้นเสริม</span></p>
+<p class="cap"><a href="posters/03-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/03-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb3">คัดลอก</button></div><pre class="txt" id="fb3">เปิดเทอมนี้ กระเป๋าลูกจะไม่หายไปกับของเพื่อน
+
+ป้ายชื่อติดกระเป๋านักเรียน จากห้าหมี
+ใช้ หัวหมี 01 × 1 + สายหัวใจ 250 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. เขียนชื่อหลังหัวหมี
+2. ร้อยสายหัวใจผ่านร่องทั้งสอง
+3. คล้องหูกระเป๋าแล้วสอดปลายสายล็อก
+
+ขนาด หมี 10.4 ซม. สาย 25 ซม.
+ราคา 129 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig3">คัดลอก</button></div><pre class="txt" id="ig3">เปิดเทอมนี้ กระเป๋าลูกจะไม่หายไปกับของเพื่อน
+
+ป้ายชื่อติดกระเป๋านักเรียน · 129 บาท
+เขียนชื่อหลังหัวหมี → ร้อยสายหัวใจผ่านร่องทั้งสอง → คล้องหูกระเป๋าแล้วสอดปลายสายล็อก
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts3">คัดลอก</button></div><pre class="txt" id="tts3">0–2 วิ  ข้อความบนจอ: เปิดเทอมนี้ กระเป๋าลูกจะไม่หายไปกับของเพื่อน  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: เขียนชื่อหลังหัวหมี  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ร้อยสายหัวใจผ่านร่องทั้งสอง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: คล้องหูกระเป๋าแล้วสอดปลายสายล็อก  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ป้ายชื่อติดกระเป๋านักเรียน 129 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc3">คัดลอก</button></div><pre class="txt" id="ttc3">เปิดเทอมนี้ กระเป๋าลูกจะไม่หายไปกับของเพื่อน ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt3">คัดลอก</button></div><pre class="txt" id="ytt3">ป้ายชื่อติดกระเป๋านักเรียน ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd3">คัดลอก</button></div><pre class="txt" id="ytd3">เปิดเทอมนี้ กระเป๋าลูกจะไม่หายไปกับของเพื่อน
+
+วิธีทำ
+1. เขียนชื่อหลังหัวหมี
+2. ร้อยสายหัวใจผ่านร่องทั้งสอง
+3. คล้องหูกระเป๋าแล้วสอดปลายสายล็อก
+
+ชิ้นที่ใช้: หัวหมี 01 × 1 + สายหัวใจ 250 × 1
+ราคา 129 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt3">คัดลอก</button></div><pre class="txt" id="spt3">ป้ายชื่อติดกระเป๋านักเรียน หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd3">คัดลอก</button></div><pre class="txt" id="spd3">เปิดเทอมนี้ กระเป๋าลูกจะไม่หายไปกับของเพื่อน
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: หัวหมี 01 × 1 + สายหัวใจ 250 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: หมี 10.4 ซม. สาย 25 ซม.
+• เหมาะกับ: ผู้ปกครอง
+
+วิธีประกอบ
+1. เขียนชื่อหลังหัวหมี
+2. ร้อยสายหัวใจผ่านร่องทั้งสอง
+3. คล้องหูกระเป๋าแล้วสอดปลายสายล็อก
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p4" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/04-post.png" target="_blank" rel="noopener"><img src="posters/thumb/04.jpg" alt="โปสเตอร์ ห่วงผ้าเช็ดปากหมี" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#04</span><h3>ห่วงผ้าเช็ดปากหมี</h3>
+<p class="cap" style="font-size:14px">หัวหมี 01 × 1 + สายหัวใจ 200 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">79 บาท</b>
+ <span class="cap">ต้นทุน 18.81 · กำไร 60 (76%) · เตรียมไปงาน 10 ชิ้น</span></p>
+<p><span class="chip ext">มีชิ้นเสริม</span></p>
+<p class="cap"><a href="posters/04-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/04-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb4">คัดลอก</button></div><pre class="txt" id="fb4">โต๊ะวันเกิดเด็กที่หมีนั่งเฝ้าทุกจาน
+
+ห่วงผ้าเช็ดปากหมี จากห้าหมี
+ใช้ หัวหมี 01 × 1 + สายหัวใจ 200 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ร้อยสายสั้นผ่านร่องแก้มซ้าย
+2. อ้อมหลังแล้วร้อยร่องล่าง
+3. สอดผ้าเช็ดปากหรือช้อนส้อมเข้าห่วง
+
+ขนาด หมี 10.4 ซม.
+ราคา 79 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig4">คัดลอก</button></div><pre class="txt" id="ig4">โต๊ะวันเกิดเด็กที่หมีนั่งเฝ้าทุกจาน
+
+ห่วงผ้าเช็ดปากหมี · 79 บาท
+ร้อยสายสั้นผ่านร่องแก้มซ้าย → อ้อมหลังแล้วร้อยร่องล่าง → สอดผ้าเช็ดปากหรือช้อนส้อมเข้าห่วง
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts4">คัดลอก</button></div><pre class="txt" id="tts4">0–2 วิ  ข้อความบนจอ: โต๊ะวันเกิดเด็กที่หมีนั่งเฝ้าทุกจาน  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ร้อยสายสั้นผ่านร่องแก้มซ้าย  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: อ้อมหลังแล้วร้อยร่องล่าง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: สอดผ้าเช็ดปากหรือช้อนส้อมเข้าห่วง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ห่วงผ้าเช็ดปากหมี 79 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc4">คัดลอก</button></div><pre class="txt" id="ttc4">โต๊ะวันเกิดเด็กที่หมีนั่งเฝ้าทุกจาน ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt4">คัดลอก</button></div><pre class="txt" id="ytt4">ห่วงผ้าเช็ดปากหมี ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd4">คัดลอก</button></div><pre class="txt" id="ytd4">โต๊ะวันเกิดเด็กที่หมีนั่งเฝ้าทุกจาน
+
+วิธีทำ
+1. ร้อยสายสั้นผ่านร่องแก้มซ้าย
+2. อ้อมหลังแล้วร้อยร่องล่าง
+3. สอดผ้าเช็ดปากหรือช้อนส้อมเข้าห่วง
+
+ชิ้นที่ใช้: หัวหมี 01 × 1 + สายหัวใจ 200 × 1
+ราคา 79 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt4">คัดลอก</button></div><pre class="txt" id="spt4">ห่วงผ้าเช็ดปากหมี หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd4">คัดลอก</button></div><pre class="txt" id="spd4">โต๊ะวันเกิดเด็กที่หมีนั่งเฝ้าทุกจาน
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: หัวหมี 01 × 1 + สายหัวใจ 200 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: หมี 10.4 ซม.
+• เหมาะกับ: ร้านอาหาร งานวันเกิด
+
+วิธีประกอบ
+1. ร้อยสายสั้นผ่านร่องแก้มซ้าย
+2. อ้อมหลังแล้วร้อยร่องล่าง
+3. สอดผ้าเช็ดปากหรือช้อนส้อมเข้าห่วง
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p5" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/05-post.png" target="_blank" rel="noopener"><img src="posters/thumb/05.jpg" alt="โปสเตอร์ ซองอั่งเปาพับกังหัน" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#05</span><h3>ซองอั่งเปาพับกังหัน <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span></h3>
+<p class="cap" style="font-size:14px">กังหัน 02 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">69 บาท</b>
+ <span class="cap">ต้นทุน 9.73 · กำไร 59 (86%) · เตรียมไปงาน 20 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/05-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/05-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb5">คัดลอก</button></div><pre class="txt" id="fb5">อั่งเปาที่ผู้รับเก็บไว้ใช้ต่อ ไม่ทิ้ง
+
+ซองอั่งเปาพับกังหัน จากห้าหมี
+ใช้ กังหัน 02 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. พับธนบัตรให้เล็กกว่า 5 ซม.
+2. วางกลางแผ่น พับกลีบเข้ากลางทีละกลีบ
+3. กลีบสุดท้ายสอดใต้กลีบแรก
+
+ขนาด 5.4 × 5.4 ซม. เมื่อพับ
+ราคา 69 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig5">คัดลอก</button></div><pre class="txt" id="ig5">อั่งเปาที่ผู้รับเก็บไว้ใช้ต่อ ไม่ทิ้ง
+
+ซองอั่งเปาพับกังหัน · 69 บาท
+พับธนบัตรให้เล็กกว่า 5 ซม. → วางกลางแผ่น พับกลีบเข้ากลางทีละกลีบ → กลีบสุดท้ายสอดใต้กลีบแรก
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts5">คัดลอก</button></div><pre class="txt" id="tts5">0–2 วิ  ข้อความบนจอ: อั่งเปาที่ผู้รับเก็บไว้ใช้ต่อ ไม่ทิ้ง  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: พับธนบัตรให้เล็กกว่า 5 ซม.  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: วางกลางแผ่น พับกลีบเข้ากลางทีละกลีบ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: กลีบสุดท้ายสอดใต้กลีบแรก  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ซองอั่งเปาพับกังหัน 69 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc5">คัดลอก</button></div><pre class="txt" id="ttc5">อั่งเปาที่ผู้รับเก็บไว้ใช้ต่อ ไม่ทิ้ง ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt5">คัดลอก</button></div><pre class="txt" id="ytt5">ซองอั่งเปาพับกังหัน ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd5">คัดลอก</button></div><pre class="txt" id="ytd5">อั่งเปาที่ผู้รับเก็บไว้ใช้ต่อ ไม่ทิ้ง
+
+วิธีทำ
+1. พับธนบัตรให้เล็กกว่า 5 ซม.
+2. วางกลางแผ่น พับกลีบเข้ากลางทีละกลีบ
+3. กลีบสุดท้ายสอดใต้กลีบแรก
+
+ชิ้นที่ใช้: กังหัน 02 × 1
+ราคา 69 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt5">คัดลอก</button></div><pre class="txt" id="spt5">ซองอั่งเปาพับกังหัน หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd5">คัดลอก</button></div><pre class="txt" id="spd5">อั่งเปาที่ผู้รับเก็บไว้ใช้ต่อ ไม่ทิ้ง
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กังหัน 02 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 5.4 × 5.4 ซม. เมื่อพับ
+• เหมาะกับ: ของขวัญองค์กร ตรุษจีน
+
+วิธีประกอบ
+1. พับธนบัตรให้เล็กกว่า 5 ซม.
+2. วางกลางแผ่น พับกลีบเข้ากลางทีละกลีบ
+3. กลีบสุดท้ายสอดใต้กลีบแรก
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p6" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/06-post.png" target="_blank" rel="noopener"><img src="posters/thumb/06.jpg" alt="โปสเตอร์ ซองใส่เครื่องประดับ" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#06</span><h3>ซองใส่เครื่องประดับ</h3>
+<p class="cap" style="font-size:14px">กังหัน 02 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">69 บาท</b>
+ <span class="cap">ต้นทุน 9.73 · กำไร 59 (86%) · เตรียมไปงาน 10 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/06-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/06-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb6">คัดลอก</button></div><pre class="txt" id="fb6">ห่อแหวนด้วยหนังแท้แทนกล่องกระดาษ
+
+ซองใส่เครื่องประดับ จากห้าหมี
+ใช้ กังหัน 02 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. วางแหวนหรือต่างหูตรงกลาง
+2. พับกลีบเข้ากลางแบบกังหัน
+3. กลีบสุดท้ายสอดล็อก
+
+ขนาด 5.4 × 5.4 ซม.
+ราคา 69 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig6">คัดลอก</button></div><pre class="txt" id="ig6">ห่อแหวนด้วยหนังแท้แทนกล่องกระดาษ
+
+ซองใส่เครื่องประดับ · 69 บาท
+วางแหวนหรือต่างหูตรงกลาง → พับกลีบเข้ากลางแบบกังหัน → กลีบสุดท้ายสอดล็อก
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts6">คัดลอก</button></div><pre class="txt" id="tts6">0–2 วิ  ข้อความบนจอ: ห่อแหวนด้วยหนังแท้แทนกล่องกระดาษ  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: วางแหวนหรือต่างหูตรงกลาง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: พับกลีบเข้ากลางแบบกังหัน  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: กลีบสุดท้ายสอดล็อก  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ซองใส่เครื่องประดับ 69 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc6">คัดลอก</button></div><pre class="txt" id="ttc6">ห่อแหวนด้วยหนังแท้แทนกล่องกระดาษ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt6">คัดลอก</button></div><pre class="txt" id="ytt6">ซองใส่เครื่องประดับ ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd6">คัดลอก</button></div><pre class="txt" id="ytd6">ห่อแหวนด้วยหนังแท้แทนกล่องกระดาษ
+
+วิธีทำ
+1. วางแหวนหรือต่างหูตรงกลาง
+2. พับกลีบเข้ากลางแบบกังหัน
+3. กลีบสุดท้ายสอดล็อก
+
+ชิ้นที่ใช้: กังหัน 02 × 1
+ราคา 69 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt6">คัดลอก</button></div><pre class="txt" id="spt6">ซองใส่เครื่องประดับ หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd6">คัดลอก</button></div><pre class="txt" id="spd6">ห่อแหวนด้วยหนังแท้แทนกล่องกระดาษ
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กังหัน 02 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 5.4 × 5.4 ซม.
+• เหมาะกับ: ร้านเครื่องประดับ งานแต่ง
+
+วิธีประกอบ
+1. วางแหวนหรือต่างหูตรงกลาง
+2. พับกลีบเข้ากลางแบบกังหัน
+3. กลีบสุดท้ายสอดล็อก
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p7" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/07-post.png" target="_blank" rel="noopener"><img src="posters/thumb/07.jpg" alt="โปสเตอร์ ซองการ์ดติดของขวัญ" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#07</span><h3>ซองการ์ดติดของขวัญ</h3>
+<p class="cap" style="font-size:14px">กังหัน 02 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">59 บาท</b>
+ <span class="cap">ต้นทุน 9.73 · กำไร 49 (84%) · เตรียมไปงาน 10 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/07-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/07-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb7">คัดลอก</button></div><pre class="txt" id="fb7">การ์ดอวยพรที่ห่อมาอย่างตั้งใจ
+
+ซองการ์ดติดของขวัญ จากห้าหมี
+ใช้ กังหัน 02 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. เขียนการ์ด 5 × 5 ซม.
+2. วางการ์ดแล้วพับกลีบแบบกังหัน
+3. ผูกเชือกติดกล่องหรือช่อดอกไม้
+
+ขนาด 5.4 × 5.4 ซม.
+ราคา 59 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig7">คัดลอก</button></div><pre class="txt" id="ig7">การ์ดอวยพรที่ห่อมาอย่างตั้งใจ
+
+ซองการ์ดติดของขวัญ · 59 บาท
+เขียนการ์ด 5 × 5 ซม. → วางการ์ดแล้วพับกลีบแบบกังหัน → ผูกเชือกติดกล่องหรือช่อดอกไม้
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts7">คัดลอก</button></div><pre class="txt" id="tts7">0–2 วิ  ข้อความบนจอ: การ์ดอวยพรที่ห่อมาอย่างตั้งใจ  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: เขียนการ์ด 5 × 5 ซม.  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: วางการ์ดแล้วพับกลีบแบบกังหัน  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ผูกเชือกติดกล่องหรือช่อดอกไม้  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ซองการ์ดติดของขวัญ 59 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc7">คัดลอก</button></div><pre class="txt" id="ttc7">การ์ดอวยพรที่ห่อมาอย่างตั้งใจ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt7">คัดลอก</button></div><pre class="txt" id="ytt7">ซองการ์ดติดของขวัญ ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd7">คัดลอก</button></div><pre class="txt" id="ytd7">การ์ดอวยพรที่ห่อมาอย่างตั้งใจ
+
+วิธีทำ
+1. เขียนการ์ด 5 × 5 ซม.
+2. วางการ์ดแล้วพับกลีบแบบกังหัน
+3. ผูกเชือกติดกล่องหรือช่อดอกไม้
+
+ชิ้นที่ใช้: กังหัน 02 × 1
+ราคา 59 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt7">คัดลอก</button></div><pre class="txt" id="spt7">ซองการ์ดติดของขวัญ หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd7">คัดลอก</button></div><pre class="txt" id="spd7">การ์ดอวยพรที่ห่อมาอย่างตั้งใจ
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กังหัน 02 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 5.4 × 5.4 ซม.
+• เหมาะกับ: ร้านดอกไม้ ร้านของขวัญ
+
+วิธีประกอบ
+1. เขียนการ์ด 5 × 5 ซม.
+2. วางการ์ดแล้วพับกลีบแบบกังหัน
+3. ผูกเชือกติดกล่องหรือช่อดอกไม้
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p8" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/08-post.png" target="_blank" rel="noopener"><img src="posters/thumb/08.jpg" alt="โปสเตอร์ กล่องแหวนหนังแท้" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#08</span><h3>กล่องแหวนหนังแท้</h3>
+<p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 6</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">290 บาท</b>
+ <span class="cap">ต้นทุน 25.87 · กำไร 264 (91%) · เตรียมไปงาน 2 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/08-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/08-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb8">คัดลอก</button></div><pre class="txt" id="fb8">กล่องแหวนที่เปิดทีละด้านได้ เซอร์ไพรส์นานขึ้นอีกนิด
+
+กล่องแหวนหนังแท้ จากห้าหมี
+ใช้ กากบาทแคปซูล 03 × 6 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นวงรอบ
+2. สอดชิ้นก้นปิดด้านล่าง
+3. ใส่แหวน แล้วสอดชิ้นฝาปิดด้านบน
+
+ขนาด 4.5 × 4.5 × 4.5 ซม.
+ราคา 290 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig8">คัดลอก</button></div><pre class="txt" id="ig8">กล่องแหวนที่เปิดทีละด้านได้ เซอร์ไพรส์นานขึ้นอีกนิด
+
+กล่องแหวนหนังแท้ · 290 บาท
+ต่อ 4 ชิ้นเป็นวงรอบ → สอดชิ้นก้นปิดด้านล่าง → ใส่แหวน แล้วสอดชิ้นฝาปิดด้านบน
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts8">คัดลอก</button></div><pre class="txt" id="tts8">0–2 วิ  ข้อความบนจอ: กล่องแหวนที่เปิดทีละด้านได้ เซอร์ไพรส์นานขึ้นอีกนิด  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ต่อ 4 ชิ้นเป็นวงรอบ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: สอดชิ้นก้นปิดด้านล่าง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ใส่แหวน แล้วสอดชิ้นฝาปิดด้านบน  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: กล่องแหวนหนังแท้ 290 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc8">คัดลอก</button></div><pre class="txt" id="ttc8">กล่องแหวนที่เปิดทีละด้านได้ เซอร์ไพรส์นานขึ้นอีกนิด ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt8">คัดลอก</button></div><pre class="txt" id="ytt8">กล่องแหวนหนังแท้ ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd8">คัดลอก</button></div><pre class="txt" id="ytd8">กล่องแหวนที่เปิดทีละด้านได้ เซอร์ไพรส์นานขึ้นอีกนิด
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นวงรอบ
+2. สอดชิ้นก้นปิดด้านล่าง
+3. ใส่แหวน แล้วสอดชิ้นฝาปิดด้านบน
+
+ชิ้นที่ใช้: กากบาทแคปซูล 03 × 6
+ราคา 290 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt8">คัดลอก</button></div><pre class="txt" id="spt8">กล่องแหวนหนังแท้ หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd8">คัดลอก</button></div><pre class="txt" id="spd8">กล่องแหวนที่เปิดทีละด้านได้ เซอร์ไพรส์นานขึ้นอีกนิด
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทแคปซูล 03 × 6 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 4.5 × 4.5 × 4.5 ซม.
+• เหมาะกับ: คนขอแต่งงาน
+
+วิธีประกอบ
+1. ต่อ 4 ชิ้นเป็นวงรอบ
+2. สอดชิ้นก้นปิดด้านล่าง
+3. ใส่แหวน แล้วสอดชิ้นฝาปิดด้านบน
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p9" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/09-post.png" target="_blank" rel="noopener"><img src="posters/thumb/09.jpg" alt="โปสเตอร์ ลูกเต๋าหนัง" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#09</span><h3>ลูกเต๋าหนัง</h3>
+<p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 6</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">159 บาท</b>
+ <span class="cap">ต้นทุน 25.87 · กำไร 133 (84%) · เตรียมไปงาน 3 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/09-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/09-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb9">คัดลอก</button></div><pre class="txt" id="fb9">ลูกเต๋าที่ทอยแล้วไม่ดัง เล่นตอนดึกได้
+
+ลูกเต๋าหนัง จากห้าหมี
+ใช้ กากบาทแคปซูล 03 × 6 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ปั๊มจุด 1 ถึง 6 บนแต่ละชิ้น
+2. ต่อ 4 ชิ้นเป็นวง
+3. ปิดบนล่างให้ด้านตรงข้ามรวมได้ 7
+
+ขนาด 4.5 ซม.
+ราคา 159 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig9">คัดลอก</button></div><pre class="txt" id="ig9">ลูกเต๋าที่ทอยแล้วไม่ดัง เล่นตอนดึกได้
+
+ลูกเต๋าหนัง · 159 บาท
+ปั๊มจุด 1 ถึง 6 บนแต่ละชิ้น → ต่อ 4 ชิ้นเป็นวง → ปิดบนล่างให้ด้านตรงข้ามรวมได้ 7
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts9">คัดลอก</button></div><pre class="txt" id="tts9">0–2 วิ  ข้อความบนจอ: ลูกเต๋าที่ทอยแล้วไม่ดัง เล่นตอนดึกได้  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ปั๊มจุด 1 ถึง 6 บนแต่ละชิ้น  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ต่อ 4 ชิ้นเป็นวง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ปิดบนล่างให้ด้านตรงข้ามรวมได้ 7  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ลูกเต๋าหนัง 159 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc9">คัดลอก</button></div><pre class="txt" id="ttc9">ลูกเต๋าที่ทอยแล้วไม่ดัง เล่นตอนดึกได้ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt9">คัดลอก</button></div><pre class="txt" id="ytt9">ลูกเต๋าหนัง ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd9">คัดลอก</button></div><pre class="txt" id="ytd9">ลูกเต๋าที่ทอยแล้วไม่ดัง เล่นตอนดึกได้
+
+วิธีทำ
+1. ปั๊มจุด 1 ถึง 6 บนแต่ละชิ้น
+2. ต่อ 4 ชิ้นเป็นวง
+3. ปิดบนล่างให้ด้านตรงข้ามรวมได้ 7
+
+ชิ้นที่ใช้: กากบาทแคปซูล 03 × 6
+ราคา 159 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt9">คัดลอก</button></div><pre class="txt" id="spt9">ลูกเต๋าหนัง หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd9">คัดลอก</button></div><pre class="txt" id="spd9">ลูกเต๋าที่ทอยแล้วไม่ดัง เล่นตอนดึกได้
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทแคปซูล 03 × 6 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 4.5 ซม.
+• เหมาะกับ: คาเฟ่บอร์ดเกม
+
+วิธีประกอบ
+1. ปั๊มจุด 1 ถึง 6 บนแต่ละชิ้น
+2. ต่อ 4 ชิ้นเป็นวง
+3. ปิดบนล่างให้ด้านตรงข้ามรวมได้ 7
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p10" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/10-post.png" target="_blank" rel="noopener"><img src="posters/thumb/10.jpg" alt="โปสเตอร์ ซองใส่ AirTag" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#10</span><h3>ซองใส่ AirTag</h3>
+<p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 2</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">129 บาท</b>
+ <span class="cap">ต้นทุน 12.51 · กำไร 116 (90%) · เตรียมไปงาน 5 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/10-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/10-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb10">คัดลอก</button></div><pre class="txt" id="fb10">AirTag ห้อยกระเป๋าแบบไม่ต้องใช้ไขควง
+
+ซองใส่ AirTag จากห้าหมี
+ใช้ กากบาทแคปซูล 03 × 2 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ประกบสองชิ้นหน้าหลัง
+2. ใส่ AirTag ตรงกลาง
+3. สอดปีกล็อกทั้งสี่ขอบ
+
+ขนาด 4.5 × 4.5 ซม.
+ราคา 129 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig10">คัดลอก</button></div><pre class="txt" id="ig10">AirTag ห้อยกระเป๋าแบบไม่ต้องใช้ไขควง
+
+ซองใส่ AirTag · 129 บาท
+ประกบสองชิ้นหน้าหลัง → ใส่ AirTag ตรงกลาง → สอดปีกล็อกทั้งสี่ขอบ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts10">คัดลอก</button></div><pre class="txt" id="tts10">0–2 วิ  ข้อความบนจอ: AirTag ห้อยกระเป๋าแบบไม่ต้องใช้ไขควง  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ประกบสองชิ้นหน้าหลัง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ใส่ AirTag ตรงกลาง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: สอดปีกล็อกทั้งสี่ขอบ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ซองใส่ AirTag 129 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc10">คัดลอก</button></div><pre class="txt" id="ttc10">AirTag ห้อยกระเป๋าแบบไม่ต้องใช้ไขควง ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt10">คัดลอก</button></div><pre class="txt" id="ytt10">ซองใส่ AirTag ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd10">คัดลอก</button></div><pre class="txt" id="ytd10">AirTag ห้อยกระเป๋าแบบไม่ต้องใช้ไขควง
+
+วิธีทำ
+1. ประกบสองชิ้นหน้าหลัง
+2. ใส่ AirTag ตรงกลาง
+3. สอดปีกล็อกทั้งสี่ขอบ
+
+ชิ้นที่ใช้: กากบาทแคปซูล 03 × 2
+ราคา 129 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt10">คัดลอก</button></div><pre class="txt" id="spt10">ซองใส่ AirTag หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd10">คัดลอก</button></div><pre class="txt" id="spd10">AirTag ห้อยกระเป๋าแบบไม่ต้องใช้ไขควง
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทแคปซูล 03 × 2 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 4.5 × 4.5 ซม.
+• เหมาะกับ: คนเดินทาง
+
+วิธีประกอบ
+1. ประกบสองชิ้นหน้าหลัง
+2. ใส่ AirTag ตรงกลาง
+3. สอดปีกล็อกทั้งสี่ขอบ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p11" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/11-post.png" target="_blank" rel="noopener"><img src="posters/thumb/11.jpg" alt="โปสเตอร์ ชุดตัวต่อหนัง 24 ชิ้น" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#11</span><h3>ชุดตัวต่อหนัง 24 ชิ้น</h3>
+<p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 24 + ถุงผ้าและการ์ดวิธีเล่น</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">390 บาท</b>
+ <span class="cap">ต้นทุน 82.65 · กำไร 307 (79%) · เตรียมไปงาน 2 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/11-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/11-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb11">คัดลอก</button></div><pre class="txt" id="fb11">ของเล่นที่ไม่มีพลาสติกสักชิ้น
+
+ชุดตัวต่อหนัง 24 ชิ้น จากห้าหมี
+ใช้ กากบาทแคปซูล 03 × 24 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. เทชิ้นหนังออกจากถุง
+2. สอดปีกเข้าร่องของอีกชิ้น
+3. ต่อเป็นลูกบาศก์ สายโซ่ หรือแผ่นใหญ่
+
+ขนาด ชุด 24 ชิ้น
+ราคา 390 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig11">คัดลอก</button></div><pre class="txt" id="ig11">ของเล่นที่ไม่มีพลาสติกสักชิ้น
+
+ชุดตัวต่อหนัง 24 ชิ้น · 390 บาท
+เทชิ้นหนังออกจากถุง → สอดปีกเข้าร่องของอีกชิ้น → ต่อเป็นลูกบาศก์ สายโซ่ หรือแผ่นใหญ่
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts11">คัดลอก</button></div><pre class="txt" id="tts11">0–2 วิ  ข้อความบนจอ: ของเล่นที่ไม่มีพลาสติกสักชิ้น  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: เทชิ้นหนังออกจากถุง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: สอดปีกเข้าร่องของอีกชิ้น  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ต่อเป็นลูกบาศก์ สายโซ่ หรือแผ่นใหญ่  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ชุดตัวต่อหนัง 24 ชิ้น 390 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc11">คัดลอก</button></div><pre class="txt" id="ttc11">ของเล่นที่ไม่มีพลาสติกสักชิ้น ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt11">คัดลอก</button></div><pre class="txt" id="ytt11">ชุดตัวต่อหนัง 24 ชิ้น ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd11">คัดลอก</button></div><pre class="txt" id="ytd11">ของเล่นที่ไม่มีพลาสติกสักชิ้น
+
+วิธีทำ
+1. เทชิ้นหนังออกจากถุง
+2. สอดปีกเข้าร่องของอีกชิ้น
+3. ต่อเป็นลูกบาศก์ สายโซ่ หรือแผ่นใหญ่
+
+ชิ้นที่ใช้: กากบาทแคปซูล 03 × 24
+ราคา 390 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt11">คัดลอก</button></div><pre class="txt" id="spt11">ชุดตัวต่อหนัง 24 ชิ้น หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd11">คัดลอก</button></div><pre class="txt" id="spd11">ของเล่นที่ไม่มีพลาสติกสักชิ้น
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทแคปซูล 03 × 24 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: ชุด 24 ชิ้น
+• เหมาะกับ: พ่อแม่ โรงเรียน
+
+วิธีประกอบ
+1. เทชิ้นหนังออกจากถุง
+2. สอดปีกเข้าร่องของอีกชิ้น
+3. ต่อเป็นลูกบาศก์ สายโซ่ หรือแผ่นใหญ่
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p12" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/12-post.png" target="_blank" rel="noopener"><img src="posters/thumb/12.jpg" alt="โปสเตอร์ ที่ใส่ปากกามงกุฎ" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#12</span><h3>ที่ใส่ปากกามงกุฎ</h3>
+<p class="cap" style="font-size:14px">สี่เหลี่ยมมน 04 × 5</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">199 บาท</b>
+ <span class="cap">ต้นทุน 21.98 · กำไร 177 (89%) · เตรียมไปงาน 2 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/12-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/12-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb12">คัดลอก</button></div><pre class="txt" id="fb12">ปากกาบนโต๊ะทำงานได้มงกุฎของตัวเอง
+
+ที่ใส่ปากกามงกุฎ จากห้าหมี
+ใช้ สี่เหลี่ยมมน 04 × 5 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นผนัง
+2. สอดชิ้นก้น
+3. พับปีกบนขึ้นเป็นยอดมงกุฎ
+
+ขนาด 6.4 ซม. + ยอดมงกุฎ
+ราคา 199 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig12">คัดลอก</button></div><pre class="txt" id="ig12">ปากกาบนโต๊ะทำงานได้มงกุฎของตัวเอง
+
+ที่ใส่ปากกามงกุฎ · 199 บาท
+ต่อ 4 ชิ้นเป็นผนัง → สอดชิ้นก้น → พับปีกบนขึ้นเป็นยอดมงกุฎ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts12">คัดลอก</button></div><pre class="txt" id="tts12">0–2 วิ  ข้อความบนจอ: ปากกาบนโต๊ะทำงานได้มงกุฎของตัวเอง  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ต่อ 4 ชิ้นเป็นผนัง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: สอดชิ้นก้น  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: พับปีกบนขึ้นเป็นยอดมงกุฎ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่ใส่ปากกามงกุฎ 199 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc12">คัดลอก</button></div><pre class="txt" id="ttc12">ปากกาบนโต๊ะทำงานได้มงกุฎของตัวเอง ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt12">คัดลอก</button></div><pre class="txt" id="ytt12">ที่ใส่ปากกามงกุฎ ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd12">คัดลอก</button></div><pre class="txt" id="ytd12">ปากกาบนโต๊ะทำงานได้มงกุฎของตัวเอง
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นผนัง
+2. สอดชิ้นก้น
+3. พับปีกบนขึ้นเป็นยอดมงกุฎ
+
+ชิ้นที่ใช้: สี่เหลี่ยมมน 04 × 5
+ราคา 199 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt12">คัดลอก</button></div><pre class="txt" id="spt12">ที่ใส่ปากกามงกุฎ หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd12">คัดลอก</button></div><pre class="txt" id="spd12">ปากกาบนโต๊ะทำงานได้มงกุฎของตัวเอง
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: สี่เหลี่ยมมน 04 × 5 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 6.4 ซม. + ยอดมงกุฎ
+• เหมาะกับ: ออฟฟิศ
+
+วิธีประกอบ
+1. ต่อ 4 ชิ้นเป็นผนัง
+2. สอดชิ้นก้น
+3. พับปีกบนขึ้นเป็นยอดมงกุฎ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p13" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/13-post.png" target="_blank" rel="noopener"><img src="posters/thumb/13.jpg" alt="โปสเตอร์ แผ่นรองจานลายข้าวหลามตัด" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#13</span><h3>แผ่นรองจานลายข้าวหลามตัด</h3>
+<p class="cap" style="font-size:14px">สี่เหลี่ยมมน 04 × 12</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">390 บาท</b>
+ <span class="cap">ต้นทุน 43.96 · กำไร 346 (89%) · เตรียมไปงาน 1 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/13-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/13-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb13">คัดลอก</button></div><pre class="txt" id="fb13">จานธรรมดาดูแพงขึ้นทันที
+
+แผ่นรองจานลายข้าวหลามตัด จากห้าหมี
+ใช้ สี่เหลี่ยมมน 04 × 12 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. วางชิ้นเป็นตาราง 3 × 4
+2. สอดปีกเข้าร่องชิ้นข้าง ๆ ทีละแถว
+3. พลิกดูลายข้าวหลามตัดด้านหน้า
+
+ขนาด ประมาณ 27 × 36 ซม.
+ราคา 390 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig13">คัดลอก</button></div><pre class="txt" id="ig13">จานธรรมดาดูแพงขึ้นทันที
+
+แผ่นรองจานลายข้าวหลามตัด · 390 บาท
+วางชิ้นเป็นตาราง 3 × 4 → สอดปีกเข้าร่องชิ้นข้าง ๆ ทีละแถว → พลิกดูลายข้าวหลามตัดด้านหน้า
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts13">คัดลอก</button></div><pre class="txt" id="tts13">0–2 วิ  ข้อความบนจอ: จานธรรมดาดูแพงขึ้นทันที  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: วางชิ้นเป็นตาราง 3 × 4  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: สอดปีกเข้าร่องชิ้นข้าง ๆ ทีละแถว  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: พลิกดูลายข้าวหลามตัดด้านหน้า  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: แผ่นรองจานลายข้าวหลามตัด 390 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc13">คัดลอก</button></div><pre class="txt" id="ttc13">จานธรรมดาดูแพงขึ้นทันที ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt13">คัดลอก</button></div><pre class="txt" id="ytt13">แผ่นรองจานลายข้าวหลามตัด ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd13">คัดลอก</button></div><pre class="txt" id="ytd13">จานธรรมดาดูแพงขึ้นทันที
+
+วิธีทำ
+1. วางชิ้นเป็นตาราง 3 × 4
+2. สอดปีกเข้าร่องชิ้นข้าง ๆ ทีละแถว
+3. พลิกดูลายข้าวหลามตัดด้านหน้า
+
+ชิ้นที่ใช้: สี่เหลี่ยมมน 04 × 12
+ราคา 390 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt13">คัดลอก</button></div><pre class="txt" id="spt13">แผ่นรองจานลายข้าวหลามตัด หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd13">คัดลอก</button></div><pre class="txt" id="spd13">จานธรรมดาดูแพงขึ้นทันที
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: สี่เหลี่ยมมน 04 × 12 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: ประมาณ 27 × 36 ซม.
+• เหมาะกับ: โฮมเดคอร์ ร้านอาหาร
+
+วิธีประกอบ
+1. วางชิ้นเป็นตาราง 3 × 4
+2. สอดปีกเข้าร่องชิ้นข้าง ๆ ทีละแถว
+3. พลิกดูลายข้าวหลามตัดด้านหน้า
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p14" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/14-post.png" target="_blank" rel="noopener"><img src="posters/thumb/14.jpg" alt="โปสเตอร์ ปลอกแก้วกาแฟ" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#14</span><h3>ปลอกแก้วกาแฟ</h3>
+<p class="cap" style="font-size:14px">วงกลม 05 × 4</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">149 บาท</b>
+ <span class="cap">ต้นทุน 18.08 · กำไร 131 (88%) · เตรียมไปงาน 3 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/14-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/14-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb14">คัดลอก</button></div><pre class="txt" id="fb14">กาแฟร้อนแค่ไหนก็ถือได้
+
+ปลอกแก้วกาแฟ จากห้าหมี
+ใช้ วงกลม 05 × 4 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นแถว
+2. ม้วนเป็นวง
+3. สอดปีกชิ้นสุดท้ายเข้าชิ้นแรก
+
+ขนาด รอบวง 25.5 ซม. แก้ว 12 oz
+ราคา 149 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig14">คัดลอก</button></div><pre class="txt" id="ig14">กาแฟร้อนแค่ไหนก็ถือได้
+
+ปลอกแก้วกาแฟ · 149 บาท
+ต่อ 4 ชิ้นเป็นแถว → ม้วนเป็นวง → สอดปีกชิ้นสุดท้ายเข้าชิ้นแรก
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts14">คัดลอก</button></div><pre class="txt" id="tts14">0–2 วิ  ข้อความบนจอ: กาแฟร้อนแค่ไหนก็ถือได้  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ต่อ 4 ชิ้นเป็นแถว  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ม้วนเป็นวง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: สอดปีกชิ้นสุดท้ายเข้าชิ้นแรก  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ปลอกแก้วกาแฟ 149 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc14">คัดลอก</button></div><pre class="txt" id="ttc14">กาแฟร้อนแค่ไหนก็ถือได้ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt14">คัดลอก</button></div><pre class="txt" id="ytt14">ปลอกแก้วกาแฟ ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd14">คัดลอก</button></div><pre class="txt" id="ytd14">กาแฟร้อนแค่ไหนก็ถือได้
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นแถว
+2. ม้วนเป็นวง
+3. สอดปีกชิ้นสุดท้ายเข้าชิ้นแรก
+
+ชิ้นที่ใช้: วงกลม 05 × 4
+ราคา 149 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt14">คัดลอก</button></div><pre class="txt" id="spt14">ปลอกแก้วกาแฟ หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd14">คัดลอก</button></div><pre class="txt" id="spd14">กาแฟร้อนแค่ไหนก็ถือได้
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: วงกลม 05 × 4 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: รอบวง 25.5 ซม. แก้ว 12 oz
+• เหมาะกับ: คอกาแฟ คาเฟ่
+
+วิธีประกอบ
+1. ต่อ 4 ชิ้นเป็นแถว
+2. ม้วนเป็นวง
+3. สอดปีกชิ้นสุดท้ายเข้าชิ้นแรก
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p15" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/15-post.png" target="_blank" rel="noopener"><img src="posters/thumb/15.jpg" alt="โปสเตอร์ ที่รองแก้วไส้ไม้ก๊อก" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#15</span><h3>ที่รองแก้วไส้ไม้ก๊อก</h3>
+<p class="cap" style="font-size:14px">วงกลม 05 × 2 + แผ่นไม้ก๊อก 6 × 6 ซม.</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">99 บาท</b>
+ <span class="cap">ต้นทุน 22.51 · กำไร 76 (77%) · เตรียมไปงาน 5 ชิ้น</span></p>
+<p><span class="chip ext">มีชิ้นเสริม</span></p>
+<p class="cap"><a href="posters/15-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/15-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb15">คัดลอก</button></div><pre class="txt" id="fb15">แก้วเย็นแค่ไหนโต๊ะก็ไม่เปียก
+
+ที่รองแก้วไส้ไม้ก๊อก จากห้าหมี
+ใช้ วงกลม 05 × 2 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. วางไม้ก๊อกบนชิ้นล่าง
+2. ประกบชิ้นบน
+3. สอดปีกล็อกทั้งสี่ขอบ
+
+ขนาด 6.4 ซม.
+ราคา 99 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig15">คัดลอก</button></div><pre class="txt" id="ig15">แก้วเย็นแค่ไหนโต๊ะก็ไม่เปียก
+
+ที่รองแก้วไส้ไม้ก๊อก · 99 บาท
+วางไม้ก๊อกบนชิ้นล่าง → ประกบชิ้นบน → สอดปีกล็อกทั้งสี่ขอบ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts15">คัดลอก</button></div><pre class="txt" id="tts15">0–2 วิ  ข้อความบนจอ: แก้วเย็นแค่ไหนโต๊ะก็ไม่เปียก  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: วางไม้ก๊อกบนชิ้นล่าง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ประกบชิ้นบน  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: สอดปีกล็อกทั้งสี่ขอบ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่รองแก้วไส้ไม้ก๊อก 99 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc15">คัดลอก</button></div><pre class="txt" id="ttc15">แก้วเย็นแค่ไหนโต๊ะก็ไม่เปียก ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt15">คัดลอก</button></div><pre class="txt" id="ytt15">ที่รองแก้วไส้ไม้ก๊อก ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd15">คัดลอก</button></div><pre class="txt" id="ytd15">แก้วเย็นแค่ไหนโต๊ะก็ไม่เปียก
+
+วิธีทำ
+1. วางไม้ก๊อกบนชิ้นล่าง
+2. ประกบชิ้นบน
+3. สอดปีกล็อกทั้งสี่ขอบ
+
+ชิ้นที่ใช้: วงกลม 05 × 2
+ราคา 99 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt15">คัดลอก</button></div><pre class="txt" id="spt15">ที่รองแก้วไส้ไม้ก๊อก หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd15">คัดลอก</button></div><pre class="txt" id="spd15">แก้วเย็นแค่ไหนโต๊ะก็ไม่เปียก
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: วงกลม 05 × 2 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 6.4 ซม.
+• เหมาะกับ: คาเฟ่ บาร์
+
+วิธีประกอบ
+1. วางไม้ก๊อกบนชิ้นล่าง
+2. ประกบชิ้นบน
+3. สอดปีกล็อกทั้งสี่ขอบ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p16" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/16-post.png" target="_blank" rel="noopener"><img src="posters/thumb/16.jpg" alt="โปสเตอร์ กระเป๋าเหรียญจิ๋ว" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#16</span><h3>กระเป๋าเหรียญจิ๋ว</h3>
+<p class="cap" style="font-size:14px">วงกลม 05 × 2</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">99 บาท</b>
+ <span class="cap">ต้นทุน 12.23 · กำไร 87 (88%) · เตรียมไปงาน 10 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/16-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/16-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb16">คัดลอก</button></div><pre class="txt" id="fb16">เหรียญสิบไม่หล่นหายในกระเป๋าอีก
+
+กระเป๋าเหรียญจิ๋ว จากห้าหมี
+ใช้ วงกลม 05 × 2 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ประกบสองชิ้น
+2. สอดปีกล็อกสามขอบ
+3. ขอบที่สี่เป็นฝาเปิดปิด
+
+ขนาด 6.4 ซม.
+ราคา 99 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig16">คัดลอก</button></div><pre class="txt" id="ig16">เหรียญสิบไม่หล่นหายในกระเป๋าอีก
+
+กระเป๋าเหรียญจิ๋ว · 99 บาท
+ประกบสองชิ้น → สอดปีกล็อกสามขอบ → ขอบที่สี่เป็นฝาเปิดปิด
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts16">คัดลอก</button></div><pre class="txt" id="tts16">0–2 วิ  ข้อความบนจอ: เหรียญสิบไม่หล่นหายในกระเป๋าอีก  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ประกบสองชิ้น  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: สอดปีกล็อกสามขอบ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ขอบที่สี่เป็นฝาเปิดปิด  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: กระเป๋าเหรียญจิ๋ว 99 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc16">คัดลอก</button></div><pre class="txt" id="ttc16">เหรียญสิบไม่หล่นหายในกระเป๋าอีก ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt16">คัดลอก</button></div><pre class="txt" id="ytt16">กระเป๋าเหรียญจิ๋ว ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd16">คัดลอก</button></div><pre class="txt" id="ytd16">เหรียญสิบไม่หล่นหายในกระเป๋าอีก
+
+วิธีทำ
+1. ประกบสองชิ้น
+2. สอดปีกล็อกสามขอบ
+3. ขอบที่สี่เป็นฝาเปิดปิด
+
+ชิ้นที่ใช้: วงกลม 05 × 2
+ราคา 99 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt16">คัดลอก</button></div><pre class="txt" id="spt16">กระเป๋าเหรียญจิ๋ว หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd16">คัดลอก</button></div><pre class="txt" id="spd16">เหรียญสิบไม่หล่นหายในกระเป๋าอีก
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: วงกลม 05 × 2 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 6.4 ซม.
+• เหมาะกับ: วัยรุ่น ของที่ระลึก
+
+วิธีประกอบ
+1. ประกบสองชิ้น
+2. สอดปีกล็อกสามขอบ
+3. ขอบที่สี่เป็นฝาเปิดปิด
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p17" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/17-post.png" target="_blank" rel="noopener"><img src="posters/thumb/17.jpg" alt="โปสเตอร์ กล่องของขวัญสลับลาย" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#17</span><h3>กล่องของขวัญสลับลาย</h3>
+<p class="cap" style="font-size:14px">สี่เหลี่ยมมน 04 × 3 + วงกลม 05 × 3</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">249 บาท</b>
+ <span class="cap">ต้นทุน 25.87 · กำไร 223 (90%) · เตรียมไปงาน 2 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/17-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/17-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb17">คัดลอก</button></div><pre class="txt" id="fb17">กล่องของขวัญที่สวยกว่าของข้างใน
+
+กล่องของขวัญสลับลาย จากห้าหมี
+ใช้ สี่เหลี่ยมมน 04 × 3 + วงกลม 05 × 3 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. สลับชิ้นเหลี่ยมกับชิ้นกลม
+2. ต่อ 4 ชิ้นเป็นวง
+3. ปิดก้นและฝา
+
+ขนาด 6.4 ซม.
+ราคา 249 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig17">คัดลอก</button></div><pre class="txt" id="ig17">กล่องของขวัญที่สวยกว่าของข้างใน
+
+กล่องของขวัญสลับลาย · 249 บาท
+สลับชิ้นเหลี่ยมกับชิ้นกลม → ต่อ 4 ชิ้นเป็นวง → ปิดก้นและฝา
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts17">คัดลอก</button></div><pre class="txt" id="tts17">0–2 วิ  ข้อความบนจอ: กล่องของขวัญที่สวยกว่าของข้างใน  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: สลับชิ้นเหลี่ยมกับชิ้นกลม  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ต่อ 4 ชิ้นเป็นวง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ปิดก้นและฝา  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: กล่องของขวัญสลับลาย 249 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc17">คัดลอก</button></div><pre class="txt" id="ttc17">กล่องของขวัญที่สวยกว่าของข้างใน ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt17">คัดลอก</button></div><pre class="txt" id="ytt17">กล่องของขวัญสลับลาย ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd17">คัดลอก</button></div><pre class="txt" id="ytd17">กล่องของขวัญที่สวยกว่าของข้างใน
+
+วิธีทำ
+1. สลับชิ้นเหลี่ยมกับชิ้นกลม
+2. ต่อ 4 ชิ้นเป็นวง
+3. ปิดก้นและฝา
+
+ชิ้นที่ใช้: สี่เหลี่ยมมน 04 × 3 + วงกลม 05 × 3
+ราคา 249 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt17">คัดลอก</button></div><pre class="txt" id="spt17">กล่องของขวัญสลับลาย หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd17">คัดลอก</button></div><pre class="txt" id="spd17">กล่องของขวัญที่สวยกว่าของข้างใน
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: สี่เหลี่ยมมน 04 × 3 + วงกลม 05 × 3 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 6.4 ซม.
+• เหมาะกับ: ร้านของขวัญ
+
+วิธีประกอบ
+1. สลับชิ้นเหลี่ยมกับชิ้นกลม
+2. ต่อ 4 ชิ้นเป็นวง
+3. ปิดก้นและฝา
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p18" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/18-post.png" target="_blank" rel="noopener"><img src="posters/thumb/18.jpg" alt="โปสเตอร์ กล่องของชำร่วยงานแต่ง" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#18</span><h3>กล่องของชำร่วยงานแต่ง <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span></h3>
+<p class="cap" style="font-size:14px">กากบาทนุ่ม 06 × 6</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">159 บาท</b>
+ <span class="cap">ต้นทุน 25.87 · กำไร 133 (84%) · เตรียมไปงาน 8 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/18-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/18-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb18">คัดลอก</button></div><pre class="txt" id="fb18">ของชำร่วยที่แขกเก็บไว้ ไม่ทิ้งไว้บนโต๊ะ
+
+กล่องของชำร่วยงานแต่ง จากห้าหมี
+ใช้ กากบาทนุ่ม 06 × 6 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นวง
+2. ปิดก้น
+3. ใส่ขนมหรือสบู่ แล้วปิดฝา
+
+ขนาด 6 × 6 × 6 ซม.
+ราคา 159 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig18">คัดลอก</button></div><pre class="txt" id="ig18">ของชำร่วยที่แขกเก็บไว้ ไม่ทิ้งไว้บนโต๊ะ
+
+กล่องของชำร่วยงานแต่ง · 159 บาท
+ต่อ 4 ชิ้นเป็นวง → ปิดก้น → ใส่ขนมหรือสบู่ แล้วปิดฝา
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts18">คัดลอก</button></div><pre class="txt" id="tts18">0–2 วิ  ข้อความบนจอ: ของชำร่วยที่แขกเก็บไว้ ไม่ทิ้งไว้บนโต๊ะ  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ต่อ 4 ชิ้นเป็นวง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ปิดก้น  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ใส่ขนมหรือสบู่ แล้วปิดฝา  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: กล่องของชำร่วยงานแต่ง 159 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc18">คัดลอก</button></div><pre class="txt" id="ttc18">ของชำร่วยที่แขกเก็บไว้ ไม่ทิ้งไว้บนโต๊ะ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt18">คัดลอก</button></div><pre class="txt" id="ytt18">กล่องของชำร่วยงานแต่ง ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd18">คัดลอก</button></div><pre class="txt" id="ytd18">ของชำร่วยที่แขกเก็บไว้ ไม่ทิ้งไว้บนโต๊ะ
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นวง
+2. ปิดก้น
+3. ใส่ขนมหรือสบู่ แล้วปิดฝา
+
+ชิ้นที่ใช้: กากบาทนุ่ม 06 × 6
+ราคา 159 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt18">คัดลอก</button></div><pre class="txt" id="spt18">กล่องของชำร่วยงานแต่ง หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd18">คัดลอก</button></div><pre class="txt" id="spd18">ของชำร่วยที่แขกเก็บไว้ ไม่ทิ้งไว้บนโต๊ะ
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทนุ่ม 06 × 6 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 6 × 6 × 6 ซม.
+• เหมาะกับ: คู่บ่าวสาว ออแกไนเซอร์
+
+วิธีประกอบ
+1. ต่อ 4 ชิ้นเป็นวง
+2. ปิดก้น
+3. ใส่ขนมหรือสบู่ แล้วปิดฝา
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p19" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/19-post.png" target="_blank" rel="noopener"><img src="posters/thumb/19.jpg" alt="โปสเตอร์ ที่ใส่แปรงแต่งหน้า" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#19</span><h3>ที่ใส่แปรงแต่งหน้า</h3>
+<p class="cap" style="font-size:14px">กากบาทนุ่ม 06 × 5</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">199 บาท</b>
+ <span class="cap">ต้นทุน 21.98 · กำไร 177 (89%) · เตรียมไปงาน 2 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/19-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/19-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb19">คัดลอก</button></div><pre class="txt" id="fb19">โต๊ะเครื่องแป้งเป็นระเบียบในหนึ่งนาที
+
+ที่ใส่แปรงแต่งหน้า จากห้าหมี
+ใช้ กากบาทนุ่ม 06 × 5 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นผนัง
+2. สอดชิ้นก้น
+3. ตั้งแปรงในกล่อง
+
+ขนาด 6 ซม.
+ราคา 199 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig19">คัดลอก</button></div><pre class="txt" id="ig19">โต๊ะเครื่องแป้งเป็นระเบียบในหนึ่งนาที
+
+ที่ใส่แปรงแต่งหน้า · 199 บาท
+ต่อ 4 ชิ้นเป็นผนัง → สอดชิ้นก้น → ตั้งแปรงในกล่อง
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts19">คัดลอก</button></div><pre class="txt" id="tts19">0–2 วิ  ข้อความบนจอ: โต๊ะเครื่องแป้งเป็นระเบียบในหนึ่งนาที  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ต่อ 4 ชิ้นเป็นผนัง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: สอดชิ้นก้น  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ตั้งแปรงในกล่อง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่ใส่แปรงแต่งหน้า 199 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc19">คัดลอก</button></div><pre class="txt" id="ttc19">โต๊ะเครื่องแป้งเป็นระเบียบในหนึ่งนาที ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt19">คัดลอก</button></div><pre class="txt" id="ytt19">ที่ใส่แปรงแต่งหน้า ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd19">คัดลอก</button></div><pre class="txt" id="ytd19">โต๊ะเครื่องแป้งเป็นระเบียบในหนึ่งนาที
+
+วิธีทำ
+1. ต่อ 4 ชิ้นเป็นผนัง
+2. สอดชิ้นก้น
+3. ตั้งแปรงในกล่อง
+
+ชิ้นที่ใช้: กากบาทนุ่ม 06 × 5
+ราคา 199 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt19">คัดลอก</button></div><pre class="txt" id="spt19">ที่ใส่แปรงแต่งหน้า หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd19">คัดลอก</button></div><pre class="txt" id="spd19">โต๊ะเครื่องแป้งเป็นระเบียบในหนึ่งนาที
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทนุ่ม 06 × 5 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 6 ซม.
+• เหมาะกับ: ของขวัญผู้หญิง
+
+วิธีประกอบ
+1. ต่อ 4 ชิ้นเป็นผนัง
+2. สอดชิ้นก้น
+3. ตั้งแปรงในกล่อง
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p20" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/20-post.png" target="_blank" rel="noopener"><img src="posters/thumb/20.jpg" alt="โปสเตอร์ ของแขวนต้นคริสต์มาส" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#20</span><h3>ของแขวนต้นคริสต์มาส</h3>
+<p class="cap" style="font-size:14px">กากบาทนุ่ม 06 × 6 + ริบบิ้น</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">159 บาท</b>
+ <span class="cap">ต้นทุน 28.87 · กำไร 130 (82%) · เตรียมไปงาน 3 ชิ้น</span></p>
+<p><span class="chip ext">มีชิ้นเสริม</span></p>
+<p class="cap"><a href="posters/20-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/20-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb20">คัดลอก</button></div><pre class="txt" id="fb20">ต้นคริสต์มาสปีนี้มีของแขวนหนังแท้
+
+ของแขวนต้นคริสต์มาส จากห้าหมี
+ใช้ กากบาทนุ่ม 06 × 6 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. เลือกหนังหลายสี
+2. ต่อเป็นลูกบาศก์
+3. ผูกริบบิ้นที่มุมบน
+
+ขนาด 6 ซม.
+ราคา 159 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig20">คัดลอก</button></div><pre class="txt" id="ig20">ต้นคริสต์มาสปีนี้มีของแขวนหนังแท้
+
+ของแขวนต้นคริสต์มาส · 159 บาท
+เลือกหนังหลายสี → ต่อเป็นลูกบาศก์ → ผูกริบบิ้นที่มุมบน
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts20">คัดลอก</button></div><pre class="txt" id="tts20">0–2 วิ  ข้อความบนจอ: ต้นคริสต์มาสปีนี้มีของแขวนหนังแท้  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: เลือกหนังหลายสี  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ต่อเป็นลูกบาศก์  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ผูกริบบิ้นที่มุมบน  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ของแขวนต้นคริสต์มาส 159 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc20">คัดลอก</button></div><pre class="txt" id="ttc20">ต้นคริสต์มาสปีนี้มีของแขวนหนังแท้ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt20">คัดลอก</button></div><pre class="txt" id="ytt20">ของแขวนต้นคริสต์มาส ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd20">คัดลอก</button></div><pre class="txt" id="ytd20">ต้นคริสต์มาสปีนี้มีของแขวนหนังแท้
+
+วิธีทำ
+1. เลือกหนังหลายสี
+2. ต่อเป็นลูกบาศก์
+3. ผูกริบบิ้นที่มุมบน
+
+ชิ้นที่ใช้: กากบาทนุ่ม 06 × 6
+ราคา 159 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt20">คัดลอก</button></div><pre class="txt" id="spt20">ของแขวนต้นคริสต์มาส หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd20">คัดลอก</button></div><pre class="txt" id="spd20">ต้นคริสต์มาสปีนี้มีของแขวนหนังแท้
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทนุ่ม 06 × 6 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 6 ซม.
+• เหมาะกับ: ช่วงปลายปี
+
+วิธีประกอบ
+1. เลือกหนังหลายสี
+2. ต่อเป็นลูกบาศก์
+3. ผูกริบบิ้นที่มุมบน
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p21" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/21-post.png" target="_blank" rel="noopener"><img src="posters/thumb/21.jpg" alt="โปสเตอร์ ราวหมีห้าตัว" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#21</span><h3>ราวหมีห้าตัว <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span></h3>
+<p class="cap" style="font-size:14px">หัวหมี 01 × 5 + เชือกแขวน</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">349 บาท</b>
+ <span class="cap">ต้นทุน 43.00 · กำไร 306 (88%) · เตรียมไปงาน 10 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/21-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/21-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb21">คัดลอก</button></div><pre class="txt" id="fb21">พ่อ แม่ และลูกสามคน แขวนไว้หน้าห้องให้รู้ว่าบ้านนี้มีกันกี่คน
+
+ราวหมีห้าตัว จากห้าหมี
+ใช้ หัวหมี 01 × 5 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. วางหมีเรียงห้าตัว
+2. เสียบหูหมีตัวหนึ่งเข้าร่องแก้มของตัวถัดไป
+3. ผูกเชือกที่หมีตัวแรกและตัวสุดท้าย
+
+ขนาด ยาวประมาณ 45 ซม.
+ราคา 349 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig21">คัดลอก</button></div><pre class="txt" id="ig21">พ่อ แม่ และลูกสามคน แขวนไว้หน้าห้องให้รู้ว่าบ้านนี้มีกันกี่คน
+
+ราวหมีห้าตัว · 349 บาท
+วางหมีเรียงห้าตัว → เสียบหูหมีตัวหนึ่งเข้าร่องแก้มของตัวถัดไป → ผูกเชือกที่หมีตัวแรกและตัวสุดท้าย
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts21">คัดลอก</button></div><pre class="txt" id="tts21">0–2 วิ  ข้อความบนจอ: พ่อ แม่ และลูกสามคน แขวนไว้หน้าห้องให้รู้ว่าบ้านนี้มีกันกี่คน  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: วางหมีเรียงห้าตัว  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: เสียบหูหมีตัวหนึ่งเข้าร่องแก้มของตัวถัดไป  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ผูกเชือกที่หมีตัวแรกและตัวสุดท้าย  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ราวหมีห้าตัว 349 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc21">คัดลอก</button></div><pre class="txt" id="ttc21">พ่อ แม่ และลูกสามคน แขวนไว้หน้าห้องให้รู้ว่าบ้านนี้มีกันกี่คน ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt21">คัดลอก</button></div><pre class="txt" id="ytt21">ราวหมีห้าตัว ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd21">คัดลอก</button></div><pre class="txt" id="ytd21">พ่อ แม่ และลูกสามคน แขวนไว้หน้าห้องให้รู้ว่าบ้านนี้มีกันกี่คน
+
+วิธีทำ
+1. วางหมีเรียงห้าตัว
+2. เสียบหูหมีตัวหนึ่งเข้าร่องแก้มของตัวถัดไป
+3. ผูกเชือกที่หมีตัวแรกและตัวสุดท้าย
+
+ชิ้นที่ใช้: หัวหมี 01 × 5
+ราคา 349 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt21">คัดลอก</button></div><pre class="txt" id="spt21">ราวหมีห้าตัว หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd21">คัดลอก</button></div><pre class="txt" id="spd21">พ่อ แม่ และลูกสามคน แขวนไว้หน้าห้องให้รู้ว่าบ้านนี้มีกันกี่คน
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: หัวหมี 01 × 5 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: ยาวประมาณ 45 ซม.
+• เหมาะกับ: ครอบครัว ห้องเด็ก
+
+วิธีประกอบ
+1. วางหมีเรียงห้าตัว
+2. เสียบหูหมีตัวหนึ่งเข้าร่องแก้มของตัวถัดไป
+3. ผูกเชือกที่หมีตัวแรกและตัวสุดท้าย
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p22" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/22-post.png" target="_blank" rel="noopener"><img src="posters/thumb/22.jpg" alt="โปสเตอร์ ที่รองแก้วหมี" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#22</span><h3>ที่รองแก้วหมี <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span></h3>
+<p class="cap" style="font-size:14px">หัวหมี 01 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">59 บาท</b>
+ <span class="cap">ต้นทุน 12.05 · กำไร 47 (80%) · เตรียมไปงาน 30 ชิ้น</span></p>
+<p><span class="chip ok">พร้อมผลิต</span></p>
+<p class="cap"><a href="posters/22-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/22-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb22">คัดลอก</button></div><pre class="txt" id="fb22">แก้วนมตอนเช้ามีหมีรองอยู่
+
+ที่รองแก้วหมี จากห้าหมี
+ใช้ หัวหมี 01 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+ขนาด 10.4 ซม.
+ราคา 59 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig22">คัดลอก</button></div><pre class="txt" id="ig22">แก้วนมตอนเช้ามีหมีรองอยู่
+
+ที่รองแก้วหมี · 59 บาท
+หยิบออกจากถุง → วางแก้ว → เสร็จ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts22">คัดลอก</button></div><pre class="txt" id="tts22">0–2 วิ  ข้อความบนจอ: แก้วนมตอนเช้ามีหมีรองอยู่  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: หยิบออกจากถุง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: วางแก้ว  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: เสร็จ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่รองแก้วหมี 59 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc22">คัดลอก</button></div><pre class="txt" id="ttc22">แก้วนมตอนเช้ามีหมีรองอยู่ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt22">คัดลอก</button></div><pre class="txt" id="ytt22">ที่รองแก้วหมี ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd22">คัดลอก</button></div><pre class="txt" id="ytd22">แก้วนมตอนเช้ามีหมีรองอยู่
+
+วิธีทำ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+ชิ้นที่ใช้: หัวหมี 01 × 1
+ราคา 59 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt22">คัดลอก</button></div><pre class="txt" id="spt22">ที่รองแก้วหมี หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd22">คัดลอก</button></div><pre class="txt" id="spd22">แก้วนมตอนเช้ามีหมีรองอยู่
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: หัวหมี 01 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 10.4 ซม.
+• เหมาะกับ: ทุกบ้าน
+
+วิธีประกอบ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p23" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/23-post.png" target="_blank" rel="noopener"><img src="posters/thumb/23.jpg" alt="โปสเตอร์ ที่ห้อยกระเป๋าหมีหัวใจ" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#23</span><h3>ที่ห้อยกระเป๋าหมีหัวใจ <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span></h3>
+<p class="cap" style="font-size:14px">หัวหมี 01 × 1 + สายหัวใจ 200 × 1 + ห่วงกุญแจโลหะ</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">129 บาท</b>
+ <span class="cap">ต้นทุน 26.81 · กำไร 102 (79%) · เตรียมไปงาน 30 ชิ้น</span></p>
+<p><span class="chip ext">มีชิ้นเสริม</span></p>
+<p class="cap"><a href="posters/23-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/23-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb23">คัดลอก</button></div><pre class="txt" id="fb23">หมีห้อยกระเป๋าที่บอกว่าใครรักคุณอยู่
+
+ที่ห้อยกระเป๋าหมีหัวใจ จากห้าหมี
+ใช้ หัวหมี 01 × 1 + สายหัวใจ 200 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. ร้อยห่วงโลหะที่ปลายสายหัวใจ
+2. สอดสายผ่านร่องแก้มและร่องล่าง
+3. คล้องห่วงกับกระเป๋า
+
+ขนาด หมี 10.4 ซม.
+ราคา 129 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig23">คัดลอก</button></div><pre class="txt" id="ig23">หมีห้อยกระเป๋าที่บอกว่าใครรักคุณอยู่
+
+ที่ห้อยกระเป๋าหมีหัวใจ · 129 บาท
+ร้อยห่วงโลหะที่ปลายสายหัวใจ → สอดสายผ่านร่องแก้มและร่องล่าง → คล้องห่วงกับกระเป๋า
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts23">คัดลอก</button></div><pre class="txt" id="tts23">0–2 วิ  ข้อความบนจอ: หมีห้อยกระเป๋าที่บอกว่าใครรักคุณอยู่  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: ร้อยห่วงโลหะที่ปลายสายหัวใจ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: สอดสายผ่านร่องแก้มและร่องล่าง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: คล้องห่วงกับกระเป๋า  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่ห้อยกระเป๋าหมีหัวใจ 129 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc23">คัดลอก</button></div><pre class="txt" id="ttc23">หมีห้อยกระเป๋าที่บอกว่าใครรักคุณอยู่ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt23">คัดลอก</button></div><pre class="txt" id="ytt23">ที่ห้อยกระเป๋าหมีหัวใจ ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd23">คัดลอก</button></div><pre class="txt" id="ytd23">หมีห้อยกระเป๋าที่บอกว่าใครรักคุณอยู่
+
+วิธีทำ
+1. ร้อยห่วงโลหะที่ปลายสายหัวใจ
+2. สอดสายผ่านร่องแก้มและร่องล่าง
+3. คล้องห่วงกับกระเป๋า
+
+ชิ้นที่ใช้: หัวหมี 01 × 1 + สายหัวใจ 200 × 1
+ราคา 129 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt23">คัดลอก</button></div><pre class="txt" id="spt23">ที่ห้อยกระเป๋าหมีหัวใจ หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd23">คัดลอก</button></div><pre class="txt" id="spd23">หมีห้อยกระเป๋าที่บอกว่าใครรักคุณอยู่
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: หัวหมี 01 × 1 + สายหัวใจ 200 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: หมี 10.4 ซม.
+• เหมาะกับ: วัยรุ่น ของขวัญ
+
+วิธีประกอบ
+1. ร้อยห่วงโลหะที่ปลายสายหัวใจ
+2. สอดสายผ่านร่องแก้มและร่องล่าง
+3. คล้องห่วงกับกระเป๋า
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p24" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/24-post.png" target="_blank" rel="noopener"><img src="posters/thumb/24.jpg" alt="โปสเตอร์ ที่รองแก้วกังหัน" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#24</span><h3>ที่รองแก้วกังหัน</h3>
+<p class="cap" style="font-size:14px">กังหัน 02 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">49 บาท</b>
+ <span class="cap">ต้นทุน 8.62 · กำไร 40 (82%) · เตรียมไปงาน 20 ชิ้น</span></p>
+<p><span class="chip ok">พร้อมผลิต</span></p>
+<p class="cap"><a href="posters/24-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/24-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb24">คัดลอก</button></div><pre class="txt" id="fb24">ที่รองแก้วลายกังหัน หนังแท้ทั้งแผ่น
+
+ที่รองแก้วกังหัน จากห้าหมี
+ใช้ กังหัน 02 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+ขนาด 9 ซม.
+ราคา 49 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig24">คัดลอก</button></div><pre class="txt" id="ig24">ที่รองแก้วลายกังหัน หนังแท้ทั้งแผ่น
+
+ที่รองแก้วกังหัน · 49 บาท
+หยิบออกจากถุง → วางแก้ว → เสร็จ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts24">คัดลอก</button></div><pre class="txt" id="tts24">0–2 วิ  ข้อความบนจอ: ที่รองแก้วลายกังหัน หนังแท้ทั้งแผ่น  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: หยิบออกจากถุง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: วางแก้ว  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: เสร็จ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่รองแก้วกังหัน 49 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc24">คัดลอก</button></div><pre class="txt" id="ttc24">ที่รองแก้วลายกังหัน หนังแท้ทั้งแผ่น ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt24">คัดลอก</button></div><pre class="txt" id="ytt24">ที่รองแก้วกังหัน ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd24">คัดลอก</button></div><pre class="txt" id="ytd24">ที่รองแก้วลายกังหัน หนังแท้ทั้งแผ่น
+
+วิธีทำ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+ชิ้นที่ใช้: กังหัน 02 × 1
+ราคา 49 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt24">คัดลอก</button></div><pre class="txt" id="spt24">ที่รองแก้วกังหัน หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd24">คัดลอก</button></div><pre class="txt" id="spd24">ที่รองแก้วลายกังหัน หนังแท้ทั้งแผ่น
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กังหัน 02 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 9 ซม.
+• เหมาะกับ: ทุกบ้าน
+
+วิธีประกอบ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p25" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/25-post.png" target="_blank" rel="noopener"><img src="posters/thumb/25.jpg" alt="โปสเตอร์ กังหันลมหนัง" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#25</span><h3>กังหันลมหนัง</h3>
+<p class="cap" style="font-size:14px">กังหัน 02 × 1 + ไม้เสียบและหมุด</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">89 บาท</b>
+ <span class="cap">ต้นทุน 16.62 · กำไร 72 (81%) · เตรียมไปงาน 5 ชิ้น</span></p>
+<p><span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p class="cap"><a href="posters/25-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/25-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb25">คัดลอก</button></div><pre class="txt" id="fb25">ของเล่นที่ลูกเป่าเล่นได้ทั้งวัน
+
+กังหันลมหนัง จากห้าหมี
+ใช้ กังหัน 02 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. พับปลายกลีบเข้าหาจุดกลางทีละกลีบ
+2. ตอกหมุดผ่านจุดกลาง
+3. เป่าดูให้หมุน
+
+ขนาด 9 ซม.
+ราคา 89 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig25">คัดลอก</button></div><pre class="txt" id="ig25">ของเล่นที่ลูกเป่าเล่นได้ทั้งวัน
+
+กังหันลมหนัง · 89 บาท
+พับปลายกลีบเข้าหาจุดกลางทีละกลีบ → ตอกหมุดผ่านจุดกลาง → เป่าดูให้หมุน
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts25">คัดลอก</button></div><pre class="txt" id="tts25">0–2 วิ  ข้อความบนจอ: ของเล่นที่ลูกเป่าเล่นได้ทั้งวัน  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: พับปลายกลีบเข้าหาจุดกลางทีละกลีบ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ตอกหมุดผ่านจุดกลาง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: เป่าดูให้หมุน  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: กังหันลมหนัง 89 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc25">คัดลอก</button></div><pre class="txt" id="ttc25">ของเล่นที่ลูกเป่าเล่นได้ทั้งวัน ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt25">คัดลอก</button></div><pre class="txt" id="ytt25">กังหันลมหนัง ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd25">คัดลอก</button></div><pre class="txt" id="ytd25">ของเล่นที่ลูกเป่าเล่นได้ทั้งวัน
+
+วิธีทำ
+1. พับปลายกลีบเข้าหาจุดกลางทีละกลีบ
+2. ตอกหมุดผ่านจุดกลาง
+3. เป่าดูให้หมุน
+
+ชิ้นที่ใช้: กังหัน 02 × 1
+ราคา 89 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt25">คัดลอก</button></div><pre class="txt" id="spt25">กังหันลมหนัง หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd25">คัดลอก</button></div><pre class="txt" id="spd25">ของเล่นที่ลูกเป่าเล่นได้ทั้งวัน
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กังหัน 02 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 9 ซม.
+• เหมาะกับ: เด็ก ของฝาก
+
+วิธีประกอบ
+1. พับปลายกลีบเข้าหาจุดกลางทีละกลีบ
+2. ตอกหมุดผ่านจุดกลาง
+3. เป่าดูให้หมุน
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p26" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/26-post.png" target="_blank" rel="noopener"><img src="posters/thumb/26.jpg" alt="โปสเตอร์ ป้ายห้อยของขวัญ" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#26</span><h3>ป้ายห้อยของขวัญ</h3>
+<p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 1 + เชือกปอ</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">39 บาท</b>
+ <span class="cap">ต้นทุน 10.62 · กำไร 28 (73%) · เตรียมไปงาน 20 ชิ้น</span></p>
+<p><span class="chip ok">พร้อมผลิต</span></p>
+<p class="cap"><a href="posters/26-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/26-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb26">คัดลอก</button></div><pre class="txt" id="fb26">ป้ายชื่อที่ผู้รับเก็บไว้ห้อยกุญแจต่อได้
+
+ป้ายห้อยของขวัญ จากห้าหมี
+ใช้ กากบาทแคปซูล 03 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. เขียนชื่อผู้รับด้วยปากกาเพ้นท์
+2. ร้อยเชือกผ่านร่อง
+3. ผูกกับถุงของขวัญ
+
+ขนาด 9 ซม.
+ราคา 39 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig26">คัดลอก</button></div><pre class="txt" id="ig26">ป้ายชื่อที่ผู้รับเก็บไว้ห้อยกุญแจต่อได้
+
+ป้ายห้อยของขวัญ · 39 บาท
+เขียนชื่อผู้รับด้วยปากกาเพ้นท์ → ร้อยเชือกผ่านร่อง → ผูกกับถุงของขวัญ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts26">คัดลอก</button></div><pre class="txt" id="tts26">0–2 วิ  ข้อความบนจอ: ป้ายชื่อที่ผู้รับเก็บไว้ห้อยกุญแจต่อได้  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: เขียนชื่อผู้รับด้วยปากกาเพ้นท์  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ร้อยเชือกผ่านร่อง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ผูกกับถุงของขวัญ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ป้ายห้อยของขวัญ 39 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc26">คัดลอก</button></div><pre class="txt" id="ttc26">ป้ายชื่อที่ผู้รับเก็บไว้ห้อยกุญแจต่อได้ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt26">คัดลอก</button></div><pre class="txt" id="ytt26">ป้ายห้อยของขวัญ ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd26">คัดลอก</button></div><pre class="txt" id="ytd26">ป้ายชื่อที่ผู้รับเก็บไว้ห้อยกุญแจต่อได้
+
+วิธีทำ
+1. เขียนชื่อผู้รับด้วยปากกาเพ้นท์
+2. ร้อยเชือกผ่านร่อง
+3. ผูกกับถุงของขวัญ
+
+ชิ้นที่ใช้: กากบาทแคปซูล 03 × 1
+ราคา 39 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt26">คัดลอก</button></div><pre class="txt" id="spt26">ป้ายห้อยของขวัญ หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd26">คัดลอก</button></div><pre class="txt" id="spd26">ป้ายชื่อที่ผู้รับเก็บไว้ห้อยกุญแจต่อได้
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทแคปซูล 03 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 9 ซม.
+• เหมาะกับ: ร้านของขวัญ
+
+วิธีประกอบ
+1. เขียนชื่อผู้รับด้วยปากกาเพ้นท์
+2. ร้อยเชือกผ่านร่อง
+3. ผูกกับถุงของขวัญ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p27" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/27-post.png" target="_blank" rel="noopener"><img src="posters/thumb/27.jpg" alt="โปสเตอร์ ที่รองแก้วสี่เหลี่ยม" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#27</span><h3>ที่รองแก้วสี่เหลี่ยม</h3>
+<p class="cap" style="font-size:14px">สี่เหลี่ยมมน 04 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">49 บาท</b>
+ <span class="cap">ต้นทุน 8.62 · กำไร 40 (82%) · เตรียมไปงาน 15 ชิ้น</span></p>
+<p><span class="chip ok">พร้อมผลิต</span></p>
+<p class="cap"><a href="posters/27-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/27-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb27">คัดลอก</button></div><pre class="txt" id="fb27">ที่รองแก้วทรงเหลี่ยมมน หนังแท้
+
+ที่รองแก้วสี่เหลี่ยม จากห้าหมี
+ใช้ สี่เหลี่ยมมน 04 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+ขนาด 9 ซม.
+ราคา 49 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig27">คัดลอก</button></div><pre class="txt" id="ig27">ที่รองแก้วทรงเหลี่ยมมน หนังแท้
+
+ที่รองแก้วสี่เหลี่ยม · 49 บาท
+หยิบออกจากถุง → วางแก้ว → เสร็จ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts27">คัดลอก</button></div><pre class="txt" id="tts27">0–2 วิ  ข้อความบนจอ: ที่รองแก้วทรงเหลี่ยมมน หนังแท้  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: หยิบออกจากถุง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: วางแก้ว  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: เสร็จ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่รองแก้วสี่เหลี่ยม 49 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc27">คัดลอก</button></div><pre class="txt" id="ttc27">ที่รองแก้วทรงเหลี่ยมมน หนังแท้ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt27">คัดลอก</button></div><pre class="txt" id="ytt27">ที่รองแก้วสี่เหลี่ยม ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd27">คัดลอก</button></div><pre class="txt" id="ytd27">ที่รองแก้วทรงเหลี่ยมมน หนังแท้
+
+วิธีทำ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+ชิ้นที่ใช้: สี่เหลี่ยมมน 04 × 1
+ราคา 49 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt27">คัดลอก</button></div><pre class="txt" id="spt27">ที่รองแก้วสี่เหลี่ยม หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd27">คัดลอก</button></div><pre class="txt" id="spd27">ที่รองแก้วทรงเหลี่ยมมน หนังแท้
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: สี่เหลี่ยมมน 04 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 9 ซม.
+• เหมาะกับ: ทุกบ้าน
+
+วิธีประกอบ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p28" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/28-post.png" target="_blank" rel="noopener"><img src="posters/thumb/28.jpg" alt="โปสเตอร์ ที่รองแก้ววงกลม" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#28</span><h3>ที่รองแก้ววงกลม</h3>
+<p class="cap" style="font-size:14px">วงกลม 05 × 1</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">49 บาท</b>
+ <span class="cap">ต้นทุน 8.62 · กำไร 40 (82%) · เตรียมไปงาน 15 ชิ้น</span></p>
+<p><span class="chip ok">พร้อมผลิต</span></p>
+<p class="cap"><a href="posters/28-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/28-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb28">คัดลอก</button></div><pre class="txt" id="fb28">ที่รองแก้วทรงกลม หนังแท้
+
+ที่รองแก้ววงกลม จากห้าหมี
+ใช้ วงกลม 05 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+ขนาด 9 ซม.
+ราคา 49 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig28">คัดลอก</button></div><pre class="txt" id="ig28">ที่รองแก้วทรงกลม หนังแท้
+
+ที่รองแก้ววงกลม · 49 บาท
+หยิบออกจากถุง → วางแก้ว → เสร็จ
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts28">คัดลอก</button></div><pre class="txt" id="tts28">0–2 วิ  ข้อความบนจอ: ที่รองแก้วทรงกลม หนังแท้  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: หยิบออกจากถุง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: วางแก้ว  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: เสร็จ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ที่รองแก้ววงกลม 49 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc28">คัดลอก</button></div><pre class="txt" id="ttc28">ที่รองแก้วทรงกลม หนังแท้ ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt28">คัดลอก</button></div><pre class="txt" id="ytt28">ที่รองแก้ววงกลม ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd28">คัดลอก</button></div><pre class="txt" id="ytd28">ที่รองแก้วทรงกลม หนังแท้
+
+วิธีทำ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+ชิ้นที่ใช้: วงกลม 05 × 1
+ราคา 49 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt28">คัดลอก</button></div><pre class="txt" id="spt28">ที่รองแก้ววงกลม หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd28">คัดลอก</button></div><pre class="txt" id="spd28">ที่รองแก้วทรงกลม หนังแท้
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: วงกลม 05 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 9 ซม.
+• เหมาะกับ: ทุกบ้าน
+
+วิธีประกอบ
+1. หยิบออกจากถุง
+2. วางแก้ว
+3. เสร็จ
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p29" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/29-post.png" target="_blank" rel="noopener"><img src="posters/thumb/29.jpg" alt="โปสเตอร์ ชุดที่รองแก้ว 4 ลาย" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#29</span><h3>ชุดที่รองแก้ว 4 ลาย <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span></h3>
+<p class="cap" style="font-size:14px">หัวหมี 01 × 1 + กังหัน 02 × 1 + สี่เหลี่ยมมน 04 × 1 + วงกลม 05 × 1 + ถุงผ้าและเชือกปอ</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">179 บาท</b>
+ <span class="cap">ต้นทุน 27.40 · กำไร 152 (85%) · เตรียมไปงาน 10 ชิ้น</span></p>
+<p><span class="chip ok">พร้อมผลิต</span></p>
+<p class="cap"><a href="posters/29-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/29-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb29">คัดลอก</button></div><pre class="txt" id="fb29">สี่แก้ว สี่ลาย ไม่ต้องจำว่าแก้วไหนของใคร
+
+ชุดที่รองแก้ว 4 ลาย จากห้าหมี
+ใช้ หัวหมี 01 × 1 + กังหัน 02 × 1 + สี่เหลี่ยมมน 04 × 1 + วงกลม 05 × 1 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. เลือกสี่ลายที่ชอบ
+2. มัดรวมด้วยเชือกปอ
+3. ใส่ถุงผ้า
+
+ขนาด 9–10.4 ซม.
+ราคา 179 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig29">คัดลอก</button></div><pre class="txt" id="ig29">สี่แก้ว สี่ลาย ไม่ต้องจำว่าแก้วไหนของใคร
+
+ชุดที่รองแก้ว 4 ลาย · 179 บาท
+เลือกสี่ลายที่ชอบ → มัดรวมด้วยเชือกปอ → ใส่ถุงผ้า
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts29">คัดลอก</button></div><pre class="txt" id="tts29">0–2 วิ  ข้อความบนจอ: สี่แก้ว สี่ลาย ไม่ต้องจำว่าแก้วไหนของใคร  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: เลือกสี่ลายที่ชอบ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: มัดรวมด้วยเชือกปอ  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ใส่ถุงผ้า  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ชุดที่รองแก้ว 4 ลาย 179 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc29">คัดลอก</button></div><pre class="txt" id="ttc29">สี่แก้ว สี่ลาย ไม่ต้องจำว่าแก้วไหนของใคร ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt29">คัดลอก</button></div><pre class="txt" id="ytt29">ชุดที่รองแก้ว 4 ลาย ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd29">คัดลอก</button></div><pre class="txt" id="ytd29">สี่แก้ว สี่ลาย ไม่ต้องจำว่าแก้วไหนของใคร
+
+วิธีทำ
+1. เลือกสี่ลายที่ชอบ
+2. มัดรวมด้วยเชือกปอ
+3. ใส่ถุงผ้า
+
+ชิ้นที่ใช้: หัวหมี 01 × 1 + กังหัน 02 × 1 + สี่เหลี่ยมมน 04 × 1 + วงกลม 05 × 1
+ราคา 179 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt29">คัดลอก</button></div><pre class="txt" id="spt29">ชุดที่รองแก้ว 4 ลาย หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd29">คัดลอก</button></div><pre class="txt" id="spd29">สี่แก้ว สี่ลาย ไม่ต้องจำว่าแก้วไหนของใคร
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: หัวหมี 01 × 1 + กังหัน 02 × 1 + สี่เหลี่ยมมน 04 × 1 + วงกลม 05 × 1 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 9–10.4 ซม.
+• เหมาะกับ: ของขวัญขึ้นบ้านใหม่
+
+วิธีประกอบ
+1. เลือกสี่ลายที่ชอบ
+2. มัดรวมด้วยเชือกปอ
+3. ใส่ถุงผ้า
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article><article class="card" id="p30" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
+<a href="posters/30-post.png" target="_blank" rel="noopener"><img src="posters/thumb/30.jpg" alt="โปสเตอร์ ชุดต่อเองกล่องลูกบาศก์" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#30</span><h3>ชุดต่อเองกล่องลูกบาศก์ <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span></h3>
+<p class="cap" style="font-size:14px">กากบาทนุ่ม 06 × 6 + ถุงและการ์ดวิธีต่อ</p>
+<p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">129 บาท</b>
+ <span class="cap">ต้นทุน 32.54 · กำไร 96 (75%) · เตรียมไปงาน 10 ชิ้น</span></p>
+<p><span class="chip ok">พร้อมผลิต</span></p>
+<p class="cap"><a href="posters/30-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/30-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
+<div style="grid-column:1/-1;min-width:0">
+<details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb30">คัดลอก</button></div><pre class="txt" id="fb30">ต่อเองได้ในห้านาที ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม
+
+ชุดต่อเองกล่องลูกบาศก์ จากห้าหมี
+ใช้ กากบาทนุ่ม 06 × 6 ต่อกันโดยไม่ต้องเย็บสักเข็ม
+
+วิธีทำ
+1. เทชิ้นหนังหกชิ้นออกจากถุง
+2. ทำตามการ์ด ต่อ 4 ชิ้นเป็นวง
+3. ปิดก้นและฝา เสร็จในห้านาที
+
+ขนาด 6 ซม. เมื่อต่อเสร็จ
+ราคา 129 บาท
+
+มาให้ลูกหมีทั้งสามสาธิตให้ดูได้ที่บูธห้าหมี งาน [ชื่องาน] 23–25 ต.ค. 2569 หรือสั่งใน Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Instagram</summary><div class="ch"><div class="h"><span class="cap">แคปชัน + โปสเตอร์ หรือคลิป Reels</span><button class="copy" data-for="ig30">คัดลอก</button></div><pre class="txt" id="ig30">ต่อเองได้ในห้านาที ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม
+
+ชุดต่อเองกล่องลูกบาศก์ · 129 บาท
+เทชิ้นหนังหกชิ้นออกจากถุง → ทำตามการ์ด ต่อ 4 ชิ้นเป็นวง → ปิดก้นและฝา เสร็จในห้านาที
+
+เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ลิงก์ Shopee อยู่หน้าโปรไฟล์
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #leathercraft #nosew #upcycle</pre></div></details>
+<details><summary>TikTok</summary><div class="ch"><div class="h"><span class="cap">สคริปต์ถ่าย 15 วินาที ใช้ภาพปก story</span><button class="copy" data-for="tts30">คัดลอก</button></div><pre class="txt" id="tts30">0–2 วิ  ข้อความบนจอ: ต่อเองได้ในห้านาที ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม  (ภาพมือเด็กถือชิ้นหนังที่ยังไม่ต่อ)
+2–6 วิ  ข้อความบนจอ: เทชิ้นหนังหกชิ้นออกจากถุง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+6–10 วิ  ข้อความบนจอ: ทำตามการ์ด ต่อ 4 ชิ้นเป็นวง  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+10–14 วิ  ข้อความบนจอ: ปิดก้นและฝา เสร็จในห้านาที  (ถ่ายมือจากด้านบน ไม่ต้องเห็นหน้า)
+14–17 วิ  ข้อความบนจอ: ชุดต่อเองกล่องลูกบาศก์ 129 บาท  (ชูของที่ต่อเสร็จ ดึงให้ดูว่าไม่หลุด)</pre></div><div class="ch"><div class="h"><span class="cap">แคปชัน</span><button class="copy" data-for="ttc30">คัดลอก</button></div><pre class="txt" id="ttc30">ต่อเองได้ในห้านาที ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม ต่อเองไม่ต้องเย็บ #ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด #tiktokป้ายยา #DIY</pre></div></details>
+<details><summary>YouTube Shorts</summary><div class="ch"><div class="h"><span class="cap">ชื่อคลิป</span><button class="copy" data-for="ytt30">คัดลอก</button></div><pre class="txt" id="ytt30">ชุดต่อเองกล่องลูกบาศก์ ต่อจากเศษหนังแท้ ไม่ต้องเย็บ | ห้าหมี Five Bears #Shorts</pre></div><div class="ch"><div class="h"><span class="cap">คำอธิบาย</span><button class="copy" data-for="ytd30">คัดลอก</button></div><pre class="txt" id="ytd30">ต่อเองได้ในห้านาที ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม
+
+วิธีทำ
+1. เทชิ้นหนังหกชิ้นออกจากถุง
+2. ทำตามการ์ด ต่อ 4 ชิ้นเป็นวง
+3. ปิดก้นและฝา เสร็จในห้านาที
+
+ชิ้นที่ใช้: กากบาทนุ่ม 06 × 6
+ราคา 129 บาท
+สั่งซื้อ: Shopee ร้านห้าหมี
+
+#ห้าหมี #FiveBears #หนังแท้ #ไม่ต้องเย็บ #ของขวัญ #งานแฮนด์เมด</pre></div></details>
+<details><summary>Shopee</summary><div class="ch"><div class="h"><span class="cap">ชื่อสินค้า</span><button class="copy" data-for="spt30">คัดลอก</button></div><pre class="txt" id="spt30">ชุดต่อเองกล่องลูกบาศก์ หนังแท้ ไม่ต้องเย็บ งานแฮนด์เมด ห้าหมี FIVE BEARS ของขวัญ</pre></div><div class="ch"><div class="h"><span class="cap">รายละเอียดสินค้า</span><button class="copy" data-for="spd30">คัดลอก</button></div><pre class="txt" id="spd30">ต่อเองได้ในห้านาที ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม
+
+• วัสดุ: เศษหนังวัวแท้ สีและลายแต่ละชิ้นต่างกันเล็กน้อย ทุกชิ้นมีชิ้นเดียว
+• ประกอบจาก: กากบาทนุ่ม 06 × 6 ต่อด้วยปีกและร่อง ไม่ใช้กาว ไม่เย็บ
+• ขนาด: 6 ซม. เมื่อต่อเสร็จ
+• เหมาะกับ: เด็ก ครอบครัว เวิร์กช็อป
+
+วิธีประกอบ
+1. เทชิ้นหนังหกชิ้นออกจากถุง
+2. ทำตามการ์ด ต่อ 4 ชิ้นเป็นวง
+3. ปิดก้นและฝา เสร็จในห้านาที
+
+การดูแล: เช็ดด้วยผ้าแห้ง เลี่ยงน้ำและแดดจัด
+ทำและแพ็คโดยครอบครัวห้าหมี พ่อ แม่ และลูกหมีสามตัว</pre></div></details>
+</div></article></section>
+
+<section id="stock"><span class="eyebrow">สต็อกไปงาน</span><h2>333 ชิ้น จากหนังที่มี</h2>
+<p class="lead">ใช้ชิ้นหนัง 705 จาก 729 ชิ้นที่ตัดได้จากเศษที่ซื้อมา (เศษใหญ่ 505 + เศษเล็ก 224) ชิ้นแบบ 02–06 ที่เกินจากเศษเล็ก 221 ชิ้นให้ตัดจากเศษใหญ่</p>
+<p class="cap">หัวหมี 01 200 · สายหัวใจ 200 40 · สายหัวใจ 250 20 · กังหัน 02 75 · กากบาทแคปซูล 03 108 · สี่เหลี่ยมมน 04 53 · วงกลม 05 73 · กากบาทนุ่ม 06 136</p>
+<div class="tbl"><table><thead><tr><th>#</th><th>สินค้า</th><th>ราคา</th><th>จำนวน</th><th>ชิ้นหนัง</th><th>ยอดถ้าขายหมด</th></tr></thead><tbody><tr><td class="mono">23</td><td>ที่ห้อยกระเป๋าหมีหัวใจ</td><td class="n">129</td><td class="n">30</td><td class="n">60</td><td class="n">3,870</td></tr><tr><td class="mono">21</td><td>ราวหมีห้าตัว</td><td class="n">349</td><td class="n">10</td><td class="n">50</td><td class="n">3,490</td></tr><tr><td class="mono">03</td><td>ป้ายชื่อติดกระเป๋านักเรียน</td><td class="n">129</td><td class="n">20</td><td class="n">40</td><td class="n">2,580</td></tr><tr><td class="mono">29</td><td>ชุดที่รองแก้ว 4 ลาย</td><td class="n">179</td><td class="n">10</td><td class="n">40</td><td class="n">1,790</td></tr><tr><td class="mono">01</td><td>ที่เก็บสายชาร์จหมี</td><td class="n">59</td><td class="n">30</td><td class="n">30</td><td class="n">1,770</td></tr><tr><td class="mono">22</td><td>ที่รองแก้วหมี</td><td class="n">59</td><td class="n">30</td><td class="n">30</td><td class="n">1,770</td></tr><tr><td class="mono">05</td><td>ซองอั่งเปาพับกังหัน</td><td class="n">69</td><td class="n">20</td><td class="n">20</td><td class="n">1,380</td></tr><tr><td class="mono">30</td><td>ชุดต่อเองกล่องลูกบาศก์</td><td class="n">129</td><td class="n">10</td><td class="n">60</td><td class="n">1,290</td></tr><tr><td class="mono">18</td><td>กล่องของชำร่วยงานแต่ง</td><td class="n">159</td><td class="n">8</td><td class="n">48</td><td class="n">1,272</td></tr><tr><td class="mono">02</td><td>ที่คั่นหนังสือหมี</td><td class="n">59</td><td class="n">20</td><td class="n">20</td><td class="n">1,180</td></tr><tr><td class="mono">16</td><td>กระเป๋าเหรียญจิ๋ว</td><td class="n">99</td><td class="n">10</td><td class="n">20</td><td class="n">990</td></tr><tr><td class="mono">24</td><td>ที่รองแก้วกังหัน</td><td class="n">49</td><td class="n">20</td><td class="n">20</td><td class="n">980</td></tr><tr><td class="mono">04</td><td>ห่วงผ้าเช็ดปากหมี</td><td class="n">79</td><td class="n">10</td><td class="n">20</td><td class="n">790</td></tr><tr><td class="mono">11</td><td>ชุดตัวต่อหนัง 24 ชิ้น</td><td class="n">390</td><td class="n">2</td><td class="n">48</td><td class="n">780</td></tr><tr><td class="mono">26</td><td>ป้ายห้อยของขวัญ</td><td class="n">39</td><td class="n">20</td><td class="n">20</td><td class="n">780</td></tr><tr><td class="mono">27</td><td>ที่รองแก้วสี่เหลี่ยม</td><td class="n">49</td><td class="n">15</td><td class="n">15</td><td class="n">735</td></tr><tr><td class="mono">28</td><td>ที่รองแก้ววงกลม</td><td class="n">49</td><td class="n">15</td><td class="n">15</td><td class="n">735</td></tr><tr><td class="mono">06</td><td>ซองใส่เครื่องประดับ</td><td class="n">69</td><td class="n">10</td><td class="n">10</td><td class="n">690</td></tr><tr><td class="mono">10</td><td>ซองใส่ AirTag</td><td class="n">129</td><td class="n">5</td><td class="n">10</td><td class="n">645</td></tr><tr><td class="mono">07</td><td>ซองการ์ดติดของขวัญ</td><td class="n">59</td><td class="n">10</td><td class="n">10</td><td class="n">590</td></tr><tr><td class="mono">08</td><td>กล่องแหวนหนังแท้</td><td class="n">290</td><td class="n">2</td><td class="n">12</td><td class="n">580</td></tr><tr><td class="mono">17</td><td>กล่องของขวัญสลับลาย</td><td class="n">249</td><td class="n">2</td><td class="n">12</td><td class="n">498</td></tr><tr><td class="mono">15</td><td>ที่รองแก้วไส้ไม้ก๊อก</td><td class="n">99</td><td class="n">5</td><td class="n">10</td><td class="n">495</td></tr><tr><td class="mono">09</td><td>ลูกเต๋าหนัง</td><td class="n">159</td><td class="n">3</td><td class="n">18</td><td class="n">477</td></tr><tr><td class="mono">20</td><td>ของแขวนต้นคริสต์มาส</td><td class="n">159</td><td class="n">3</td><td class="n">18</td><td class="n">477</td></tr><tr><td class="mono">14</td><td>ปลอกแก้วกาแฟ</td><td class="n">149</td><td class="n">3</td><td class="n">12</td><td class="n">447</td></tr><tr><td class="mono">25</td><td>กังหันลมหนัง</td><td class="n">89</td><td class="n">5</td><td class="n">5</td><td class="n">445</td></tr><tr><td class="mono">12</td><td>ที่ใส่ปากกามงกุฎ</td><td class="n">199</td><td class="n">2</td><td class="n">10</td><td class="n">398</td></tr><tr><td class="mono">19</td><td>ที่ใส่แปรงแต่งหน้า</td><td class="n">199</td><td class="n">2</td><td class="n">10</td><td class="n">398</td></tr><tr><td class="mono">13</td><td>แผ่นรองจานลายข้าวหลามตัด</td><td class="n">390</td><td class="n">1</td><td class="n">12</td><td class="n">390</td></tr></tbody></table></div>
+<p class="cap">เวลาประกอบรวมประมาณ 3.7 ชม. และแพ็คอีก 5.5 ชม. แบ่งให้ลูก ๆ ช่วยวันเสาร์อาทิตย์ที่ 17–18 ต.ค. ได้</p></section>
+
+<section id="kids"><span class="eyebrow">ลูกหมีขายของ</span><h2>สามหน้าที่ ทำได้ตามวัย</h2>
+<div class="grid"><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #F0B43C"><h3>หัวหน้าร้าน</h3><span class="cap">ลูกหมีคนโต</span><ul><li>ดูแลกล่องเงินและป้าย QR พร้อมเพย์</li><li>บอกราคา ทอนเงิน จดยอดในสมุด</li><li>ส่งถุงและพูดขอบคุณ</li></ul></div><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #F2A7A0"><h3>นักสาธิต</h3><span class="cap">ลูกหมีคนกลาง</span><ul><li>นั่งต่อหนังให้ลูกค้าดูที่โต๊ะหน้าบูธ</li><li>ยื่นชิ้นที่ต่อเสร็จให้ลูกค้าลองดึง</li><li>ชวนดูชุดต่อเอง</li></ul></div><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #6F9A8D"><h3>ผู้ต้อนรับ</h3><span class="cap">ลูกหมีคนเล็ก</span><ul><li>ยิ้ม ทักทาย ยื่นการ์ดให้</li><li>ชวนลูกค้าเด็กลองต่อที่กล่องทดลอง</li><li>แจกสติกเกอร์หมีเมื่อซื้อ</li></ul></div></div>
+<h3>ประโยคที่ซ้อมไว้</h3><div class="tbl"><table><tbody><tr><td style="white-space:nowrap"><b>ทักทาย</b></td><td>“สวัสดีค่ะ/ครับ ลองจับดูได้เลยนะ หนังแท้ ไม่ได้เย็บเลย”</td></tr><tr><td style="white-space:nowrap"><b>เล่าสั้น ๆ</b></td><td>“พ่อออกแบบให้มันล็อกกันเอง หนูต่อเองได้ ดูนะ สอดตรงนี้ ดัน เสร็จ”</td></tr><tr><td style="white-space:nowrap"><b>ช่วยเลือก</b></td><td>“ซื้อให้ตัวเองหรือเป็นของขวัญคะ/ครับ ถ้าของขวัญ ราวหมีห้าตัวขายดีที่สุด”</td></tr><tr><td style="white-space:nowrap"><b>ปิดการขาย</b></td><td>“รับเป็นเงินสดหรือสแกนคะ/ครับ”</td></tr><tr><td style="white-space:nowrap"><b>ลูกค้าขอลด</b></td><td>“ถ้าซื้อสามชิ้น ได้สติกเกอร์หมีฟรีค่ะ/ครับ (ราคาเท่าเดิม ให้ของแถมแทน)”</td></tr><tr><td style="white-space:nowrap"><b>ขอบคุณ</b></td><td>“ขอบคุณนะคะ/ครับ ฝากกดติดตามห้าหมีด้วย มีคลิปวิธีต่ออีกเยอะเลย”</td></tr></tbody></table></div>
+<div class="card"><h3>กติกาบูธ</h3><ul style="margin-top:6px"><li>พ่อหรือแม่อยู่ที่บูธตลอด เด็กไม่อยู่ลำพัง</li><li>เด็กทำกะละ 45 นาที พัก 15 นาที มีน้ำและขนมใต้โต๊ะ</li><li>นัดจุดเจอกันถ้าพลัดหลง และใส่ป้ายชื่อที่มีเบอร์พ่อแม่ไว้ด้านหลัง</li><li>เงินทอนตั้งต้น 1,500 บาท ใบละ 20 และ 100 กับเหรียญ 10 และ 5</li><li>ปิดยอดทุกเย็น นับเงิน เทียบสมุด แล้วแบ่งให้ลูกหมี 10% เข้ากระปุก</li></ul></div></section>
+
+<section id="print"><span class="eyebrow">ของต้องพิมพ์</span><h2>สั่งร้านพิมพ์ภายใน 15 ต.ค.</h2>
+<div class="tbl"><table><thead><tr><th>รายการ</th><th>จำนวน</th><th>หมายเหตุ</th></tr></thead><tbody><tr><td>ป้ายบูธ (แบ็คดรอปหรือไวนิล)</td><td class="n">1 ผืน</td><td>โลโก้ใหญ่ + สโลแกน + QR ไอจี</td></tr><tr><td>ป้ายตั้งโต๊ะ QR พร้อมเพย์</td><td class="n">2 ป้าย</td><td>A5 ตั้งได้</td></tr><tr><td>ป้ายราคาตามหมวด</td><td class="n">8 ใบ</td><td>39 / 49 / 59 / 99 / 129 / 159 / 199 / 290+</td></tr><tr><td>การ์ดเล่าเรื่องห้าหมี + QR</td><td class="n">300 ใบ</td><td>ขนาดนามบัตร ใส่ถุงทุกออเดอร์</td></tr><tr><td>สติกเกอร์โลโก้วงกลม 3 ซม.</td><td class="n">500 ดวง</td><td>ปิดถุง และแจกเด็ก</td></tr><tr><td>ป้ายชื่อพนักงานลูกหมี</td><td class="n">3 อัน</td><td>สีประจำตัวของลูกแต่ละคน เบอร์พ่อแม่ด้านหลัง</td></tr><tr><td>โปสเตอร์ How-to สินค้าหลัก</td><td class="n">8 แผ่น</td><td>A4 จากไฟล์ในชุดนี้</td></tr></tbody></table></div></section>
+
+<section id="more"><span class="eyebrow">ข้อ 7 · แนะนำเพิ่ม</span><h2>สิ่งที่ควรทำต่อ</h2><div class="grid"><div class="card"><h3>จดทะเบียนพาณิชย์</h3><p class="cap" style="font-size:14px;margin-top:4px">ร้านที่ขายออนไลน์ต้องจดทะเบียนพาณิชย์ ยื่นออนไลน์ที่ระบบ e-Registration ของกรมพัฒนาธุรกิจการค้า หรือที่สำนักงานเขต</p></div><div class="card"><h3>ยื่นจดเครื่องหมายการค้า</h3><p class="cap" style="font-size:14px;margin-top:4px">เช็กชื่อในฐานข้อมูลกรมทรัพย์สินทางปัญญาก่อนพิมพ์ของจำนวนมาก แล้วยื่นจดชื่อและโลโก้</p></div><div class="card"><h3>เปิด LINE Official Account</h3><p class="cap" style="font-size:14px;margin-top:4px">ลูกค้าบูธที่สั่งทำจำนวนมาก (ของชำร่วยงานแต่ง ของขวัญองค์กร) จะทักทาง LINE มากกว่า</p></div><div class="card"><h3>เวิร์กช็อปที่บูธ</h3><p class="cap" style="font-size:14px;margin-top:4px">ชุดต่อเองกล่องลูกบาศก์ 129 บาท นั่งต่อที่บูธ 5 นาที ดึงคนเข้าบูธ และได้คลิปลง TikTok</p></div><div class="card"><h3>รับออเดอร์จำนวนมาก</h3><p class="cap" style="font-size:14px;margin-top:4px">ทำแผ่นพับราคาส่ง ของชำร่วยงานแต่ง 50 ชิ้นขึ้นไป ปั๊มชื่อบ่าวสาวได้</p></div><div class="card"><h3>บันทึกยอดขายลง Google Sheet</h3><p class="cap" style="font-size:14px;margin-top:4px">เพิ่มแท็บบันทึกการขายในไฟล์ต้นทุน ลูกหมีคนโตกรอกทุกเย็น จะรู้ว่าตัวไหนขายดี</p></div><div class="card"><h3>ขออนุญาตก่อนโพสต์รูปลูก</h3><p class="cap" style="font-size:14px;margin-top:4px">ถ่ายมือ ไม่ต้องเห็นหน้าก็ได้ ถ้าโพสต์หน้าลูก ปิดตำแหน่งที่อยู่ และไม่บอกชื่อโรงเรียน</p></div></div></section>
+</div><script>
+document.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;
+const t=document.getElementById(b.dataset.for);const s=t.innerText;
+const done=()=>{const o=b.textContent;b.textContent='คัดลอกแล้ว';setTimeout(()=>b.textContent=o,1400)};
+const sel=()=>{const r=document.createRange();r.selectNodeContents(t);const w=getSelection();w.removeAllRanges();w.addRange(r);b.textContent='เลือกข้อความแล้ว กดคัดลอก'};
+try{navigator.clipboard.writeText(s).then(done,sel)}catch(_){sel()}});
+</script>

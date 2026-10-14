@@ -1,0 +1,117 @@
+<title>ห้าหมี Brand Book</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&family=Mitr:wght@400;500;600&display=swap"><style>
+:root{
+  /* Layout: one reading column of cards on cream, like a craft-shop catalogue; wide tables scroll inside their box. */
+  --bg:#F7EEE2;--paper:#FFFDF9;--ink:#4A2C1D;--muted:#7A5A45;--line:#E6D3BE;
+  --caramel:#B8743A;--heart:#D6453D;--honey:#F0B43C;--peach:#F2A7A0;--sage:#6F9A8D;--cocoa:#4A2C1D;--cream:#F7EEE2;
+  --on-accent:#FFFFFF;--chip:#F1E2CF;
+  --display:"Mitr","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#21150F;--paper:#2C1D15;--ink:#F7EEE2;--muted:#CDB49E;--line:#46311F;--caramel:#D99158;--heart:#EC6A60;--chip:#3A281C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#21150F;--paper:#2C1D15;--ink:#F7EEE2;--muted:#CDB49E;--line:#46311F;--caramel:#D99158;--heart:#EC6A60;--chip:#3A281C;color-scheme:dark}
+*{box-sizing:border-box}
+img{max-width:100%;height:auto;display:block}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.25;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,7vw,46px)}h2{font-size:clamp(23px,5vw,30px)}h3{font-size:19px}
+p{margin:0}
+a{color:var(--caramel)}
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.top a{flex:none;font-family:var(--display);font-size:14px;text-decoration:none;color:var(--ink);background:var(--chip);
+  border-radius:99px;padding:5px 13px}
+nav.top a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--honey);outline-offset:2px}
+section{padding-top:44px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:60px}
+.eyebrow{font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--caramel)}
+.lead{font-size:18px;color:var(--muted);max-width:62ch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px}
+.paper{background:#FFFDF9;border-radius:18px;padding:18px;display:flex;align-items:center;justify-content:center}
+.paper.dark{background:#4A2C1D}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.grid.s{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.grid>*{min-width:0}
+.cap{font-size:13px;color:var(--muted)}
+.mono{font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-size:12.5px;border-radius:99px;padding:2px 10px;background:var(--chip)}
+.chip.ok{background:#DCEBE5;color:#2F5A4E}.chip.mid{background:#FBE7C2;color:#7A4E0E}.chip.ext{background:#F8DAD7;color:#8A2A23}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:500;font-size:13px;color:var(--muted);white-space:nowrap}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+ol,ul{margin:0;padding-left:1.3em}
+li+li{margin-top:4px}
+.copy{font-family:var(--display);font-size:13px;border:1px solid var(--line);background:var(--chip);color:var(--ink);
+  border-radius:99px;padding:4px 12px;cursor:pointer}
+pre.txt{white-space:pre-wrap;font-family:var(--body);font-size:14.5px;background:var(--bg);border-radius:12px;padding:12px;margin:0}
+details{border-top:1px solid var(--line)}
+details>summary{cursor:pointer;padding:10px 0;font-family:var(--display);font-size:15px}
+.ch{display:flex;flex-direction:column;gap:8px;padding-bottom:12px}
+.ch .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+</style>
+<div class="wrap">
+<nav class="top" aria-label="หัวข้อ"><a href="#name">ชื่อ</a><a href="#story">เรื่องเล่า</a><a href="#logo">โลโก้</a><a href="#family">ครอบครัวหมี</a>
+<a href="#color">สี</a><a href="#type">ตัวอักษร</a><a href="#voice">น้ำเสียง</a><a href="#use">ตัวอย่างใช้งาน</a></nav>
+<header style="padding-top:28px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center">
+ <div class="paper" style="aspect-ratio:1"><img src="logo/logo-stacked.svg" alt="โลโก้ห้าหมี FIVE BEARS" style="max-height:100%"></div>
+ <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BOOK · ฉบับแรก 14 ต.ค. 2569</span>
+ <h1>ห้าหมี · FIVE BEARS</h1><p class="lead">เศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บสักเข็ม</p>
+ <p>คู่มือนี้ใช้กับทุกอย่างที่มีชื่อห้าหมี ตั้งแต่ป้ายบูธ ถุง สติกเกอร์ ไปจนถึงโพสต์ในโซเชียล ให้ทุกชิ้นดูเป็นแบรนด์เดียวกัน</p></div>
+</header>
+
+<section id="name"><span class="eyebrow">ชื่อแบรนด์</span><h2>ห้าหมี เพราะบ้านเรามีห้าคน</h2>
+<p class="lead">ตัวเลือกห้าชื่อที่คิดไว้ ชื่อที่มีกรอบคือชื่อที่แนะนำ และใช้ทำโลโก้กับทุกไฟล์ในชุดนี้</p>
+<div class="grid"><div class="card" style="display:flex;flex-direction:column;gap:6px;border:2px solid var(--caramel)"><h3>ห้าหมี · FIVE BEARS</h3><span class=chip>แนะนำ</span><p class="cap" style="font-size:14px">บ้านเรามีห้าคน พ่อ แม่ ลูกสาวสองคน ลูกชายหนึ่งคน และแบบ 01 ที่เป็นสินค้าตัวแรกคือหัวหมี ชื่อนี้เด็กพูดเองได้ ลูกค้าจำง่าย และต่อเป็นตัวละครได้ทั้งครอบครัว อ่านเล่นคำว่า หาหมี ได้ด้วย</p></div><div class="card" style="display:flex;flex-direction:column;gap:6px"><h3>เศษรัก · Scraps of Love</h3><p class="cap" style="font-size:14px">บอกตรง ๆ ว่าทำจากเศษหนัง และทำด้วยความรัก เหมาะกับสายรักษ์โลก แต่ภาษาอังกฤษยาว ใช้เป็นชื่อร้านใน Shopee ยาก</p></div><div class="card" style="display:flex;flex-direction:column;gap:6px"><h3>สอดรัก · Tuck &amp; Love</h3><p class="cap" style="font-size:14px">มาจากวิธีต่อ สอดปีกเข้าร่อง เล่าเรื่องงานไม่ต้องเย็บได้ชัด แต่ไม่ได้เล่าเรื่องครอบครัว</p></div><div class="card" style="display:flex;flex-direction:column;gap:6px"><h3>ลูกหมีขายของ · Cub Market</h3><p class="cap" style="font-size:14px">เน้นว่าเด็ก ๆ เป็นคนขาย ดีสำหรับงานออกบูธ แต่เมื่อลูกโตขึ้นชื่อจะเล็กกว่าแบรนด์</p></div><div class="card" style="display:flex;flex-direction:column;gap:6px"><h3>ไม่เย็บ · No Stitch Studio</h3><p class="cap" style="font-size:14px">เรียบ ดูเป็นสตูดิโอ ขายของขวัญองค์กรได้ แต่ไม่มีเรื่องเล่าของบ้านเรา</p></div></div>
+<p class="cap">ก่อนพิมพ์ของจำนวนมาก เช็กว่าชื่อ @fivebears.th ยังว่างในทุกช่องทาง และค้นชื่อในฐานข้อมูลเครื่องหมายการค้าของกรมทรัพย์สินทางปัญญา ถ้าเปลี่ยนชื่อ แก้ใน brand.py ที่เดียวแล้วสร้างไฟล์ใหม่ได้ทั้งชุด</p></section>
+
+<section id="story"><span class="eyebrow">STORY TELLING</span><h2>เรื่องของห้าหมี</h2>
+<p class="lead">เศษหนังแท้ที่เหลือจากการผลิต พ่อออกแบบให้ต่อกันได้โดยไม่ต้องเย็บ ลูก ๆ ช่วยกันประกอบและขายเอง</p>
+<div class="grid"><div class="card"><h3>เริ่มจากเศษหนัง</h3><p style="margin-top:6px">เศษหนังแท้ที่เหลือจากการตัดกระเป๋าและรองเท้า ถูกขายเป็นกิโล ชิ้นเล็กเท่าฝ่ามือ ใช้ทำของชิ้นใหญ่ไม่ได้ แต่ยังเป็นหนังดีทุกชิ้น พ่อหมีซื้อมาแล้วนั่งคิดว่าจะทำให้มันมีค่าอีกครั้งได้อย่างไร</p></div><div class="card"><h3>ไม่ต้องเย็บ เด็กก็ทำได้</h3><p style="margin-top:6px">งานหนังส่วนใหญ่ต้องเย็บ ต้องใช้เข็ม ต้องใช้มือผู้ใหญ่ พ่อหมีจึงออกแบบชิ้นหนังหกแบบ ให้มีปีกกับร่องที่สอดล็อกกันได้พอดี ต่างกันแค่ครึ่งมิลลิเมตร ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม ลูก ๆ ทั้งสามจึงช่วยประกอบได้ด้วยมือตัวเอง</p></div><div class="card"><h3>ชิ้นแรกเป็นหมี</h3><p style="margin-top:6px">แบบแรกที่ตัดออกมาเป็นหัวหมี และสายหนังรูปหัวใจ บ้านเรามีหมีห้าตัว พ่อหมี แม่หมี และลูกหมีสามตัว หัวใจตรงกลางโลโก้คือแม่หมี คนที่ทำให้บ้านนี้ต่อกันติดโดยไม่ต้องเย็บ</p></div><div class="card"><h3>ลูกหมีเป็นคนขาย</h3><p style="margin-top:6px">ที่บูธนี้ ลูกหมีทั้งสามเป็นคนต้อนรับ สาธิต และรับเงินเอง ทุกชิ้นที่คุณซื้อ คือเศษหนังหนึ่งชิ้นที่ไม่ถูกทิ้ง และบทเรียนการค้าขายครั้งแรกของเด็กสามคน</p></div></div>
+<div class="card"><div class="ch"><div class="h"><span class="cap">ประโยคแนะนำตัวสั้น ใช้เป็น bio</span><button class="copy" data-for="bio">คัดลอก</button></div><pre class="txt" id="bio">ห้าหมี · FIVE BEARS
+ของใช้จากเศษหนังแท้ ต่อกันด้วยรัก ไม่ต้องเย็บ
+ทำโดยครอบครัวหมีห้าตัว พ่อ แม่ และลูกหมีสามตัว</pre></div></div></section>
+
+<section id="logo"><span class="eyebrow">โลโก้</span><h2>หมีตัวนี้คือบล็อกตัดจริง</h2>
+<p class="lead">รูปหมีในโลโก้คือเส้นตัดของแบบ 01 ที่หมุน 45 องศาให้หูอยู่ด้านบน ร่องสองเส้นของบล็อกกลายเป็นแก้ม และหัวใจตรงกลางคือแม่หมี</p>
+<div class="grid"><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px"><div class="paper " style="aspect-ratio:4/3"><img src="logo/logo-stacked.svg" alt="โลโก้หลัก แนวตั้ง" style="max-height:100%;max-width:100%"></div><figcaption class="cap">โลโก้หลัก แนวตั้ง · <span class="mono">logo/svg/logo-stacked.svg</span></figcaption></figure><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px"><div class="paper " style="aspect-ratio:4/3"><img src="logo/logo-horizontal.svg" alt="แนวนอน ใช้หัวเว็บ ป้ายบูธ" style="max-height:100%;max-width:100%"></div><figcaption class="cap">แนวนอน ใช้หัวเว็บ ป้ายบูธ · <span class="mono">logo/svg/logo-horizontal.svg</span></figcaption></figure><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px"><div class="paper dark" style="aspect-ratio:4/3"><img src="logo/logo-stacked-reverse.svg" alt="บนพื้นเข้ม" style="max-height:100%;max-width:100%"></div><figcaption class="cap">บนพื้นเข้ม · <span class="mono">logo/svg/logo-stacked-reverse.svg</span></figcaption></figure><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px"><div class="paper " style="aspect-ratio:4/3"><img src="logo/logo-horizontal-mono.svg" alt="สีเดียว ใช้ปั๊มเลเซอร์ ตรายาง" style="max-height:100%;max-width:100%"></div><figcaption class="cap">สีเดียว ใช้ปั๊มเลเซอร์ ตรายาง · <span class="mono">logo/svg/logo-horizontal-mono.svg</span></figcaption></figure><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px"><div class="paper " style="aspect-ratio:4/3"><img src="logo/mark.svg" alt="ตัวหมี ใช้เดี่ยว ๆ" style="max-height:100%;max-width:100%"></div><figcaption class="cap">ตัวหมี ใช้เดี่ยว ๆ · <span class="mono">logo/svg/mark.svg</span></figcaption></figure><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px"><div class="paper " style="aspect-ratio:4/3"><img src="logo/sticker-3cm.svg" alt="สติกเกอร์ปิดถุง 3 ซม." style="max-height:100%;max-width:100%"></div><figcaption class="cap">สติกเกอร์ปิดถุง 3 ซม. · <span class="mono">logo/svg/sticker-3cm.svg</span></figcaption></figure></div>
+<div class="card"><h3>กติกาการใช้โลโก้</h3><ul style="margin-top:8px">
+<li>เว้นที่ว่างรอบโลโก้อย่างน้อยเท่าความกว้างหูหมีหนึ่งข้าง</li>
+<li>โลโก้หลักเล็กที่สุดกว้าง 25 มม. ถ้าเล็กกว่านั้นใช้ตัวหมีอย่างเดียว เล็กสุด 10 มม.</li>
+<li>บนพื้นเข้มใช้ไฟล์ reverse บนหนังหรือตรายางใช้ไฟล์สีเดียว</li>
+<li>ห้ามบีบ ยืด หมุน ใส่เงา หรือเปลี่ยนสีหัวใจเป็นสีอื่นนอกจากแดงหัวใจหรือครีม</li>
+<li>ไฟล์ SVG ทุกไฟล์แปลงตัวอักษรเป็นเส้นแล้ว ส่งร้านพิมพ์ได้เลยโดยไม่ต้องมีฟอนต์</li></ul></div></section>
+
+<section id="family"><span class="eyebrow">ครอบครัวหมี</span><h2>หมีห้าตัว ห้าสี</h2>
+<div class="paper"><img src="logo/family.svg" alt="หมีห้าตัวเรียงจากพ่อหมีถึงลูกหมีคนเล็ก"></div>
+<div class="grid"><div class="card" style="display:flex;gap:12px;align-items:center"><span style="flex:none;width:40px;height:40px;border-radius:50%;background:#4A2C1D;border:1px solid var(--line)"></span><div><b style="font-family:var(--display);font-weight:500">พ่อหมี</b><p class="cap">ออกแบบแพตเทิร์นและบล็อกตัด ดูแลการผลิต</p></div></div><div class="card" style="display:flex;gap:12px;align-items:center"><span style="flex:none;width:40px;height:40px;border-radius:50%;background:#D6453D;border:1px solid var(--line)"></span><div><b style="font-family:var(--display);font-weight:500">แม่หมี</b><p class="cap">หัวใจของบ้าน และหัวใจกลางโลโก้</p></div></div><div class="card" style="display:flex;gap:12px;align-items:center"><span style="flex:none;width:40px;height:40px;border-radius:50%;background:#F0B43C;border:1px solid var(--line)"></span><div><b style="font-family:var(--display);font-weight:500">ลูกหมีคนโต</b><p class="cap">หัวหน้าร้าน ดูแลเงินและ QR</p></div></div><div class="card" style="display:flex;gap:12px;align-items:center"><span style="flex:none;width:40px;height:40px;border-radius:50%;background:#F2A7A0;border:1px solid var(--line)"></span><div><b style="font-family:var(--display);font-weight:500">ลูกหมีคนกลาง</b><p class="cap">สาธิตการต่อหนังให้ลูกค้าดู</p></div></div><div class="card" style="display:flex;gap:12px;align-items:center"><span style="flex:none;width:40px;height:40px;border-radius:50%;background:#6F9A8D;border:1px solid var(--line)"></span><div><b style="font-family:var(--display);font-weight:500">ลูกหมีคนเล็ก</b><p class="cap">ทักทาย ชวนลูกค้าลองต่อเอง</p></div></div></div>
+<p class="cap">สีประจำตัวใช้กับป้ายชื่อพนักงานลูกหมี ถุง และสีพื้นของโพสต์ ลูกแต่ละคนเลือกสีของตัวเองใหม่ได้ ขอให้อยู่ในชุดสีด้านล่าง</p></section>
+
+<section id="color"><span class="eyebrow">สี</span><h2>ชุดสี</h2>
+<div class="grid s"><div class="card" style="padding:0;overflow:hidden"><div style="height:84px;background:#B8743A"></div><div style="padding:10px 12px"><b style="font-family:var(--display);font-weight:500">คาราเมล</b> <span class="mono cap">#B8743A</span><p class="cap">สีหนัง สีหลักของแบรนด์</p></div></div><div class="card" style="padding:0;overflow:hidden"><div style="height:84px;background:#4A2C1D"></div><div style="padding:10px 12px"><b style="font-family:var(--display);font-weight:500">โกโก้</b> <span class="mono cap">#4A2C1D</span><p class="cap">พ่อหมี ตัวหนังสือ เส้นขอบ</p></div></div><div class="card" style="padding:0;overflow:hidden"><div style="height:84px;background:#D6453D"></div><div style="padding:10px 12px"><b style="font-family:var(--display);font-weight:500">แดงหัวใจ</b> <span class="mono cap">#D6453D</span><p class="cap">แม่หมี หัวใจกลางโลโก้ ปุ่มสั่งซื้อ</p></div></div><div class="card" style="padding:0;overflow:hidden"><div style="height:84px;background:#F0B43C"></div><div style="padding:10px 12px"><b style="font-family:var(--display);font-weight:500">น้ำผึ้ง</b> <span class="mono cap">#F0B43C</span><p class="cap">ลูกหมีคนโต</p></div></div><div class="card" style="padding:0;overflow:hidden"><div style="height:84px;background:#F2A7A0"></div><div style="padding:10px 12px"><b style="font-family:var(--display);font-weight:500">ชมพูพีช</b> <span class="mono cap">#F2A7A0</span><p class="cap">ลูกหมีคนกลาง</p></div></div><div class="card" style="padding:0;overflow:hidden"><div style="height:84px;background:#6F9A8D"></div><div style="padding:10px 12px"><b style="font-family:var(--display);font-weight:500">เขียวเสจ</b> <span class="mono cap">#6F9A8D</span><p class="cap">ลูกหมีคนเล็ก</p></div></div><div class="card" style="padding:0;overflow:hidden"><div style="height:84px;background:#F7EEE2"></div><div style="padding:10px 12px"><b style="font-family:var(--display);font-weight:500">ครีม</b> <span class="mono cap">#F7EEE2</span><p class="cap">พื้นหลัง</p></div></div></div>
+<p class="cap">สัดส่วนโดยประมาณ ครีม 60% คาราเมลกับโกโก้ 30% แดงหัวใจและสีลูกหมี 10% ใช้แดงหัวใจกับราคาและปุ่มสั่งซื้อเท่านั้น</p></section>
+
+<section id="type"><span class="eyebrow">ตัวอักษร</span><h2>สองฟอนต์ ฟรีจาก Google Fonts</h2>
+<div class="grid">
+<div class="card"><p class="cap">หัวข้อ · Mitr</p><p style="font-family:var(--display);font-size:38px;font-weight:600;line-height:1.2">ห้าหมี 349 บาท</p><p class="cap">หัวข้อ โลโก้ ป้ายราคา น้ำหนัก 500–600</p></div>
+<div class="card"><p class="cap">เนื้อความ · IBM Plex Sans Thai</p><p style="font-size:18px">เศษหนังแท้ต่อกันด้วยปีกและร่อง ไม่ใช้กาว ไม่ต้องเย็บสักเข็ม</p><p class="cap">เนื้อความ คำบรรยายสินค้า น้ำหนัก 400 และ 600</p></div>
+</div></section>
+
+<section id="voice"><span class="eyebrow">น้ำเสียง</span><h2>พูดแบบห้าหมี</h2><div class="grid"><div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>พูดเหมือนเด็กเล่าให้ฟัง</h3><p class="cap" style="font-size:14px">ประโยคสั้น คำง่าย อ่านออกเสียงได้ ไม่ใช้ศัพท์การตลาด</p><p><span class="chip ok">ใช้</span> ลองดึงดูสิ ไม่หลุดเลย ไม่ได้ใช้กาวนะ</p><p><span class="chip ext">เลี่ยง</span> <s>นวัตกรรมการเชื่อมต่อไร้รอยเย็บระดับพรีเมียม</s></p></div><div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>บอกความจริงเรื่องวัสดุ</h3><p class="cap" style="font-size:14px">บอกว่าเป็นเศษหนัง สีและลายแต่ละชิ้นไม่เหมือนกัน เป็นเสน่ห์ ไม่ใช่ข้อเสีย</p><p><span class="chip ok">ใช้</span> หนังแท้จากเศษ สีอาจต่างจากรูปนิดหน่อย ทุกชิ้นมีชิ้นเดียว</p><p><span class="chip ext">เลี่ยง</span> <s>หนังแท้เกรดเอ สีตรงปก 100%</s></p></div><div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>โชว์วิธีทำ</h3><p class="cap" style="font-size:14px">ทุกโพสต์มีขั้นตอนสั้น ๆ ให้เห็นว่าต่อกันอย่างไร คนซื้อเพราะเห็นว่ามันง่าย</p><p><span class="chip ok">ใช้</span> สอดปีกเข้าร่อง ดันจนสุด เสร็จ</p><p><span class="chip ext">เลี่ยง</span> <s>สินค้าคุณภาพ สนใจทักแชท</s></p></div><div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>อบอุ่นแต่ไม่หวาน</h3><p class="cap" style="font-size:14px">พูดถึงครอบครัวได้ แต่ไม่ขอความเห็นใจ ขายเพราะของดี</p><p><span class="chip ok">ใช้</span> ลูกหมีคนเล็กเป็นคนต่อชิ้นนี้</p><p><span class="chip ext">เลี่ยง</span> <s>ช่วยอุดหนุนเด็ก ๆ หน่อยนะคะ</s></p></div></div></section>
+
+<section id="use"><span class="eyebrow">ตัวอย่างใช้งาน</span><h2>รูปโปรไฟล์และปก</h2>
+<p class="cap">บนมือถือ กดค้างที่รูปเพื่อบันทึก ไฟล์ทั้งหมดอยู่ในโฟลเดอร์ brand-20261014/logo ของโปรเจกต์</p>
+<div class="grid"><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="logo/avatar-1080.png" alt="รูปโปรไฟล์ทุกช่องทาง 1080 × 1080" style="border-radius:10px;border:1px solid var(--line)"><figcaption class="cap">รูปโปรไฟล์ทุกช่องทาง 1080 × 1080</figcaption></figure><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="logo/cover-facebook-1640x624.png" alt="ปก Facebook 1640 × 624" style="border-radius:10px;border:1px solid var(--line)"><figcaption class="cap">ปก Facebook 1640 × 624</figcaption></figure><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="logo/cover-youtube-2560x1440.png" alt="ปก YouTube 2560 × 1440" style="border-radius:10px;border:1px solid var(--line)"><figcaption class="cap">ปก YouTube 2560 × 1440</figcaption></figure><figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="logo/cover-shopee-1200x600.png" alt="ปกร้าน Shopee 1200 × 600" style="border-radius:10px;border:1px solid var(--line)"><figcaption class="cap">ปกร้าน Shopee 1200 × 600</figcaption></figure></div>
+<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="posters/21-post.png" alt="ตัวอย่างโปสเตอร์ How-to ราวหมีห้าตัว" style="border-radius:10px;max-width:420px">
+<figcaption class="cap">โปสเตอร์ How-to ใช้แบบเดียวกันทั้ง 30 ตัว ดูทั้งหมดใน <a href="https://claude.ai/artifact/AyvcJTzj5BY6spbPkZYQXS">ชุดเปิดตัว</a></figcaption></figure></section>
+</div><script>
+document.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;
+const t=document.getElementById(b.dataset.for);const s=t.innerText;
+const done=()=>{const o=b.textContent;b.textContent='คัดลอกแล้ว';setTimeout(()=>b.textContent=o,1400)};
+const sel=()=>{const r=document.createRange();r.selectNodeContents(t);const w=getSelection();w.removeAllRanges();w.addRange(r);b.textContent='เลือกข้อความแล้ว กดคัดลอก'};
+try{navigator.clipboard.writeText(s).then(done,sel)}catch(_){sel()}});
+</script>
