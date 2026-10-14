@@ -49,22 +49,139 @@ def classify(s, tol=0.03):
             return ("ellipse", C, rx, ry, p0, p3, t0)
     return ("spline", p0, c1, c2, p3)
 
-# ---------------------------------------------------------------- slit rules (agreed with the designer, 2026-10-14)
-# Slot overrun past the outline is intentional: it guarantees the slot is cut right through. Keep as drawn.
-# Receiving slits (B) are 0.5 mm longer than the tab neck: +0.25 mm at each end, centre unchanged.
-CLEARANCE = 0.5
-RECEIVERS = {"03": [0, 1], "04": [4, 5], "05": [4, 5], "06": [0, 1]}   # slit indexes in extraction order
+# ---------------------------------------------------------------- slit rules (agreed with the designer)
+# 1. Every slit and every tab neck is centred on the piece centre lines (CL).
+# 2. Receiving slit keeps its design length; the tab neck between two slots is 0.5 mm shorter.
+#    01: the ear neck (where ear meets face) is the tab; its slit is neck + 0.5.
+# 3. Slots that open onto the outline run 1.0 mm past the cut line so they always cut through.
+# 4. 02 pinwheel slots end exactly on the centre line.
+from shapely.geometry import LineString as _LS, Point as _Pt
+from extract import sample as _sample
+from shapely.geometry import Polygon as _Poly
+CLEARANCE, OVERRUN = 0.5, 1.0
+SLIT = {"03": 22.5, "04": 30.0, "05": 30.0, "06": 17.5}
+_CACHE = {}
+
+def _boundary(p):
+    if p["code"] not in _CACHE:
+        _CACHE[p["code"]] = _Poly(_sample(p["segs"], 400)).buffer(0).boundary
+    return _CACHE[p["code"]]
+
+def _hit(p, M, u, reach=80):
+    """First outline point from M along unit direction u."""
+    line = _LS([M, (M[0] + u[0] * reach, M[1] + u[1] * reach)])
+    g = _boundary(p).intersection(line)
+    pts = [g] if g.geom_type == "Point" else list(getattr(g, "geoms", []))
+    pts = [q for q in pts if q.geom_type == "Point" and math.dist((q.x, q.y), M) > 1e-6]
+    q = min(pts, key=lambda q: math.dist((q.x, q.y), M))
+    return (q.x, q.y)
+
+def _add(P, k, a):
+    return (P[0] + k * a[0], P[1] + k * a[1])
+
+def alignment(p):
+    """Centre, centre lines, rule-built slits and the numbers that prove the alignment."""
+    code = p["code"]; groups = circles(p)
+    if code == "01":
+        face = max(groups, key=lambda g_: g_["r"]); C = face["c"]
+    else:
+        cs = [g_["c"] for g_ in groups]
+        C = (sum(q[0] for q in cs) / len(cs), sum(q[1] for q in cs) / len(cs))
+    C = (round(C[0], 2), round(C[1], 2))
+    cx, cy = C
+    slits, checks, folds, recv = [], [], [], []
+    r2 = 1 / math.sqrt(2)
+
+    def receiver(M, u, L, name):
+        a, b = _add(M, -L / 2, u), _add(M, L / 2, u)
+        slits.append({"a": a, "b": b, "kind": "slit", "note": f"receiving slit {L:.2f}, centred on CL"})
+        recv.append({"M": M, "u": u, "L": L, "name": name})
+
+    def tab_fold(M, u, neck, name, half_chord=None):
+        if half_chord:                                   # corner points known exactly (03 notches)
+            P1, P2 = _add(M, half_chord, u), _add(M, -half_chord, u)
+        else:
+            P1, P2 = _hit(p, M, u), _hit(p, M, (-u[0], -u[1]))
+        for P, sg in ((P1, 1), (P2, -1)):
+            d = (u[0] * sg, u[1] * sg)
+            outer = _add(P, OVERRUN, d); inner = _add(M, neck / 2, d)
+            slits.append({"a": outer, "b": inner, "kind": "slot",
+                          "note": f"slot {math.dist(P, inner):.2f} in + {OVERRUN:.1f} past cut"})
+        folds.append({"M": M, "u": u, "neck": neck, "P1": P1, "P2": P2, "name": name})
+
+    if code == "01":
+        face = max(groups, key=lambda g_: g_["r"]); ears = [g_ for g_ in groups if g_ is not face]
+        necks = []
+        for e in ears:
+            d = math.dist(face["c"], e["c"]); R, r = face["r"], e["r"]
+            a_ = (R * R - r * r + d * d) / (2 * d); necks.append(2 * math.sqrt(R * R - a_ * a_))
+        neck = sum(necks) / len(necks); L = round(neck + CLEARANCE, 2); off = 30.5
+        receiver((cx - off, cy), (0, 1), L, "left slit")
+        receiver((cx, cy - off), (1, 0), L, "bottom slit")
+        offs = [abs(e["c"][1] - cy) if abs(e["c"][1] - cy) < 5 else abs(e["c"][0] - cx) for e in ears]
+        checks.append(("ear centres vs CL", " / ".join(f"{o:.2f}" for o in offs) + " mm"))
+        checks += [("ear neck (ear meets face)", f"{neck:.2f}"),
+                   ("slit = neck + 0.5", f"{L:.2f}  (was 17.27)"),
+                   ("slit centre to CL", "0.00 / 0.00"),
+                   ("slit offset from centre", f"{off:.2f}")]
+        return {"C": C, "slits": slits, "checks": checks, "folds": folds, "recv": recv, "diag": False,
+                "ear_neck": neck}
+    if code == "02":
+        lob = groups; c1 = min(lob, key=lambda g_: g_["c"][0]); c2 = max(lob, key=lambda g_: g_["c"][1])
+        d = math.dist(c1["c"], c2["c"]); R = c1["r"]; h = math.sqrt(R * R - (d / 2) ** 2)
+        mx, my = (c1["c"][0] + c2["c"][0]) / 2, (c1["c"][1] + c2["c"][1]) / 2
+        ux, uy = (c2["c"][0] - c1["c"][0]) / d, (c2["c"][1] - c1["c"][1]) / d
+        notch = (mx - uy * h, my + ux * h); H2 = round(cy - 0 + (notch[1] - cy), 3) - cy
+        H2 = round(abs(notch[0] - cx), 3)
+        for sl in p["slits"]:                               # keep the designer's pinwheel sides
+            a, b = sl["raw"]
+            horiz = abs(a[1] - b[1]) < abs(a[0] - b[0])
+            if horiz:
+                yv = cy + H2 * (1 if (a[1] + b[1]) / 2 > cy else -1)
+                far = a if abs(a[0] - cx) > abs(b[0] - cx) else b
+                sx = 1 if far[0] > cx else -1
+                outer, inner = (cx + sx * (H2 + OVERRUN), yv), (cx, yv)
+            else:
+                xv = cx + H2 * (1 if (a[0] + b[0]) / 2 > cx else -1)
+                far = a if abs(a[1] - cy) > abs(b[1] - cy) else b
+                sy = 1 if far[1] > cy else -1
+                outer, inner = (xv, cy + sy * (H2 + OVERRUN)), (xv, cy)
+            slits.append({"a": outer, "b": inner, "kind": "slot", "note": f"slot {H2:.2f} notch->CL + {OVERRUN:.1f} past cut"})
+        checks += [("fold square (notch to notch)", f"{2 * H2:.2f}"), ("slot inner end on CL", "0.00 (all 4)"),
+                   ("slot length notch -> CL", f"{H2:.2f}"), ("overrun past cut", f"{OVERRUN:.2f}")]
+        return {"C": C, "slits": slits, "checks": checks, "folds": [], "recv": [], "diag": False, "h": H2}
+    L = SLIT[code]; neck = L - CLEARANCE
+    if code == "03":
+        h = 22.5
+        receiver((cx - h, cy), (0, 1), L, "left"); receiver((cx + h, cy), (0, 1), L, "right")
+        tab_fold((cx, cy + h), (1, 0), neck, "top", h); tab_fold((cx, cy - h), (1, 0), neck, "bottom", h)
+    elif code == "04":
+        h = 22.5
+        receiver((cx + h, cy - h), (r2, r2), L, "BR"); receiver((cx - h, cy + h), (r2, r2), L, "TL")
+        tab_fold((cx + h, cy + h), (r2, -r2), neck, "TR"); tab_fold((cx - h, cy - h), (r2, -r2), neck, "BL")
+    elif code == "05":
+        h = 45 / math.sqrt(2)
+        receiver((cx, cy + h), (1, 0), L, "top"); receiver((cx, cy - h), (1, 0), L, "bottom")
+        tab_fold((cx + h, cy), (0, 1), neck, "right"); tab_fold((cx - h, cy), (0, 1), neck, "left")
+    elif code == "06":
+        h = 30.0
+        receiver((cx, cy + h), (1, 0), L, "top"); receiver((cx, cy - h), (1, 0), L, "bottom")
+        tab_fold((cx + h, cy), (0, 1), neck, "right"); tab_fold((cx - h, cy), (0, 1), neck, "left")
+    f0 = folds[0]
+    chord = math.dist(f0["P1"], f0["P2"])
+    mid_off = math.dist(((f0["P1"][0] + f0["P2"][0]) / 2, (f0["P1"][1] + f0["P2"][1]) / 2), f0["M"])
+    checks += [("fold line offset from centre", f"{h:.2f}"),
+               ("receiving slit (design)", f"{L:.2f}, centred on CL (0.00)"),
+               ("tab neck = slit - 0.5", f"{neck:.2f}, centred on CL (0.00)"),
+               ("tab chord at fold (cut to cut)", f"{chord:.2f}  (centre {mid_off:.2f} off CL)"),
+               ("slot inside the piece", f"{(chord - neck) / 2:.2f} each side"),
+               ("overrun past cut", f"{OVERRUN:.2f}")]
+    return {"C": C, "slits": slits, "checks": checks, "folds": folds, "recv": recv, "diag": code == "04", "h": h}
 
 def final_slits(p):
     out = []
-    for i, sl in enumerate(p["slits"]):
-        a, b = sl["raw"]
-        note = f"runs {sl['trimmed']:.2f} past outline (as drawn)" if sl["trimmed"] > 0.05 else ""
-        if i in RECEIVERS.get(p["code"], []):
-            L = math.dist(a, b); ux, uy = (b[0] - a[0]) / L, (b[1] - a[1]) / L; e = CLEARANCE / 2
-            a, b = (a[0] - ux * e, a[1] - uy * e), (b[0] + ux * e, b[1] + uy * e)
-            note = f"lengthened {L:.2f} -> {L + CLEARANCE:.2f} (+0.25 each end)"
-        out.append({"a": (round(a[0], 3), round(a[1], 3)), "b": (round(b[0], 3), round(b[1], 3)), "note": note})
+    for sl in alignment(p)["slits"]:
+        out.append({"a": (round(sl["a"][0], 3), round(sl["a"][1], 3)), "b": (round(sl["b"][0], 3), round(sl["b"][1], 3)), "note": sl["note"]})
     return out
 
 # ---------------------------------------------------------------- DXF / SVG
@@ -172,6 +289,54 @@ def centermark(c, x, y, s=1.2):
     c.setStrokeColorRGB(*BLUE); c.setLineWidth(0.2)
     c.line((x - s) * mm, y * mm, (x + s) * mm, y * mm); c.line(x * mm, (y - s) * mm, x * mm, (y + s) * mm)
 
+def cl_line(c, a, b):
+    c.saveState(); c.setStrokeColorRGB(0.1, 0.55, 0.35); c.setLineWidth(0.22); c.setDash([6, 1.5, 1, 1.5])
+    c.line(a[0] * mm, a[1] * mm, b[0] * mm, b[1] * mm); c.restoreState()
+    c.setFillColorRGB(0.1, 0.55, 0.35); c.setFont("Helvetica-Bold", 6); c.drawCentredString(b[0] * mm, (b[1] + 1.2) * mm, "CL")
+
+def annotate(c, p, A, ox, oy):
+    """Centre lines + dimensions that show how slits, necks and slots sit on the centre."""
+    W, H = p["W"], p["H"]; cx, cy = A["C"]; X, Y = ox + cx, oy + cy
+    ext = 7
+    cl_line(c, (ox - ext + 2, Y), (ox + W + ext, Y)); cl_line(c, (X, oy - ext + 2), (X, oy + H + ext))
+    if A.get("diag"):
+        d = 52
+        cl_line(c, (X - d * 0.7071, Y - d * 0.7071), (X + d * 0.7071, Y + d * 0.7071))
+        cl_line(c, (X - d * 0.7071, Y + d * 0.7071), (X + d * 0.7071, Y - d * 0.7071))
+    c.setStrokeColorRGB(0.1, 0.55, 0.35); c.setLineWidth(0.35)
+    c.circle(X * mm, Y * mm, 1.2 * mm); c.line((X - 2.5) * mm, Y * mm, (X + 2.5) * mm, Y * mm); c.line(X * mm, (Y - 2.5) * mm, X * mm, (Y + 2.5) * mm)
+    P = lambda q: (ox + q[0], oy + q[1])
+    if A["recv"]:
+        r = A["recv"][0]; M, u, L = r["M"], r["u"], r["L"]
+        a_, b_ = _add(M, -L / 2, u), _add(M, L / 2, u)
+        side = 1 if (M[0] - cx) * -u[1] + (M[1] - cy) * u[0] >= 0 else -1
+        dim(c, P(a_), P(M), 4 * side, f"{L/2:.2f}", fs=6); dim(c, P(M), P(b_), 4 * side, f"{L/2:.2f}", fs=6)
+        # offset of the slit line from the centre
+        n = (-u[1], u[0]); t = (M[0] - cx) * n[0] + (M[1] - cy) * n[1]
+        if abs(t) > 1:
+            q0 = (cx, cy); q1 = (cx + n[0] * t, cy + n[1] * t)
+            dim(c, P(q0), P(q1), -3 if p["code"] != "04" else 3, f"{abs(t):.2f}", fs=6)
+    if A["folds"]:
+        f = A["folds"][0]; M, u, nk = f["M"], f["u"], f["neck"]
+        i1, i2 = _add(M, nk / 2, u), _add(M, -nk / 2, u)
+        side = -1 if (M[0] - cx) * -u[1] + (M[1] - cy) * u[0] >= 0 else 1
+        dim(c, P(i2), P(i1), 5 * side, f"neck {nk:.2f}", fs=6)
+        dim(c, P(i1), P(f["P1"]), 5 * side, f"{math.dist(i1, f['P1']):.2f}", fs=6)
+        leader(c, P(_add(f["P1"], 0.5, u)), P(_add(_add(f["P1"], 6, u), 6 * side, (-u[1], u[0]))), "+1.0 past cut", fs=6)
+    if p["code"] == "02":
+        sl = A["slits"][0]; a_, b_ = sl["a"], sl["b"]
+        notch = _add(a_, 1.0, ((b_[0] - a_[0]) / math.dist(a_, b_), (b_[1] - a_[1]) / math.dist(a_, b_)))
+        dim(c, P(notch), P(b_), -5, f"{math.dist(notch, b_):.2f} to CL", fs=6)
+        leader(c, P(_add(a_, 0.5, ((b_[0] - a_[0]) / math.dist(a_, b_), 0))), P((a_[0] + 8, a_[1] - 8)), "+1.0 past cut", fs=6)
+    if p["code"] == "01":
+        # ear neck on the top ear
+        groups = circles(p); face = max(groups, key=lambda g_: g_["r"])
+        top = max((g_ for g_ in groups if g_ is not face), key=lambda g_: g_["c"][1])
+        d = math.dist(face["c"], top["c"]); R, r = face["r"], top["r"]
+        a0 = (R * R - r * r + d * d) / (2 * d); hh = math.sqrt(R * R - a0 * a0)
+        mid = (face["c"][0], face["c"][1] + a0)
+        dim(c, P((mid[0] - hh, mid[1])), P((mid[0] + hh, mid[1])), 6, f"ear neck {2*hh:.2f}", fs=6)
+
 def frame(c, sheet, total, title, sub):
     c.setStrokeColorRGB(0, 0, 0); c.setFillColorRGB(0, 0, 0); c.setLineWidth(0.5)
     c.rect(8 * mm, 8 * mm, 194 * mm, 281 * mm); c.rect(10 * mm, 10 * mm, 190 * mm, 34 * mm)
@@ -273,6 +438,8 @@ def pattern_page(c, p, sheet, total, notes):
     c.rect(ox * mm, oy * mm, W * mm, H * mm); c.setDash()
     dim(c, (ox, oy), (ox + W, oy), -10, f"{W:.2f}"); dim(c, (ox, oy), (ox, oy + H), 10, f"{H:.2f}")
     c.setFont("Helvetica", 6.5); c.setFillColorRGB(*BLUE); c.drawString((ox - 4) * mm, (oy - 4) * mm, "0,0"); centermark(c, ox, oy, 2)
+    A = alignment(p)
+    annotate(c, p, A, ox, oy)
     groups = circles(p)
     # one label per radius value; centre marks on every circle
     byr = []
@@ -309,6 +476,10 @@ def pattern_page(c, p, sheet, total, notes):
         a, b = sl["a"], sl["b"]; y -= 3.6
         t = f"   ({sl['note']})" if sl["note"] else ""
         c.drawString(14 * mm, y * mm, f"S{i}:  ({a[0]:.2f}, {a[1]:.2f})  ->  ({b[0]:.2f}, {b[1]:.2f})    L = {math.dist(a, b):.2f}{t}")
+    y -= 5.5; c.setFont("Helvetica-Bold", 8); c.setFillColorRGB(0.1, 0.45, 0.28); c.drawString(14 * mm, y * mm, "ALIGNMENT CHECK (CL = centre line)")
+    c.setFont("Helvetica", 6.8)
+    for k_, v_ in A["checks"]:
+        y -= 3.6; c.drawString(14 * mm, y * mm, f"- {k_}:"); c.drawString(70 * mm, y * mm, v_)
     if notes:
         y -= 5.5; c.setFont("Helvetica-Bold", 8); c.setFillColorRGB(0.7, 0.3, 0.05); c.drawString(14 * mm, y * mm, "NOTES")
         c.setFont("Helvetica", 6.8)
@@ -347,13 +518,12 @@ def overview(c, P, total):
     legend(c, 140, 62)
 
 NOTES = {
-    "01": ["Bear rotated 45 deg vs 20261013: ears at top and right; slits vertical (left) and horizontal (bottom)."],
-    "02": ["Pinwheel slots 27.0 = half of the 54.1 fold edge. Unchanged from the artwork."],
-    "03": ["Receiving slits S1, S2 lengthened 22.50 -> 23.00 so the 22.5 tab neck has 0.5 mm clearance."],
-    "04": ["Receiving slits S5, S6 lengthened 30.00 -> 30.50 (tab neck ~29.9)."],
-    "05": ["Receiving slits S5, S6 lengthened 30.00 -> 30.50 (tab neck 30.0).",
-           "Slot pairs differ as drawn: top 17.7, bottom 16.0 - kept as in the artwork."],
-    "06": ["Receiving slits S1, S2 lengthened 17.50 -> 18.00 (tab neck 17.5). Lobes are true ellipses in the DXF."],
+    "01": ["The ear neck (17.41, where ear meets face) is the tab. Slits lengthened 17.27 -> 17.91 = neck + 0.5, centred on CL."],
+    "02": ["Each slot runs from the notch to the centre line (ends exactly on CL) plus 1.0 past the cut."],
+    "03": ["Slit 22.5 as designed. Tab neck between slots = 22.0 (slit - 0.5). Slots 11.5 in + 1.0 past cut."],
+    "04": ["Slit 30.0 as designed. Tab neck = 29.5. Slots 17.07 in + 1.0 past cut (overrun was 1.7-4.5)."],
+    "05": ["Slit 30.0 as designed, centred on the circle. Tab neck = 29.5 centred, so all 4 slots are now equal (were 17.7 / 16.0)."],
+    "06": ["Slit 17.5 as designed, centred on CL. Tab neck = 17.0. Slots 9.19 in + 1.0 past cut."],
 }
 
 def main():

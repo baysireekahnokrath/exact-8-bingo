@@ -3,16 +3,25 @@ import math, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, ROOT)
 from extract import load
-from generate import svg_d, SRC, final_slits
+from generate import svg_d, SRC, final_slits, alignment
 
 SPECS = {
-    "01": ("Bear head", ["หน้า R41.68 · หู R12.68 × 2", "slit 17.27 × 2 แนวตั้งและแนวนอน"]),
-    "02": ("Pinwheel", ["4 กลีบ R29.37", "slot 27.0 × 4 วนแบบกังหัน"]),
-    "03": ("Capsule cross", ["สี่เหลี่ยม 45 · ปีก R22.5", "slit 23.0 × 2 · slot 11.25 × 4"]),
-    "04": ("Rounded square", ["มุม R5", "slit 30.5 × 2 · slot 16.8–16.9 × 4"]),
-    "05": ("Circle", ["Ø90", "slit 30.5 × 2 · slot 17.7 × 2 และ 16.0 × 2"]),
-    "06": ("Soft cross", ["กลีบวงรี 35.4 × 29.4 · โค้งเว้า R12.62", "slit 18.0 × 2 · slot 8.94 × 4"]),
+    "01": ("Bear head", ["หน้า R41.68 · หู R12.68 × 2", "slit 17.91 × 2 = คอหู 17.41 + 0.5"]),
+    "02": ("Pinwheel", ["4 กลีบ R29.37", "slot 27.05 ถึงเส้น CL + เลยขอบ 1.0"]),
+    "03": ("Capsule cross", ["สี่เหลี่ยม 45 · ปีก R22.5", "slit 22.5 · คอ 22.0 · slot 11.5 + 1.0"]),
+    "04": ("Rounded square", ["มุม R5", "slit 30 · คอ 29.5 · slot 17.07 + 1.0"]),
+    "05": ("Circle", ["Ø90", "slit 30 · คอ 29.5 · slot 17.07 + 1.0"]),
+    "06": ("Soft cross", ["กลีบวงรี 35.4 × 29.4 · โค้งเว้า R12.62", "slit 17.5 · คอ 17.0 · slot 9.19 + 1.0"]),
 }
+
+def align_table():
+    rows = []
+    for p in load(SRC):
+        A = alignment(p)
+        items = "".join(f"<li>{k}: <span class=\"mono\">{v}</span></li>" for k, v in A["checks"])
+        rows.append(f'<tr><td>{p["code"]} {SPECS[p["code"]][0]}</td><td><ul class="chk">{items}</ul></td></tr>')
+    return ('<div class="tablebox"><table><thead><tr><th>แบบ</th><th>ค่าที่ตรวจ</th></tr></thead><tbody>'
+            + "".join(rows) + "</tbody></table></div>")
 
 IDEAS_LINK = 'ใช้แบบชุดนี้ทั้งหมด ไม่ต้องแก้แบบ · <a href="https://claude.ai/artifact/EboiyQ9wdsMx98uk7zkCZn">ดู 20 ไอเดียสินค้า</a>'
 
@@ -28,7 +37,7 @@ def main():
         plates.append(f'<article class="plate">{svg}<header><h3>{name}</h3><span class="code">{p["code"]}</span></header>'
                       f'<span class="size">{W:.2f} × {H:.2f} mm</span><ul>{li}</ul></article>')
     t = open(os.path.join(HERE, "template.html")).read().replace("__PLATES__", "\n    ".join(plates))
-    t = t.replace("__IDEAS_LINK__", IDEAS_LINK)
+    t = t.replace("__IDEAS_LINK__", IDEAS_LINK).replace("__ALIGN__", align_table())
     open(os.path.join(HERE, "index.html"), "w").write(t)
     print("ok")
 
