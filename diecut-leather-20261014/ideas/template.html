@@ -1,0 +1,96 @@
+<title>20 ไอเดียสินค้าหนังไม่เย็บ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Bai+Jamjuree:wght@600;700&display=swap">
+<style>
+/* Layout: idea catalogue. Picks first, then one band per pattern with a 2-column card grid */
+:root{
+  --bg:#F7F8F6; --sheet:#FFFFFF; --ink:#1D2125; --muted:#5B636B; --rule:#D9DDDC;
+  --dim:#1F5FBF; --slit:#D12F2F; --leather:#8A5A35; --ok:#2E7D4F; --warn:#B4541A;
+  --display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --ok:#6CC892; --warn:#F0A060; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --ok:#6CC892; --warn:#F0A060; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:52px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,46px)}
+h2{font-size:22px}
+h3{font-size:18px}
+p{margin:0;max-width:65ch}
+a{color:var(--dim);text-underline-offset:3px}
+header{display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--leather)}
+.lede{font-size:18px;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fact{background:var(--sheet);border:1px solid var(--rule);padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.fact b{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.fact p{font-size:14px}
+.picks{border:1px solid var(--ink);background:var(--sheet);padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.picks ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.picks li span{color:var(--muted);font-size:15px}
+.picks a{color:var(--ink);text-decoration:none}
+.picks a:hover b{color:var(--dim)}
+.key{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.group{display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--ink);padding-top:20px}
+.ghead{display:flex;gap:16px;align-items:center}
+.gthumb{width:64px;flex:none}
+.gthumb svg{width:64px;height:64px;display:block}
+.rule{font-size:14px;color:var(--muted);font-family:var(--mono)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{background:var(--sheet);border:1px solid var(--rule);padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0;scroll-margin-top:16px}
+.card:target{outline:2px solid var(--dim)}
+.head{display:flex;justify-content:space-between;align-items:center}
+.num{font-family:var(--mono);font-size:13px;color:var(--dim)}
+.pill{font-family:var(--mono);font-size:11.5px;padding:2px 8px;border:1px solid currentColor;white-space:nowrap}
+.pill.ok{color:var(--ok)} .pill.mid{color:var(--warn)} .pill.ext{color:var(--dim)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;border:1px solid var(--rule);padding:2px 8px 2px 4px;color:var(--muted)}
+.chip b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.chip svg{width:22px;height:22px}
+.card p{font-size:15px}
+dl{margin:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;border-top:1px solid var(--rule);padding-top:10px}
+dl div{min-width:0}
+dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+dd{margin:0;font-size:14px}
+svg .cut{fill:none;stroke:var(--ink);stroke-width:1.6}
+svg .slit line{stroke:var(--slit);stroke-width:2.2;stroke-linecap:round}
+.note{font-size:14px;color:var(--muted)}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px}
+@media (max-width:720px){
+  .cards,.facts{grid-template-columns:minmax(0,1fr)}
+  dl{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Rev 20261014 · Product ideas</div>
+  <h1>20 ไอเดียสินค้าหนังไม่ต้องเย็บ</h1>
+  <p class="lede">ใช้แบบ die-cut ชุด 14 ต.ค. ทั้ง 6 แบบตามที่เป็นอยู่ ไม่ต้องแก้แบบ แต่ละไอเดียบอกว่าใช้ชิ้นไหน กี่ชิ้น ประกอบอย่างไร และขายให้ใคร</p>
+  <div class="facts">
+    <div class="fact"><b>ต่อข้ามแบบ</b><p>แบบ 04 กับ 05 มีขอบพับ 63.6 mm และคอปีก/slit เท่ากัน จึงต่อกันได้ในชิ้นงานเดียว</p></div>
+    <div class="fact"><b>ประกบ 2 ชิ้น</b><p>หมุนชิ้นที่สอง 90° แล้วประกบหน้าหลัง ด้านเสียบจะตรงกับด้านรับทุกขอบ ได้เป็นซองปิด</p></div>
+    <div class="fact"><b>ต่อ 5–6 ชิ้น</b><p>แบบ 03, 04, 05, 06 ต่อเป็นกล่องเปิดด้านบน (5 ชิ้น) หรือลูกบาศก์ปิด (6 ชิ้น) ได้ทุกแบบ</p></div>
+  </div>
+</header>
+
+<section class="picks">
+  <h2>ถ้าจะเริ่มทำ 5 อันแรก</h2>
+  <ol>__PICKS__</ol>
+</section>
+
+<div class="key"><span><span class="pill ok">ลองได้เลย</span> ใช้แบบตามที่มี</span><span><span class="pill mid">ต้องลองต้นแบบ</span> ควรตัดหนังลองประกอบก่อน</span><span><span class="pill ext">ต้องมีชิ้นเสริม</span> ต้องมีสาย ไม้ก๊อก หรือริบบิ้นเพิ่ม</span></div>
+
+  __GROUPS__
+
+<p class="note">ยังไม่ได้ทำ drawing หรือภาพ 3D ของสินค้าเหล่านี้ เลือกแบบที่สนใจแล้วผมจะทำวิธีประกอบให้ทีละแบบ ขนาดที่ระบุคำนวณจากขอบพับของแต่ละแบบ ขนาดจริงจะต่างไปเล็กน้อยตามความหนาของหนัง</p>
+<footer>รวบรวมโดย Claude Code · 14 ต.ค. 2026</footer>
+</div>

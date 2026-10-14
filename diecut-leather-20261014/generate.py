@@ -49,6 +49,24 @@ def classify(s, tol=0.03):
             return ("ellipse", C, rx, ry, p0, p3, t0)
     return ("spline", p0, c1, c2, p3)
 
+# ---------------------------------------------------------------- slit rules (agreed with the designer, 2026-10-14)
+# Slot overrun past the outline is intentional: it guarantees the slot is cut right through. Keep as drawn.
+# Receiving slits (B) are 0.5 mm longer than the tab neck: +0.25 mm at each end, centre unchanged.
+CLEARANCE = 0.5
+RECEIVERS = {"03": [0, 1], "04": [4, 5], "05": [4, 5], "06": [0, 1]}   # slit indexes in extraction order
+
+def final_slits(p):
+    out = []
+    for i, sl in enumerate(p["slits"]):
+        a, b = sl["raw"]
+        note = f"runs {sl['trimmed']:.2f} past outline (as drawn)" if sl["trimmed"] > 0.05 else ""
+        if i in RECEIVERS.get(p["code"], []):
+            L = math.dist(a, b); ux, uy = (b[0] - a[0]) / L, (b[1] - a[1]) / L; e = CLEARANCE / 2
+            a, b = (a[0] - ux * e, a[1] - uy * e), (b[0] + ux * e, b[1] + uy * e)
+            note = f"lengthened {L:.2f} -> {L + CLEARANCE:.2f} (+0.25 each end)"
+        out.append({"a": (round(a[0], 3), round(a[1], 3)), "b": (round(b[0], 3), round(b[1], 3)), "note": note})
+    return out
+
 # ---------------------------------------------------------------- DXF / SVG
 def dxf_add(msp, p, ox=0, oy=0):
     o = lambda q: (q[0] + ox, q[1] + oy)
@@ -78,9 +96,8 @@ def dxf_add(msp, p, ox=0, oy=0):
             msp.add_ellipse(o(C), major_axis=major, ratio=ratio, start_param=s0, end_param=s1, dxfattribs=A)
         else:
             msp.add_open_spline([o(q) for q in k[1:]], degree=3, knots=[0, 0, 0, 0, 1, 1, 1, 1], dxfattribs=A)
-    for sl in p["slits"]:
-        a, b = sl["cut"]
-        msp.add_line(o(a), o(b), dxfattribs={"layer": "SLIT"})
+    for sl in final_slits(p):
+        msp.add_line(o(sl["a"]), o(sl["b"]), dxfattribs={"layer": "SLIT"})
 
 def new_doc():
     doc = ezdxf.new("R2010", setup=False)
@@ -97,7 +114,7 @@ def svg_d(segs, H):
 
 def write_svg(p, path):
     W, H = p["W"], p["H"]
-    lines = "\n".join(f'  <line x1="{a[0]:.3f}" y1="{H-a[1]:.3f}" x2="{b[0]:.3f}" y2="{H-b[1]:.3f}"/>' for a, b in (s["cut"] for s in p["slits"]))
+    lines = "\n".join(f'  <line x1="{a[0]:.3f}" y1="{H-a[1]:.3f}" x2="{b[0]:.3f}" y2="{H-b[1]:.3f}"/>' for a, b in ((s["a"], s["b"]) for s in final_slits(p)))
     open(path, "w").write(f'''<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="{W}mm" height="{H}mm" viewBox="0 0 {W} {H}">
  <title>{p["code"]} {p["name"]} - {W}x{H} mm - 1:1 - rev {DATE}</title>
@@ -183,6 +200,22 @@ def legend(c, x, y):
     c.drawString((x + 12) * mm, (y - 6) * mm, "SLIT - through-cut slit / slot")
     c.drawString((x + 12) * mm, (y - 11) * mm, "Dimension - not cut")
 
+def calibration(c, x, y):
+    """100 mm ruler + 50 mm square. If these do not measure true, the print was scaled."""
+    c.setStrokeColorRGB(0, 0, 0); c.setFillColorRGB(0, 0, 0); c.setLineWidth(0.4)
+    c.line(x * mm, y * mm, (x + 100) * mm, y * mm)
+    for i in range(0, 101):  # mm ticks
+        h = 3 if i % 10 == 0 else (2 if i % 5 == 0 else 1)
+        c.setLineWidth(0.3 if i % 10 == 0 else 0.15); c.line((x + i) * mm, y * mm, (x + i) * mm, (y + h) * mm)
+    c.setFont("Helvetica", 5.5)
+    for i in range(0, 101, 10): c.drawCentredString((x + i) * mm, (y + 4) * mm, str(i))
+    c.setLineWidth(0.4); c.rect(140 * mm, 48 * mm, 50 * mm, 50 * mm)
+    c.setFont("Helvetica", 6.5); c.drawCentredString(165 * mm, 72 * mm, "50 x 50 mm square")
+    c.setFont("Helvetica-Bold", 7.5)
+    c.drawString(x * mm, (y - 5) * mm, "PRINT AT 100% / ACTUAL SIZE - turn OFF 'Fit to page' / 'Shrink'.")
+    c.setFont("Helvetica", 7)
+    c.drawString(x * mm, (y - 9) * mm, "Ruler must read 100 mm and the square 50 x 50 mm. If not, the drawing is NOT 1:1.")
+
 def scale_bar(c, x, y):
     c.setStrokeColorRGB(0, 0, 0); c.setLineWidth(0.4); c.line(x * mm, y * mm, (x + 50) * mm, y * mm)
     for i in range(0, 51, 10): c.line((x + i) * mm, y * mm, (x + i) * mm, (y + (3 if i in (0, 50) else 2)) * mm)
@@ -221,17 +254,18 @@ def ellipses(p):
     return out
 
 def pattern_page(c, p, sheet, total, notes):
-    W, H = p["W"], p["H"]; ox, oy = (210 - W) / 2, 150 if H < 100 else 146
+    W, H = p["W"], p["H"]; ox, oy = (210 - W) / 2, 162
     frame(c, sheet, total, f"PATTERN {p['code']} - {p['name'].upper()}", f"Overall {W:.2f} x {H:.2f} mm  |  1 cut outline + {len(p['slits'])} slits  |  REV 20261014")
     c.setStrokeColorRGB(0, 0, 0); c.setLineWidth(0.35); draw_outline(c, p["segs"], ox, oy)
     c.setStrokeColorRGB(*RED); c.setLineWidth(0.35)
-    for i, sl in enumerate(p["slits"], 1):
-        a, b = sl["cut"]; c.line((ox + a[0]) * mm, (oy + a[1]) * mm, (ox + b[0]) * mm, (oy + b[1]) * mm)
+    FS = final_slits(p)
+    for sl in FS:
+        a, b = sl["a"], sl["b"]; c.line((ox + a[0]) * mm, (oy + a[1]) * mm, (ox + b[0]) * mm, (oy + b[1]) * mm)
     # slit tags
     c.setFillColorRGB(*RED); c.setFont("Helvetica-Bold", 6)
     cx, cy = W / 2, H / 2
-    for i, sl in enumerate(p["slits"], 1):
-        a, b = sl["cut"]; m = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+    for i, sl in enumerate(FS, 1):
+        a, b = sl["a"], sl["b"]; m = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
         v = (m[0] - cx, m[1] - cy); l = math.hypot(*v) or 1
         tx, ty = m[0] - v[0] / l * 4.5, m[1] - v[1] / l * 4.5
         c.drawCentredString((ox + tx) * mm, (oy + ty - 1) * mm, f"S{i}")
@@ -264,34 +298,35 @@ def pattern_page(c, p, sheet, total, notes):
     for (a_, b_), cs in ellipses(p).items():
         geo.append(f"Ellipse {a_:.2f} x {b_:.2f}  centres: " + ", ".join(f"({x:.2f}, {y:.2f})" for x, y in sorted(cs)))
         for x, y in cs: centermark(c, ox + x, oy + y)
-    y = oy - 22
+    y = oy - 20
     c.setFillColorRGB(0, 0, 0); c.setFont("Helvetica-Bold", 8); c.drawString(14 * mm, y * mm, "GEOMETRY (from designer vector file)")
     c.setFont("Helvetica", 6.8)
     for g_ in geo[:6]:
-        y -= 3.8; c.drawString(14 * mm, y * mm, "- " + g_)
-    y -= 6; c.setFont("Helvetica-Bold", 8); c.drawString(14 * mm, y * mm, "SLIT COORDINATES (origin = bottom-left 0,0)")
+        y -= 3.6; c.drawString(14 * mm, y * mm, "- " + g_)
+    y -= 5.5; c.setFont("Helvetica-Bold", 8); c.drawString(14 * mm, y * mm, "SLIT COORDINATES (origin = bottom-left 0,0)")
     c.setFont("Helvetica", 6.8)
-    for i, sl in enumerate(p["slits"], 1):
-        a, b = sl["cut"]; y -= 3.8
-        t = f"   (trimmed {sl['trimmed']:.2f} outside outline)" if sl["trimmed"] > 0.05 else ""
+    for i, sl in enumerate(FS, 1):
+        a, b = sl["a"], sl["b"]; y -= 3.6
+        t = f"   ({sl['note']})" if sl["note"] else ""
         c.drawString(14 * mm, y * mm, f"S{i}:  ({a[0]:.2f}, {a[1]:.2f})  ->  ({b[0]:.2f}, {b[1]:.2f})    L = {math.dist(a, b):.2f}{t}")
     if notes:
-        y -= 6; c.setFont("Helvetica-Bold", 8); c.setFillColorRGB(0.7, 0.3, 0.05); c.drawString(14 * mm, y * mm, "CHECK BEFORE CUTTING STEEL")
+        y -= 5.5; c.setFont("Helvetica-Bold", 8); c.setFillColorRGB(0.7, 0.3, 0.05); c.drawString(14 * mm, y * mm, "NOTES")
         c.setFont("Helvetica", 6.8)
         for n_ in notes:
-            y -= 3.8; c.drawString(14 * mm, y * mm, "- " + n_)
-    legend(c, 140, oy - 22); scale_bar(c, 140, oy - 42)
+            y -= 3.6; c.drawString(14 * mm, y * mm, "- " + n_)
+    legend(c, 140, oy - 20)
+    calibration(c, 14, 60)
 
 def overview(c, P, total):
-    frame(c, 1, total, "OVERVIEW - REV 20261014", "Reduced scale on this sheet only. Sheets 2-7 are 1:1.")
+    frame(c, 1, 1, "OVERVIEW - NOT TO SCALE", "Reduced view of all 6 patterns. Use diecut-drawings-1to1-rev20261014.pdf for 1:1.")
     sc = 0.58
     pos = [(16, 200), (80, 205), (142, 205), (18, 118), (80, 118), (142, 118)]
     for p, (x, y) in zip(P, pos):
         c.saveState(); c.translate(x * mm, y * mm); c.scale(sc, sc)
         c.setStrokeColorRGB(0, 0, 0); c.setLineWidth(0.5); draw_outline(c, p["segs"], 0, 0)
         c.setStrokeColorRGB(*RED)
-        for sl in p["slits"]:
-            a, b = sl["cut"]; c.line(a[0] * mm, a[1] * mm, b[0] * mm, b[1] * mm)
+        for sl in final_slits(p):
+            a, b = sl["a"], sl["b"]; c.line(a[0] * mm, a[1] * mm, b[0] * mm, b[1] * mm)
         c.restoreState()
         c.setFillColorRGB(0, 0, 0); c.setFont("Helvetica-Bold", 8); c.drawString(x * mm, (y + p["H"] * sc + 4) * mm, f"{p['code']}  {p['name']}")
         c.setFont("Helvetica", 7); c.drawString(x * mm, (y + p["H"] * sc + 0.5) * mm, f"{p['W']:.2f} x {p['H']:.2f} mm  |  {len(p['slits'])} slits")
@@ -299,40 +334,38 @@ def overview(c, P, total):
     c.setFont("Helvetica-Bold", 8); c.drawString(14 * mm, y * mm, "DIE MAKER NOTES")
     c.setFont("Helvetica", 7)
     for n in [
-        "1. All drawings 1:1, mm. Produce from the DXF files (layers CUT / SLIT; true arcs and ellipses). This PDF is the dimensioned reference.",
+        "1. 1:1 sheets are in the separate 1:1 PDF. Produce from the DXF files (layers CUT / SLIT; true arcs and ellipses).",
         "2. Geometry is taken directly from the designer's vector PDF of 2026-10-14 - no re-tracing.",
         "3. CUT (black) = outline, full cut. SLIT (red) = through cut, same rule height as CUT.",
-        "4. Slit lines that ran past the outline in the artwork were trimmed back to the outline (amount listed per sheet).",
+        "4. Slot lines run past the outline on purpose (as drawn) so the slot is cut right through. Keep the overrun.",
         "5. A 0.01 mm stray point inside pattern 03 was removed - it is not a cut.",
-        "6. Slits ending on the outline join the outline rule cleanly (T-joint), no gap, no overcut.",
+        "6. Receiving slits are 0.5 mm longer than the tab neck they take (+0.25 mm each end) - see each sheet.",
         "7. Suggested rule: 2pt centre-bevel, 23.8 mm height (or die maker standard) for leather 1.2-2.0 mm.",
         "8. Optional: dia. 1.5 mm round punch at the closed end of each slit to stop tearing (confirm with designer).",
     ]:
         y -= 4.5; c.drawString(14 * mm, y * mm, n)
-    legend(c, 140, 62); scale_bar(c, 14, 54)
+    legend(c, 140, 62)
 
 NOTES = {
-    "01": ["Bear rotated 45 deg vs 20261013: ears now at top and right; slits now vertical (left) and horizontal (bottom)."],
-    "02": ["Slots now 27.0 = exactly half of the 54.1 fold edge (were 29.25).",
-           "Woven petal-box joint needs the two slots to overlap: keep >= 28.5 if that product is used."],
-    "03": ["Tab neck (45 - 2 x 11.25 = 22.5) equals receiving slit 22.5: zero clearance.",
-           "Suggest slit 23.5 or slots 11.75 for ~1 mm clearance in 1.5 mm leather."],
-    "04": ["Edge slots now 16.8-16.9 (were 15): tab neck ~29.9 vs slit 30.0 - about 0.1 mm clearance."],
-    "05": ["Slots differ: top pair 17.7, bottom pair 16.0 - intended? Symmetric value for neck = slit is 16.82.",
-           "Tab neck 30.0 equals slit 30.0: zero clearance. Suggest slots 17.3 each (~1 mm clearance)."],
-    "06": ["Lobes are now ellipses (DXF uses true ELLIPSE). Tab neck 17.5 equals slit 17.5: zero clearance.",
-           "Lower two concave corners meet the side lobes through a 0.4 mm straight step (upper two meet directly) - reproduced as drawn."],
+    "01": ["Bear rotated 45 deg vs 20261013: ears at top and right; slits vertical (left) and horizontal (bottom)."],
+    "02": ["Pinwheel slots 27.0 = half of the 54.1 fold edge. Unchanged from the artwork."],
+    "03": ["Receiving slits S1, S2 lengthened 22.50 -> 23.00 so the 22.5 tab neck has 0.5 mm clearance."],
+    "04": ["Receiving slits S5, S6 lengthened 30.00 -> 30.50 (tab neck ~29.9)."],
+    "05": ["Receiving slits S5, S6 lengthened 30.00 -> 30.50 (tab neck 30.0).",
+           "Slot pairs differ as drawn: top 17.7, bottom 16.0 - kept as in the artwork."],
+    "06": ["Receiving slits S1, S2 lengthened 17.50 -> 18.00 (tab neck 17.5). Lobes are true ellipses in the DXF."],
 }
 
 def main():
     P = load(SRC)
-    total = len(P) + 1
     c = canvas.Canvas(os.path.join(HERE, "diecut-drawings-1to1-rev20261014.pdf"), pagesize=A4)
-    c.setTitle("Leather die-cut drawings 1:1 - REV 20261014")
-    overview(c, P, total); c.showPage()
-    for i, p in enumerate(P, 2):
-        pattern_page(c, p, i, total, NOTES.get(p["code"], [])); c.showPage()
+    c.setTitle("Leather die-cut drawings 1:1 - REV 20261014 - print at 100%")
+    for i, p in enumerate(P, 1):
+        pattern_page(c, p, i, len(P), NOTES.get(p["code"], [])); c.showPage()
     c.save()
+    c = canvas.Canvas(os.path.join(HERE, "overview-not-to-scale-rev20261014.pdf"), pagesize=A4)
+    c.setTitle("Overview - not to scale - REV 20261014")
+    overview(c, P, 1); c.showPage(); c.save()
     os.makedirs(os.path.join(HERE, "dxf"), exist_ok=True); os.makedirs(os.path.join(HERE, "svg"), exist_ok=True)
     allp = new_doc(); amsp = allp.modelspace()
     for i, p in enumerate(P):

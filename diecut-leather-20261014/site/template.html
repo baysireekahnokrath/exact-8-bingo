@@ -107,7 +107,7 @@ td b{font-weight:600}
     <div><b>Patterns</b><span>6 แบบ</span></div>
     <div><b>Accuracy</b><span class="mono">±0.016 mm</span></div>
     <div><b>Date</b><span class="mono">14 Oct 2026</span></div>
-    <div><b>Status</b><span class="status">รอตัดสินใจเรื่องระยะเผื่อ</span></div>
+    <div><b>Status</b><span class="status">พร้อมพิมพ์ทดสอบ</span></div>
   </div>
 </header>
 
@@ -136,49 +136,53 @@ td b{font-weight:600}
 </section>
 
 <section>
-  <h2>สิ่งที่ผมแก้ในไฟล์ตัด <span class="tag">Clean-up</span></h2>
+  <h2>ปรับแล้วตามที่ตกลง <span class="tag">Updates</span></h2>
   <div class="tablebox"><table>
-    <thead><tr><th>จุด</th><th>รายละเอียด</th></tr></thead>
+    <thead><tr><th>เรื่อง</th><th>ทำอะไร</th></tr></thead>
     <tbody>
-      <tr><td>เส้น slit ยื่นออกนอกชิ้นงาน</td><td>slot ของแบบ 03, 04, 05, 06 วาดยาวเลยขอบชิ้นงานออกไป 1.1–5.3 mm ผมตัดให้จบที่ขอบชิ้นงาน ชิ้นงานที่ได้เหมือนเดิม แต่ใบมีดไม่ไปบาดหนังรอบข้าง</td></tr>
-      <tr><td>จุดเล็ก ๆ กลางแบบ 03</td><td>มีจุดขนาด 0.01 mm ค้างอยู่ตรงกลาง ถ้าไม่ลบจะกลายเป็นรอยตัดเล็ก ๆ ผมลบทิ้งแล้ว</td></tr>
-      <tr><td>เส้นต่อขนาดจิ๋ว</td><td>เส้นต่อยาวไม่ถึง 0.05 mm ใน 03 และ 06 รวมเป็นเส้นตรงสั้น ๆ ให้รูปปิดสนิท</td></tr>
+      <tr><td>slot ที่ลากเลยขอบ</td><td>คงไว้ตามที่ออกแบบ 1.1–5.3 mm เพื่อให้ตัดขาดทุกชิ้นโดยไม่ต้องมาตัดซ้ำ ในแบบมีระบุระยะที่เลยขอบไว้ทุกเส้น</td></tr>
+      <tr><td>ระยะเผื่อ 0.5 mm</td><td>ยืด slit ตัวรับให้ยาวกว่าคอปีก 0.5 mm โดยยืดปลายละ 0.25 mm ตำแหน่งกลาง slit เท่าเดิม</td></tr>
+      <tr><td>จุดเล็ก ๆ กลางแบบ 03</td><td>ลบออก เป็นจุดขนาด 0.01 mm ที่ค้างอยู่ในไฟล์ ถ้าไม่ลบจะกลายเป็นรอยตัด</td></tr>
+      <tr><td>พิมพ์แล้วขนาดเล็กลง</td><td>แยกหน้าภาพรวม (ย่อส่วน) ออกเป็นไฟล์ของตัวเอง ไฟล์ 1:1 จึงเป็นขนาดจริงทุกหน้า และเพิ่มไม้บรรทัด 100 mm กับสี่เหลี่ยม 50 × 50 mm ไว้วัดเช็คทุกหน้า</td></tr>
     </tbody>
   </table></div>
 </section>
 
 <section>
-  <h2>ต้องตัดสินใจก่อนสั่งทำ die <span class="tag">Fit check</span></h2>
-  <p>ฉบับนี้ทุกแบบที่ใช้ระบบเสียบปีกผ่าน slit ตั้ง <b>ความกว้างคอปีกเท่ากับความยาว slit พอดี</b> ทำให้ไม่มีระยะเผื่อเลย หนังหนา 1.5 mm น่าจะสอดได้ยากหรือฉีกที่ปลาย slit</p>
+  <h2>ระยะเผื่อที่รอยต่อ <span class="tag">Fit · 0.5 mm</span></h2>
   <div class="tablebox"><table>
-    <thead><tr><th>แบบ</th><th>คอปีก</th><th>slit รับ</th><th>ระยะเผื่อ</th><th>แนะนำ</th></tr></thead>
+    <thead><tr><th>แบบ</th><th>คอปีก</th><th>slit รับ (เดิม → ใหม่)</th><th>ระยะเผื่อ</th></tr></thead>
     <tbody>
-      <tr><td>03 Capsule cross</td><td class="num">22.5</td><td class="num">22.5</td><td><span class="pill mid">0</span></td><td>slit 23.5 หรือ slot 11.75</td></tr>
-      <tr><td>04 Rounded square</td><td class="num">29.9</td><td class="num">30.0</td><td><span class="pill mid">0.1</span></td><td>slot 17.3</td></tr>
-      <tr><td>05 Circle</td><td class="num">30.0</td><td class="num">30.0</td><td><span class="pill mid">0</span></td><td>slot 17.3 เท่ากันทั้ง 4 (ตอนนี้บน 17.7 ล่าง 16.0)</td></tr>
-      <tr><td>06 Soft cross</td><td class="num">17.5</td><td class="num">17.5</td><td><span class="pill mid">0</span></td><td>slit 18.5 หรือ slot 9.45</td></tr>
-      <tr><td>02 Pinwheel</td><td colspan="2">slot 27.0 = ครึ่งขอบพอดี</td><td><span class="pill mid">ซ้อน 0</span></td><td>ถ้าจะทำกล่องกลีบดอก ใช้ slot ≥ 28.5</td></tr>
-      <tr><td>01 Bear</td><td colspan="2">slit 17.27 กับสายหัวใจ 13</td><td><span class="pill ok">ผ่าน</span></td><td>ไม่ต้องแก้</td></tr>
+      <tr><td>03 Capsule cross</td><td class="num">22.5</td><td class="num">22.5 → 23.0</td><td><span class="pill ok">0.5</span></td></tr>
+      <tr><td>04 Rounded square</td><td class="num">29.9</td><td class="num">30.0 → 30.5</td><td><span class="pill ok">0.6</span></td></tr>
+      <tr><td>05 Circle</td><td class="num">30.0</td><td class="num">30.0 → 30.5</td><td><span class="pill ok">0.5</span></td></tr>
+      <tr><td>06 Soft cross</td><td class="num">17.5</td><td class="num">17.5 → 18.0</td><td><span class="pill ok">0.5</span></td></tr>
     </tbody>
   </table></div>
-  <p class="note">ระยะเผื่อประมาณ 1 mm คือคอปีกแคบกว่า slit ข้างละ 0.5 mm เป็นค่าที่ผมแนะนำ ถ้าตั้งใจให้แน่นพอดีเพื่อกันหลุด ให้ตัดหนังจริงลองก่อนสั่ง die</p>
+  <p class="note">แบบ 01 และ 02 ไม่ได้ใช้ระบบเสียบปีก จึงไม่ได้ปรับ slot คู่บนกับคู่ล่างของแบบ 05 ยาวไม่เท่ากัน (17.7 กับ 16.0) ผมคงไว้ตามไฟล์ต้นฉบับ</p>
+</section>
+
+<section>
+  <h2>พิมพ์ให้ได้ขนาดจริง <span class="tag">Print</span></h2>
+  <ol class="steps">
+    <li>เปิดไฟล์ <span class="mono">diecut-drawings-1to1-rev20261014.pdf</span> ไม่ใช่ไฟล์ภาพรวม</li>
+    <li>ตอนสั่งพิมพ์ ตั้งค่าเป็น <b>100% / Actual size</b> และปิด Fit to page หรือ Shrink ถ้าพิมพ์จากมือถือ ให้ส่งไฟล์ไปพิมพ์จากคอมพิวเตอร์ เพราะแอปมือถือมักย่อให้พอดีหน้าเอง</li>
+    <li>เอาไม้บรรทัดวัดแถบ 100 mm กับสี่เหลี่ยม 50 × 50 mm ที่ท้ายกระดาษ ถ้าได้ไม่ตรง แปลว่าเครื่องพิมพ์ย่อหรือขยาย ให้ปรับแล้วพิมพ์ใหม่</li>
+  </ol>
 </section>
 
 <section>
   <div class="alert">
-    <b>ผลกระทบกับคู่มือประกอบที่ทำไว้</b>
-    <ul>
-      <li><b>01 พวงกุญแจหมี</b> หมีหมุน 45° และ slit เปลี่ยนแนว คู่มือเดิมใช้รูปทรงเก่า ต้องทำภาพและแนวสายใหม่</li>
-      <li><b>02 กล่องกลีบดอก</b> slot 27 ไม่มีช่วงให้กลีบไขว้ผ่านกัน รอยต่อแบบสานอาจล็อกไม่ได้</li>
-      <li><b>05 กล่องลูกบาศก์</b> ใช้ระบบเดียวกับคู่มือ แต่ฉบับนี้คอปีกเท่ากับ slit (คู่มือแนะนำ slot 18)</li>
-    </ul>
+    <b>ไอเดียสินค้าใหม่ 20 แบบ</b>
+    <p>__IDEAS_LINK__</p>
   </div>
 </section>
 
 <section>
   <h2>ไฟล์ที่ส่งมอบ <span class="tag">Deliverables</span></h2>
   <div class="files">
-    <div class="file"><code>diecut-drawings-1to1-rev20261014.pdf</code><p>แบบ A4 จำนวน 7 แผ่น สเกล 1:1 มีรัศมี พิกัด slit ทุกเส้น และรายการที่ต้องเช็ค</p></div>
+    <div class="file"><code>diecut-drawings-1to1-rev20261014.pdf</code><p>แบบ A4 สเกล 1:1 จำนวน 6 แผ่น แผ่นละแบบ มีรัศมี พิกัด slit ไม้บรรทัด 100 mm และสี่เหลี่ยม 50 mm ไว้เช็คขนาด</p></div>
+    <div class="file"><code>overview-not-to-scale-rev20261014.pdf</code><p>ภาพรวม 6 แบบในหน้าเดียว ย่อส่วน ห้ามใช้วัดขนาด มีหมายเหตุสำหรับช่างทำ die</p></div>
     <div class="file"><code>dxf/*.dxf</code><p>ไฟล์สำหรับช่างทำ die แยก layer CUT กับ SLIT ใช้เส้นโค้งและวงรีจริง ต่างจากไฟล์นักออกแบบไม่เกิน 0.016 mm</p></div>
     <div class="file"><code>svg/*.svg</code><p>ไฟล์ 1:1 ใช้เส้นโค้งชุดเดียวกับไฟล์ต้นฉบับ เปิดใน Illustrator ได้</p></div>
     <div class="file"><code>extract.py · generate.py</code><p>ถ้าแก้ไฟล์ PDF แล้วส่งมาใหม่ สคริปต์จะดึงเส้นและสร้างแบบทั้งชุดให้ใหม่</p></div>
@@ -189,9 +193,9 @@ td b{font-weight:600}
 <section>
   <h2>ขั้นต่อไป <span class="tag">Next</span></h2>
   <ol class="steps">
-    <li>ตัดสินใจเรื่องระยะเผื่อของแบบ 03, 04, 05, 06 และความยาว slot คู่บนกับคู่ล่างของแบบ 05</li>
-    <li>พิมพ์ PDF แบบ 100% แล้ววัด scale bar ให้ได้ 50 mm</li>
-    <li>ตัดหนังเศษตามไฟล์ แล้วลองสอดปีกจริงอย่างน้อยแบบละ 1 รอยต่อ</li>
+    <li>พิมพ์ไฟล์ 1:1 แบบ 100% แล้ววัดไม้บรรทัดกับสี่เหลี่ยมให้ตรง</li>
+    <li>ตัดหนังเศษตามแบบ ลองสอดปีกจริงอย่างน้อยแบบละ 1 รอยต่อ</li>
+    <li>เลือกไอเดียสินค้าที่จะทำต้นแบบ</li>
     <li>ส่ง DXF ให้ช่างทำ die</li>
   </ol>
 </section>
