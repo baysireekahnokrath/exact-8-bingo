@@ -1,0 +1,200 @@
+<title>แพทเทิร์นหนัง Rev 14 ต.ค.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Bai+Jamjuree:wght@600;700&display=swap">
+<style>
+/* Layout: drafting sheet (rev 20261014) — single 920px column, pattern plates in a 3-up grid, title-block style meta strip */
+:root{
+  --bg:#F7F8F6; --sheet:#FFFFFF; --ink:#1D2125; --muted:#5B636B; --rule:#D9DDDC;
+  --dim:#1F5FBF; --slit:#D12F2F; --leather:#8A5A35; --ok:#2E7D4F; --warn:#B4541A;
+  --display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --ok:#6CC892; --warn:#F0A060; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111417; --sheet:#181C20; --ink:#E5E8EA; --muted:#9AA3AB; --rule:#2C3238;
+  --dim:#79A8F2; --slit:#FF6E6E; --leather:#D19B6E; --ok:#6CC892; --warn:#F0A060; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,46px);letter-spacing:-.01em}
+h2{font-size:24px;display:flex;align-items:baseline;gap:12px}
+h2 .tag{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+h3{font-size:18px}
+p{margin:0;max-width:65ch}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+section{display:flex;flex-direction:column;gap:20px}
+
+header{display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--leather)}
+.lede{font-size:18px;color:var(--muted)}
+.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);background:var(--sheet)}
+.meta div{padding:10px 14px;border-right:1px solid var(--rule);min-width:0}
+.meta div:last-child{border-right:0}
+.meta b{display:block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.meta span{font-weight:600}
+.status{color:var(--warn)}
+
+.plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.plate{background:var(--sheet);border:1px solid var(--rule);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.plate svg{width:100%;height:auto;aspect-ratio:1/1;max-width:100%}
+.plate .cut{fill:none;stroke:var(--ink);stroke-width:.45}
+.plate .slit line{stroke:var(--slit);stroke-width:.7;stroke-linecap:round}
+.plate header{gap:2px;flex-direction:row;justify-content:space-between;align-items:baseline}
+.plate .code{font-family:var(--mono);color:var(--dim);font-size:13px}
+.plate h3{font-size:16px}
+.plate .size{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.plate ul{margin:0;padding-left:18px;font-size:14px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:20px;font-size:14px;color:var(--muted)}
+.legend i{display:inline-block;width:22px;height:0;border-top:2px solid var(--ink);vertical-align:middle;margin-right:8px}
+.legend i.r{border-color:var(--slit)}
+
+.system{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.card{background:var(--sheet);border:1px solid var(--rule);padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card .k{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+
+.ideas{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.idea{display:grid;grid-template-columns:180px minmax(0,1fr);gap:20px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.idea .who{font-family:var(--display);font-weight:700}
+.idea .who small{display:block;font-family:var(--mono);font-weight:400;font-size:12px;color:var(--muted)}
+.idea ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.idea strong{color:var(--leather)}
+.idea a{color:var(--dim);text-underline-offset:3px}
+
+.tablebox{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--rule)}
+th{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border:1px solid currentColor}
+.pill.ok{color:var(--ok)} .pill.mid{color:var(--warn)} .pill.bad{color:var(--warn)}
+.note{font-size:14px;color:var(--muted)}
+
+.files{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.file{border-left:3px solid var(--dim);background:var(--sheet);padding:12px 16px;min-width:0}
+.file code{font-family:var(--mono);font-size:13px;color:var(--dim);word-break:break-all}
+.file p{font-size:14px;color:var(--muted)}
+
+ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:65ch}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px}
+
+td.old{color:var(--muted)}
+a{color:var(--dim);text-underline-offset:3px}
+td b{font-weight:600}
+.alert{border:1px solid var(--warn);background:var(--sheet);padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.alert b{color:var(--warn)}
+.alert ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+@media (max-width:720px){
+  .plates{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .system,.files{grid-template-columns:minmax(0,1fr)}
+  .meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .meta div:nth-child(2){border-right:0}
+  .meta div:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+  .idea{grid-template-columns:minmax(0,1fr);gap:8px}
+}
+@media (max-width:440px){.plates{grid-template-columns:minmax(0,1fr)}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Project 20261013 · Revision 20261014</div>
+  <h1>แพทเทิร์นหนัง 6 แบบ ฉบับแก้ไข</h1>
+  <p class="lede">แบบ technical drawing 1:1 ชุดใหม่ ดึงเส้นมาจากไฟล์ PDF แบบเวกเตอร์ของนักออกแบบโดยตรง ขนาดตรงกับไฟล์ต้นฉบับทุกเส้น</p>
+  <div class="meta">
+    <div><b>Patterns</b><span>6 แบบ</span></div>
+    <div><b>Accuracy</b><span class="mono">±0.016 mm</span></div>
+    <div><b>Date</b><span class="mono">14 Oct 2026</span></div>
+    <div><b>Status</b><span class="status">รอตัดสินใจเรื่องระยะเผื่อ</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>แบบทั้ง 6 ชิ้น <span class="tag">Rev 20261014</span></h2>
+  <div class="legend"><span><i></i>CUT ตัดขอบ</span><span><i class="r"></i>SLIT ช่องเสียบ (ตัดทะลุ)</span></div>
+  <div class="plates">
+    __PLATES__
+  </div>
+</section>
+
+<section>
+  <h2>เปลี่ยนอะไรจากฉบับ 13 ต.ค. <span class="tag">Changes</span></h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>แบบ</th><th>ฉบับเดิม</th><th>ฉบับนี้</th></tr></thead>
+    <tbody>
+      <tr><td>01 Bear</td><td class="old">95 × 90 · หูซ้ายขวาด้านบน · slit 17 เอียง 45°</td><td><b>104.36 × 104.36 · หมุน 45°</b> หูอยู่บนกับขวา · slit 17.27 แนวตั้ง (ซ้าย) และแนวนอน (ล่าง)</td></tr>
+      <tr><td>02 Pinwheel</td><td class="old">slot 29.25</td><td><b>slot 27.0</b> เท่ากับครึ่งของขอบพับ 54.1 พอดี · กลีบ R29.37</td></tr>
+      <tr><td>03 Capsule cross</td><td class="old">slit กลาง 30 บนล่าง · slot ปลาย 14 ซ้ายขวา</td><td><b>สลับด้าน</b> · slit กลาง 22.5 ซ้ายขวา · slot ปลาย 11.25 บนล่าง</td></tr>
+      <tr><td>04 Rounded square</td><td class="old">slot ปลาย 15</td><td><b>slot ปลาย 16.8–16.9</b> · slit กลาง 30 และมุม R5 เท่าเดิม</td></tr>
+      <tr><td>05 Circle</td><td class="old">slot ปลาย 15 ทั้ง 4</td><td><b>slot ปลายคู่บน 17.7 คู่ล่าง 16.0</b> · slit กลาง 30 เท่าเดิม</td></tr>
+      <tr><td>06 Soft cross</td><td class="old">กลีบวงกลม R16 · slit 15 · slot 5</td><td><b>กลีบเป็นวงรี</b> 35.4 × 29.4 · โค้งเว้า R12.62 · slit 17.5 · slot 8.94</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">ตัวเลขฉบับเดิมวัดจากภาพหน้าจอ จึงคลาดได้ราว ±0.5 mm ความต่างเล็ก ๆ บางจุด เช่นรัศมี 41.5 กับ 41.68 มาจากการวัดครั้งก่อน ไม่ได้มาจากการแก้แบบ</p>
+</section>
+
+<section>
+  <h2>สิ่งที่ผมแก้ในไฟล์ตัด <span class="tag">Clean-up</span></h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>จุด</th><th>รายละเอียด</th></tr></thead>
+    <tbody>
+      <tr><td>เส้น slit ยื่นออกนอกชิ้นงาน</td><td>slot ของแบบ 03, 04, 05, 06 วาดยาวเลยขอบชิ้นงานออกไป 1.1–5.3 mm ผมตัดให้จบที่ขอบชิ้นงาน ชิ้นงานที่ได้เหมือนเดิม แต่ใบมีดไม่ไปบาดหนังรอบข้าง</td></tr>
+      <tr><td>จุดเล็ก ๆ กลางแบบ 03</td><td>มีจุดขนาด 0.01 mm ค้างอยู่ตรงกลาง ถ้าไม่ลบจะกลายเป็นรอยตัดเล็ก ๆ ผมลบทิ้งแล้ว</td></tr>
+      <tr><td>เส้นต่อขนาดจิ๋ว</td><td>เส้นต่อยาวไม่ถึง 0.05 mm ใน 03 และ 06 รวมเป็นเส้นตรงสั้น ๆ ให้รูปปิดสนิท</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>ต้องตัดสินใจก่อนสั่งทำ die <span class="tag">Fit check</span></h2>
+  <p>ฉบับนี้ทุกแบบที่ใช้ระบบเสียบปีกผ่าน slit ตั้ง <b>ความกว้างคอปีกเท่ากับความยาว slit พอดี</b> ทำให้ไม่มีระยะเผื่อเลย หนังหนา 1.5 mm น่าจะสอดได้ยากหรือฉีกที่ปลาย slit</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>แบบ</th><th>คอปีก</th><th>slit รับ</th><th>ระยะเผื่อ</th><th>แนะนำ</th></tr></thead>
+    <tbody>
+      <tr><td>03 Capsule cross</td><td class="num">22.5</td><td class="num">22.5</td><td><span class="pill mid">0</span></td><td>slit 23.5 หรือ slot 11.75</td></tr>
+      <tr><td>04 Rounded square</td><td class="num">29.9</td><td class="num">30.0</td><td><span class="pill mid">0.1</span></td><td>slot 17.3</td></tr>
+      <tr><td>05 Circle</td><td class="num">30.0</td><td class="num">30.0</td><td><span class="pill mid">0</span></td><td>slot 17.3 เท่ากันทั้ง 4 (ตอนนี้บน 17.7 ล่าง 16.0)</td></tr>
+      <tr><td>06 Soft cross</td><td class="num">17.5</td><td class="num">17.5</td><td><span class="pill mid">0</span></td><td>slit 18.5 หรือ slot 9.45</td></tr>
+      <tr><td>02 Pinwheel</td><td colspan="2">slot 27.0 = ครึ่งขอบพอดี</td><td><span class="pill mid">ซ้อน 0</span></td><td>ถ้าจะทำกล่องกลีบดอก ใช้ slot ≥ 28.5</td></tr>
+      <tr><td>01 Bear</td><td colspan="2">slit 17.27 กับสายหัวใจ 13</td><td><span class="pill ok">ผ่าน</span></td><td>ไม่ต้องแก้</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">ระยะเผื่อประมาณ 1 mm คือคอปีกแคบกว่า slit ข้างละ 0.5 mm เป็นค่าที่ผมแนะนำ ถ้าตั้งใจให้แน่นพอดีเพื่อกันหลุด ให้ตัดหนังจริงลองก่อนสั่ง die</p>
+</section>
+
+<section>
+  <div class="alert">
+    <b>ผลกระทบกับคู่มือประกอบที่ทำไว้</b>
+    <ul>
+      <li><b>01 พวงกุญแจหมี</b> หมีหมุน 45° และ slit เปลี่ยนแนว คู่มือเดิมใช้รูปทรงเก่า ต้องทำภาพและแนวสายใหม่</li>
+      <li><b>02 กล่องกลีบดอก</b> slot 27 ไม่มีช่วงให้กลีบไขว้ผ่านกัน รอยต่อแบบสานอาจล็อกไม่ได้</li>
+      <li><b>05 กล่องลูกบาศก์</b> ใช้ระบบเดียวกับคู่มือ แต่ฉบับนี้คอปีกเท่ากับ slit (คู่มือแนะนำ slot 18)</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>ไฟล์ที่ส่งมอบ <span class="tag">Deliverables</span></h2>
+  <div class="files">
+    <div class="file"><code>diecut-drawings-1to1-rev20261014.pdf</code><p>แบบ A4 จำนวน 7 แผ่น สเกล 1:1 มีรัศมี พิกัด slit ทุกเส้น และรายการที่ต้องเช็ค</p></div>
+    <div class="file"><code>dxf/*.dxf</code><p>ไฟล์สำหรับช่างทำ die แยก layer CUT กับ SLIT ใช้เส้นโค้งและวงรีจริง ต่างจากไฟล์นักออกแบบไม่เกิน 0.016 mm</p></div>
+    <div class="file"><code>svg/*.svg</code><p>ไฟล์ 1:1 ใช้เส้นโค้งชุดเดียวกับไฟล์ต้นฉบับ เปิดใน Illustrator ได้</p></div>
+    <div class="file"><code>extract.py · generate.py</code><p>ถ้าแก้ไฟล์ PDF แล้วส่งมาใหม่ สคริปต์จะดึงเส้นและสร้างแบบทั้งชุดให้ใหม่</p></div>
+  </div>
+  <p class="note">ไฟล์ทั้งหมดอยู่ที่ <span class="mono">diecut-leather-20261014/</span> ใน branch <span class="mono">claude/brave-faraday-2x1ygq</span> · ฉบับก่อนหน้า: <a href="https://claude.ai/artifact/5CaPczKRnoLckC1M6Di1dN">สรุปฉบับ 13 ต.ค.</a></p>
+</section>
+
+<section>
+  <h2>ขั้นต่อไป <span class="tag">Next</span></h2>
+  <ol class="steps">
+    <li>ตัดสินใจเรื่องระยะเผื่อของแบบ 03, 04, 05, 06 และความยาว slot คู่บนกับคู่ล่างของแบบ 05</li>
+    <li>พิมพ์ PDF แบบ 100% แล้ววัด scale bar ให้ได้ 50 mm</li>
+    <li>ตัดหนังเศษตามไฟล์ แล้วลองสอดปีกจริงอย่างน้อยแบบละ 1 รอยต่อ</li>
+    <li>ส่ง DXF ให้ช่างทำ die</li>
+  </ol>
+</section>
+
+<footer>สรุปโดย Claude Code · 14 ต.ค. 2026</footer>
+</div>
