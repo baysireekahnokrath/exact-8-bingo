@@ -1,13 +1,16 @@
-# ห้าหมี · FIVE BEARS — brand kit (14 Oct 2026)
+# OCT. 26 — brand kit (14 Oct 2026)
+
+Master brand OCT. 26 (our crafted things; 26 October). First collection Soi 2.
+Sub-brand ห้าหมี FIVE BEARS by OCT. 26, first collection Love (pattern 01 products).
 
 Everything reads from `brand.py`. Rebuild in this order:
 
-    python3 logo/build.py                         # logo/svg (outlined, no fonts needed)
+    python3 logo/build.py                         # logo/svg (outlined, no fonts needed); logo/jobs.json renders logo/png
     python3 posters/build.py                      # posters/html + posters/jobs.json
     node tools/render.mjs <jobs.json>             # PNGs (logo jobs: see logo/png, posters: posters/jobs.json)
     python3 site/build.py                         # site/brandbook.html, launch.html, index.html
 
-Fonts in `fonts/` are Mitr and IBM Plex Sans Thai (SIL Open Font License, Google Fonts).
+Fonts in `fonts/`: Syne (OCT. 26 logo), Anuphan (OCT. 26 Thai headings), Mitr (FIVE BEARS), IBM Plex Sans Thai (body). All SIL Open Font License, Google Fonts.
 The birthday deck source is in `deck/project/` (Slides artifact files).
 
 Pages: summary https://claude.ai/artifact/1bBApc1D6ewCk8bpq3AydB ·

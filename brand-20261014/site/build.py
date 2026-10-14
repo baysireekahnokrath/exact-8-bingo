@@ -1,4 +1,4 @@
-"""Build the three FIVE BEARS pages from brand.py.
+"""Build the three OCT. 26 pages from brand.py.
 
 site/brandbook.html  - brand book (name, story, logo, colours, type, voice)
 site/launch.html     - launch kit (channels, 30 products with posts, stock, kids at the booth, plan)
@@ -15,16 +15,17 @@ URLS = json.load(open(os.path.join(HERE, "urls.json"))) if os.path.exists(os.pat
 
 CSS = """
 :root{
-  /* Layout: one reading column of cards on cream, like a craft-shop catalogue; wide tables scroll inside their box. */
-  --bg:#F7EEE2;--paper:#FFFDF9;--ink:#4A2C1D;--muted:#7A5A45;--line:#E6D3BE;
-  --caramel:#B8743A;--heart:#D6453D;--honey:#F0B43C;--peach:#F2A7A0;--sage:#6F9A8D;--cocoa:#4A2C1D;--cream:#F7EEE2;
-  --on-accent:#FFFFFF;--chip:#F1E2CF;
-  --display:"Mitr","IBM Plex Sans Thai",system-ui,sans-serif;
+  /* Layout: one reading column of cards on warm October cream, like a craft-shop catalogue; wide tables scroll inside their box. */
+  --bg:#F6EADB;--paper:#FFFBF5;--ink:#3A2318;--muted:#6E5440;--line:#E3CDB1;
+  --caramel:#A9541A;--heart:#B8501A;--honey:#F0B43C;--peach:#F2A7A0;--sage:#6F9A8D;--cocoa:#3A2318;--cream:#F3E3CF;
+  --brick:#D9772B;--love:#D6453D;--on-accent:#FFFFFF;--chip:#EFDCC4;
+  --logo:"Syne","Anuphan",system-ui,sans-serif;
+  --display:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;
   --body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#21150F;--paper:#2C1D15;--ink:#F7EEE2;--muted:#CDB49E;--line:#46311F;--caramel:#D99158;--heart:#EC6A60;--chip:#3A281C;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#21150F;--paper:#2C1D15;--ink:#F7EEE2;--muted:#CDB49E;--line:#46311F;--caramel:#D99158;--heart:#EC6A60;--chip:#3A281C;color-scheme:dark}
+  --bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chip:#3A281C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chip:#3A281C;color-scheme:dark}
 *{box-sizing:border-box}
 img{max-width:100%;height:auto;display:block}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;margin:0;
@@ -45,7 +46,7 @@ section{padding-top:44px;display:flex;flex-direction:column;gap:16px;scroll-marg
 .lead{font-size:18px;color:var(--muted);max-width:62ch}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px}
 .paper{background:#FFFDF9;border-radius:18px;padding:18px;display:flex;align-items:center;justify-content:center}
-.paper.dark{background:#4A2C1D}
+.paper.dark{background:#3A2318}
 .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
 .grid.s{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 .grid>*{min-width:0}
@@ -71,7 +72,7 @@ details>summary{cursor:pointer;padding:10px 0;font-family:var(--display);font-si
 """
 
 FONT_LINK = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&family=Mitr:wght@400;500;600&display=swap">')
+             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600&family=IBM+Plex+Sans+Thai:wght@400;600&family=Mitr:wght@400;500;600&family=Syne:wght@700&display=swap">')
 
 COPY_JS = """<script>
 document.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;
@@ -96,90 +97,128 @@ def link(key, text):
     return f'<a href="{u}">{text}</a>' if u else text
 
 # ---------------------------------------------------------------- brand book
+def fig(f, cap, cls="", ratio="4/3"):
+    return (f'<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px"><div class="paper {cls}" style="aspect-ratio:{ratio}">'
+            f'<img src="logo/{f}.svg" alt="{E(cap)}" style="max-height:100%;max-width:100%"></div>'
+            f'<figcaption class="cap">{E(cap)} · <span class="mono">logo/svg/{f}.svg</span></figcaption></figure>')
+
+def swatches(keys):
+    return "".join(
+        f'<div class="card" style="padding:0;overflow:hidden"><div style="height:76px;background:{hx}"></div><div style="padding:10px 12px">'
+        f'<b style="font-family:var(--display);font-weight:500">{E(th)}</b> <span class="mono cap">{hx}</span><p class="cap">{E(use)}</p></div></div>'
+        for k, th, hx, use in B.PALETTE if k in keys)
+
 def brandbook():
     b = B.BRAND
-    names = "".join(
-        f'<div class="card" style="display:flex;flex-direction:column;gap:6px{";border:2px solid var(--caramel)" if tag else ""}">'
-        f'<h3>{E(n)}</h3>{f"<span class=chip>{tag}</span>" if tag else ""}<p class="cap" style="font-size:14px">{E(why)}</p></div>'
-        for n, tag, why in B.NAME_OPTIONS)
+    meaning = [("O · C · T", "our · crafted · things ของที่เราทำกันเอง ไม่ได้สั่งโรงงาน"),
+               ("OCT.", "ตุลาคม เดือนที่แบรนด์เกิด และเดือนที่ลูก ๆ ออกบูธครั้งแรก"),
+               ("26", "วันเกิดของแม่ แบรนด์เกิดวันเดียวกัน 26 ตุลาคม 2569"),
+               ("อ่านว่า", f"{b['say']} เขียนตัวใหญ่ มีจุดหลัง OCT และเว้นวรรคก่อน 26 ทุกครั้ง")]
+    mean = "".join(f'<div class="card"><h3 style="font-family:var(--logo);font-weight:700">{E(h)}</h3><p style="margin-top:6px">{E(t)}</p></div>' for h, t in meaning)
+    arch = "".join(
+        f'<div class="card" style="display:flex;flex-direction:column;gap:6px;{"border:2px solid var(--brick)" if i == 0 else ""}">'
+        f'<span class="eyebrow">{E(lv)}</span><h3>{E(nm)}</h3><p class="cap" style="font-size:14px">{E(what)}</p><p style="font-size:14.5px">{E(note)}</p></div>'
+        for i, (lv, nm, what, note) in enumerate(B.ARCH))
+    answer = "".join(f'<div class="card"><h3>{E(h)}</h3><p style="margin-top:6px">{E(t)}</p></div>' for h, t in B.SUB_ANSWER)
     story = "".join(f'<div class="card"><h3>{E(h)}</h3><p style="margin-top:6px">{E(t)}</p></div>' for h, t in B.STORY_LONG)
     fam = "".join(
         f'<div class="card" style="display:flex;gap:12px;align-items:center"><span style="flex:none;width:40px;height:40px;border-radius:50%;'
         f'background:{B.C[k]};border:1px solid var(--line)"></span><div><b style="font-family:var(--display);font-weight:500">{E(n)}</b>'
         f'<p class="cap">{E(r)}</p></div></div>' for n, k, r in B.FAMILY)
-    sw = "".join(
-        f'<div class="card" style="padding:0;overflow:hidden"><div style="height:84px;background:{hx}"></div><div style="padding:10px 12px">'
-        f'<b style="font-family:var(--display);font-weight:500">{E(th)}</b> <span class="mono cap">{hx}</span><p class="cap">{E(use)}</p></div></div>'
-        for k, th, hx, use in B.PALETTE)
     voice = "".join(
         f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>{E(h)}</h3><p class="cap" style="font-size:14px">{E(d)}</p>'
         f'<p><span class="chip ok">ใช้</span> {E(do)}</p><p><span class="chip ext">เลี่ยง</span> <s>{E(dont)}</s></p></div>'
         for h, d, do, dont in B.VOICE)
-    logos = [("logo-stacked", "โลโก้หลัก แนวตั้ง", ""), ("logo-horizontal", "แนวนอน ใช้หัวเว็บ ป้ายบูธ", ""),
-             ("logo-stacked-reverse", "บนพื้นเข้ม", "dark"), ("logo-horizontal-mono", "สีเดียว ใช้ปั๊มเลเซอร์ ตรายาง", ""),
-             ("mark", "ตัวหมี ใช้เดี่ยว ๆ", ""), ("sticker-3cm", "สติกเกอร์ปิดถุง 3 ซม.", "")]
-    logo_cards = "".join(
-        f'<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px"><div class="paper {cls}" style="aspect-ratio:4/3">'
-        f'<img src="logo/{f}.svg" alt="{E(cap)}" style="max-height:100%;max-width:100%"></div>'
-        f'<figcaption class="cap">{E(cap)} · <span class="mono">logo/svg/{f}.svg</span></figcaption></figure>' for f, cap, cls in logos)
+    oct_logos = "".join(fig(f, c, cls) for f, c, cls in [
+        ("oct-stacked", "โลโก้หลัก แนวตั้ง", ""), ("oct-horizontal", "แนวนอน ใช้ป้ายบูธ หัวเว็บ", ""),
+        ("oct-stacked-reverse", "บนพื้นเข้ม", "dark"), ("oct-horizontal-mono", "สีเดียว ใช้ปั๊มเลเซอร์ ตรายาง", ""),
+        ("oct-mark", "ตราวงกลม ใช้เดี่ยว ๆ", ""), ("oct-sticker-3cm", "สติกเกอร์ปิดถุง 3 ซม.", "")])
+    bear_logos = "".join(fig(f, c, cls) for f, c, cls in [
+        ("fivebears-stacked", "ห้าหมี แนวตั้ง", ""), ("fivebears-horizontal", "ห้าหมี แนวนอน", ""),
+        ("fivebears-stacked-reverse", "บนพื้นเข้ม", "dark"), ("mark", "ตัวหมี ใช้เดี่ยว ๆ", ""),
+        ("fivebears-sticker-3cm", "สติกเกอร์หมี แจกเด็ก 3 ซม.", ""), ("fivebears-horizontal-mono", "สีเดียว", "")])
+    colls = "".join(
+        f'<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="paper" style="aspect-ratio:5/3"><img src="logo/{img}.svg" alt="ป้ายคอลเลกชัน {E(c["name"])}"></div>'
+        f'<span class="eyebrow">{E(c["brand"])} · คอลเลกชันแรก</span><h3>{E(c["name"])}</h3><p class="cap" style="font-size:14px">{E(c["line"])}</p>'
+        f'<p style="font-size:14.5px">{E(c["why"])}</p>'
+        f'<p class="cap">{sum(p["coll"] == k for p in B.PRODUCTS)} แบบ · '
+        f'{E(", ".join(p["name"] for p in B.PRODUCTS if p["coll"] == k)[:150])}…</p></div>'
+        for k, img, c in (("soi2", "soi2-sign", B.COLLECTIONS["soi2"]), ("love", "love-badge", B.COLLECTIONS["love"])))
+    fonts = "".join(
+        f'<div class="card"><p class="cap">{E(role)} · {E(nm)}</p><p style="font-family:{css};font-size:{sz}px;font-weight:{w};line-height:1.25">{E(sample)}</p><p class="cap">{E(use)}</p></div>'
+        for role, (nm, use), css, sz, w, sample in [
+            ("โลโก้", B.FONTS["logo"], "var(--logo)", 40, 700, "OCT. 26"),
+            ("หัวข้อ OCT. 26", B.FONTS["head"], "var(--display)", 32, 500, "กล่องของชำร่วย 159 บาท"),
+            ("ห้าหมี", B.FONTS["sub"], "'Mitr',sans-serif", 32, 600, "ราวหมีห้าตัว 349 บาท"),
+            ("เนื้อความ", B.FONTS["body"], "var(--body)", 18, 400, "เศษหนังแท้ต่อกันด้วยปีกและร่อง ไม่ใช้กาว ไม่ต้องเย็บสักเข็ม")])
     apps = [("avatar-1080.png", "รูปโปรไฟล์ทุกช่องทาง 1080 × 1080"), ("cover-facebook-1640x624.png", "ปก Facebook 1640 × 624"),
             ("cover-youtube-2560x1440.png", "ปก YouTube 2560 × 1440"), ("cover-shopee-1200x600.png", "ปกร้าน Shopee 1200 × 600")]
     app_cards = "".join(
         f'<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="logo/{f}" alt="{E(c)}" style="border-radius:10px;border:1px solid var(--line)">'
         f'<figcaption class="cap">{E(c)}</figcaption></figure>' for f, c in apps)
-    return f"""{head("ห้าหมี Brand Book")}
+    return f"""{head("OCT. 26 Brand Book")}
 <div class="wrap">
-<nav class="top" aria-label="หัวข้อ"><a href="#name">ชื่อ</a><a href="#story">เรื่องเล่า</a><a href="#logo">โลโก้</a><a href="#family">ครอบครัวหมี</a>
-<a href="#color">สี</a><a href="#type">ตัวอักษร</a><a href="#voice">น้ำเสียง</a><a href="#use">ตัวอย่างใช้งาน</a></nav>
+<nav class="top" aria-label="หัวข้อ"><a href="#name">ชื่อ</a><a href="#arch">โครงสร้างแบรนด์</a><a href="#story">เรื่องเล่า</a><a href="#logo">โลโก้</a>
+<a href="#collections">คอลเลกชัน</a><a href="#fivebears">ห้าหมี</a><a href="#color">สี</a><a href="#type">ตัวอักษร</a><a href="#voice">น้ำเสียง</a><a href="#use">ตัวอย่างใช้งาน</a></nav>
 <header style="padding-top:28px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center">
- <div class="paper" style="aspect-ratio:1"><img src="logo/logo-stacked.svg" alt="โลโก้ห้าหมี FIVE BEARS" style="max-height:100%"></div>
- <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BOOK · ฉบับแรก 14 ต.ค. 2569</span>
- <h1>{b['th']} · {b['en']}</h1><p class="lead">{E(b['line'])}</p>
- <p>คู่มือนี้ใช้กับทุกอย่างที่มีชื่อห้าหมี ตั้งแต่ป้ายบูธ ถุง สติกเกอร์ ไปจนถึงโพสต์ในโซเชียล ให้ทุกชิ้นดูเป็นแบรนด์เดียวกัน</p></div>
+ <div class="paper" style="aspect-ratio:1"><img src="logo/oct-stacked.svg" alt="โลโก้ OCT. 26 our crafted things" style="max-height:100%"></div>
+ <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BOOK · ฉบับ OCT. 26 · 14 ต.ค. 2569</span>
+ <h1 style="font-family:var(--logo);font-weight:700">OCT. 26</h1><p class="lead">{E(b['tag_en'])} {E(b['tag_th'])} · {E(b['line'])}</p>
+ <p>คู่มือนี้ใช้กับทุกอย่างที่มีชื่อ OCT. 26 และซับแบรนด์ห้าหมี ตั้งแต่ป้ายบูธ ถุง สติกเกอร์ ไปจนถึงโพสต์ในโซเชียล</p></div>
 </header>
 
-<section id="name"><span class="eyebrow">ชื่อแบรนด์</span><h2>ห้าหมี เพราะบ้านเรามีห้าคน</h2>
-<p class="lead">ตัวเลือกห้าชื่อที่คิดไว้ ชื่อที่มีกรอบคือชื่อที่แนะนำ และใช้ทำโลโก้กับทุกไฟล์ในชุดนี้</p>
-<div class="grid">{names}</div>
-<p class="cap">ก่อนพิมพ์ของจำนวนมาก เช็กว่าชื่อ @{b['handle']} ยังว่างในทุกช่องทาง และค้นชื่อในฐานข้อมูลเครื่องหมายการค้าของกรมทรัพย์สินทางปัญญา ถ้าเปลี่ยนชื่อ แก้ใน brand.py ที่เดียวแล้วสร้างไฟล์ใหม่ได้ทั้งชุด</p></section>
+<section id="name"><span class="eyebrow">ชื่อแบรนด์</span><h2>OCT. 26 ชื่อที่ซ่อนวันเกิดของเธอ</h2>
+<div class="grid">{mean}</div>
+<p class="cap">ค้นเว็บเมื่อ 14 ต.ค. 2569 ไม่เจอแบรนด์เครื่องหนังหรือบัญชีไทยชื่อ OCT. 26 แต่มีแบรนด์เครื่องหนังที่ขึ้นต้นด้วย Oct อยู่แล้ว (Octovo, Octogony) การค้นเว็บไม่ใช่การค้นเครื่องหมายการค้า ก่อนพิมพ์จำนวนมาก ค้นในฐานข้อมูลกรมทรัพย์สินทางปัญญา และเช็กว่า @{b['handle']} ยังว่างทุกช่องทาง ชื่ออื่นที่คิดไว้ทั้งหมดอยู่ใน {link("alternatives", "หน้าทางเลือกแบรนด์")}</p></section>
 
-<section id="story"><span class="eyebrow">STORY TELLING</span><h2>เรื่องของห้าหมี</h2>
+<section id="arch"><span class="eyebrow">โครงสร้างแบรนด์</span><h2>แบรนด์หลัก คอลเลกชัน และซับแบรนด์</h2>
+<p class="lead">หมีห้าตัวเป็นซับแบรนด์ได้ ใช้ชื่อเต็มว่า ห้าหมี FIVE BEARS by OCT. 26</p>
+<div class="grid">{arch}</div>
+<div class="grid">{answer}</div></section>
+
+<section id="story"><span class="eyebrow">STORY TELLING</span><h2>เรื่องของ OCT. 26</h2>
 <p class="lead">{E(B.STORY_SHORT)}</p>
 <div class="grid">{story}</div>
 <div class="card">{copybox("bio", B.STORY_BIO, "ประโยคแนะนำตัวสั้น ใช้เป็น bio")}</div></section>
 
-<section id="logo"><span class="eyebrow">โลโก้</span><h2>หมีตัวนี้คือบล็อกตัดจริง</h2>
-<p class="lead">รูปหมีในโลโก้คือเส้นตัดของแบบ 01 ที่หมุน 45 องศาให้หูอยู่ด้านบน ร่องสองเส้นของบล็อกกลายเป็นแก้ม และหัวใจตรงกลางคือแม่หมี</p>
-<div class="grid">{logo_cards}</div>
+<section id="logo"><span class="eyebrow">โลโก้ OCT. 26</span><h2>จุดสีส้มอิฐคือหัวใจของโลโก้</h2>
+<p class="lead">ตัวอักษร Syne ตัวหนา จุดหลัง OCT เป็นวงกลมสีส้มอิฐแทนจุดธรรมดา ในโลโก้แนวตั้ง 26 ตัวใหญ่กว่า OCT เพราะวันที่คือเรื่องสำคัญที่สุด</p>
+<div class="grid">{oct_logos}</div>
 <div class="card"><h3>กติกาการใช้โลโก้</h3><ul style="margin-top:8px">
-<li>เว้นที่ว่างรอบโลโก้อย่างน้อยเท่าความกว้างหูหมีหนึ่งข้าง</li>
-<li>โลโก้หลักเล็กที่สุดกว้าง 25 มม. ถ้าเล็กกว่านั้นใช้ตัวหมีอย่างเดียว เล็กสุด 10 มม.</li>
-<li>บนพื้นเข้มใช้ไฟล์ reverse บนหนังหรือตรายางใช้ไฟล์สีเดียว</li>
-<li>ห้ามบีบ ยืด หมุน ใส่เงา หรือเปลี่ยนสีหัวใจเป็นสีอื่นนอกจากแดงหัวใจหรือครีม</li>
+<li>เขียนชื่อในข้อความว่า OCT. 26 ตัวใหญ่ มีจุด และเว้นวรรคหนึ่งครั้ง ชื่อบัญชีใช้ {E(b['handle'])}</li>
+<li>เว้นที่ว่างรอบโลโก้อย่างน้อยเท่าความสูงตัว O</li>
+<li>โลโก้แนวนอนเล็กสุดกว้าง 25 มม. ถ้าเล็กกว่านั้นใช้ตราวงกลม เล็กสุด 10 มม.</li>
+<li>จุดเป็นสีส้มอิฐเสมอ ยกเว้นงานสีเดียว ห้ามบีบ ยืด หมุน หรือใส่เงา</li>
 <li>ไฟล์ SVG ทุกไฟล์แปลงตัวอักษรเป็นเส้นแล้ว ส่งร้านพิมพ์ได้เลยโดยไม่ต้องมีฟอนต์</li></ul></div></section>
 
-<section id="family"><span class="eyebrow">ครอบครัวหมี</span><h2>หมีห้าตัว ห้าสี</h2>
+<section id="collections"><span class="eyebrow">คอลเลกชัน</span><h2>Soi 2 และ Love</h2>
+<div class="grid">{colls}</div></section>
+
+<section id="fivebears"><span class="eyebrow">ซับแบรนด์</span><h2>ห้าหมี FIVE BEARS by OCT. 26</h2>
+<p class="lead">หมีในโลโก้คือเส้นตัดของแบบ 01 ที่หมุน 45 องศา ร่องสองเส้นเป็นแก้ม หัวใจตรงกลางคือแม่หมี ใช้กับสินค้าคอลเลกชัน Love และทุกอย่างที่ทำให้เด็ก</p>
 <div class="paper"><img src="logo/family.svg" alt="หมีห้าตัวเรียงจากพ่อหมีถึงลูกหมีคนเล็ก"></div>
 <div class="grid">{fam}</div>
-<p class="cap">สีประจำตัวใช้กับป้ายชื่อพนักงานลูกหมี ถุง และสีพื้นของโพสต์ ลูกแต่ละคนเลือกสีของตัวเองใหม่ได้ ขอให้อยู่ในชุดสีด้านล่าง</p></section>
+<div class="grid">{bear_logos}</div>
+<p class="cap">ห้าหมีมีบรรทัด by OCT. 26 เสมอ ยกเว้นตัวหมีเดี่ยวและสติกเกอร์ ที่เล็กเกินจะอ่าน</p></section>
 
-<section id="color"><span class="eyebrow">สี</span><h2>ชุดสี</h2>
-<div class="grid s">{sw}</div>
-<p class="cap">สัดส่วนโดยประมาณ ครีม 60% คาราเมลกับโกโก้ 30% แดงหัวใจและสีลูกหมี 10% ใช้แดงหัวใจกับราคาและปุ่มสั่งซื้อเท่านั้น</p></section>
+<section id="color"><span class="eyebrow">สี</span><h2>สีเดือนตุลาคม และสีหมีห้าตัว</h2>
+<h3>OCT. 26</h3><div class="grid s">{swatches(B.MASTER_KEYS)}</div>
+<p class="cap">ครีมตุลา 60% เกาลัด 30% ส้มอิฐและใบไม้แห้ง 10% ส้มอิฐใช้กับจุด ราคา และปุ่มสั่งซื้อ ถ้าเป็นตัวหนังสือบนพื้นครีมใช้ส้มอิฐเข้ม #A9541A จะอ่านง่ายกว่า</p>
+<h3>ห้าหมี</h3><div class="grid s">{swatches([k for k, *_ in B.PALETTE if k not in B.MASTER_KEYS])}</div></section>
 
-<section id="type"><span class="eyebrow">ตัวอักษร</span><h2>สองฟอนต์ ฟรีจาก Google Fonts</h2>
-<div class="grid">
-<div class="card"><p class="cap">หัวข้อ · {B.FONTS['head'][0]}</p><p style="font-family:var(--display);font-size:38px;font-weight:600;line-height:1.2">ห้าหมี 349 บาท</p><p class="cap">{E(B.FONTS['head'][1])}</p></div>
-<div class="card"><p class="cap">เนื้อความ · {B.FONTS['body'][0]}</p><p style="font-size:18px">เศษหนังแท้ต่อกันด้วยปีกและร่อง ไม่ใช้กาว ไม่ต้องเย็บสักเข็ม</p><p class="cap">{E(B.FONTS['body'][1])}</p></div>
-</div></section>
+<section id="type"><span class="eyebrow">ตัวอักษร</span><h2>สี่ฟอนต์ ฟรีจาก Google Fonts</h2>
+<div class="grid">{fonts}</div></section>
 
-<section id="voice"><span class="eyebrow">น้ำเสียง</span><h2>พูดแบบห้าหมี</h2><div class="grid">{voice}</div></section>
+<section id="voice"><span class="eyebrow">น้ำเสียง</span><h2>พูดแบบ OCT. 26</h2><div class="grid">{voice}</div></section>
 
-<section id="use"><span class="eyebrow">ตัวอย่างใช้งาน</span><h2>รูปโปรไฟล์และปก</h2>
+<section id="use"><span class="eyebrow">ตัวอย่างใช้งาน</span><h2>รูปโปรไฟล์ ปก และโปสเตอร์</h2>
 <p class="cap">บนมือถือ กดค้างที่รูปเพื่อบันทึก ไฟล์ทั้งหมดอยู่ในโฟลเดอร์ brand-20261014/logo ของโปรเจกต์</p>
 <div class="grid">{app_cards}</div>
-<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="posters/21-post.png" alt="ตัวอย่างโปสเตอร์ How-to ราวหมีห้าตัว" style="border-radius:10px;max-width:420px">
-<figcaption class="cap">โปสเตอร์ How-to ใช้แบบเดียวกันทั้ง 30 ตัว ดูทั้งหมดใน {link("launch", "ชุดเปิดตัว")}</figcaption></figure></section>
+<div class="grid">
+<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="posters/18-post.png" alt="ตัวอย่างโปสเตอร์ Soi 2 กล่องของชำร่วยงานแต่ง" style="border-radius:10px">
+<figcaption class="cap">โปสเตอร์ Soi 2 สีของ OCT. 26</figcaption></figure>
+<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="posters/21-post.png" alt="ตัวอย่างโปสเตอร์ห้าหมี Love ราวหมีห้าตัว" style="border-radius:10px">
+<figcaption class="cap">โปสเตอร์ห้าหมี Love สีของหมีห้าตัว · ดูทั้ง 30 ตัวใน {link("launch", "ชุดเปิดตัว")}</figcaption></figure></div></section>
 </div>{COPY_JS}"""
 
 # ---------------------------------------------------------------- launch kit
@@ -198,13 +237,15 @@ def launch():
         shots, tcap = B.script_tiktok(p); ytt, ytd = B.youtube(p); spt, spd = B.shopee(p)
         shot_txt = "\n".join(f"{t}  {a}  ({b_})" for t, a, b_ in shots)
         hero = ' <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span>' if n in B.HEROES else ""
+        coll = (f'<span class="chip" style="background:{"#F8DAD7" if p["coll"] == "love" else "#F3E3CF"};color:{"#8A2A23" if p["coll"] == "love" else "#3A2318"}">'
+                f'{E(p["line"])}</span>')
         cards += f"""<article class="card" id="p{n}" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
 <a href="posters/{n:02d}-post.png" target="_blank" rel="noopener"><img src="posters/thumb/{n:02d}.jpg" alt="โปสเตอร์ {E(p['name'])}" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
 <div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span class="cap mono">#{n:02d}</span><h3>{E(p['name'])}{hero}</h3>
 <p class="cap" style="font-size:14px">{E(p['pieces_txt'])}{(' + ' + E(p['extra'][0])) if p['extra'] else ''}</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">{p['price']} บาท</b>
  <span class="cap">ต้นทุน {p['cost']:.2f} · กำไร {p['profit']:.0f} ({p['margin']:.0%}) · เตรียมไปงาน {p['stock']} ชิ้น</span></p>
-<p><span class="chip {status_chip(p['status'])}">{p['status']}</span></p>
+<p>{coll} <span class="chip {status_chip(p['status'])}">{p['status']}</span></p>
 <p class="cap"><a href="posters/{n:02d}-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/{n:02d}-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary>{copybox(f"fb{n}", B.caption_fb(p), "โพสต์ + แนบโปสเตอร์ 1080 × 1350")}</details>
@@ -225,13 +266,13 @@ def launch():
     prints = "".join(f'<tr><td>{E(a)}</td><td class="n">{E(q)}</td><td>{E(n)}</td></tr>' for a, q, n in B.PRINT_LIST)
     more = "".join(f'<div class="card"><h3>{E(a)}</h3><p class="cap" style="font-size:14px;margin-top:4px">{E(b_)}</p></div>' for a, b_ in B.MORE)
     usage = " · ".join(f"{B.PIECE_NAME[k]} {v}" for k, v in sorted(use.items()))
-    return f"""{head("ห้าหมี Launch Kit")}
+    return f"""{head("OCT. 26 Launch Kit")}
 <div class="wrap">
 <nav class="top" aria-label="หัวข้อ"><a href="#plan">แผน 9 วัน</a><a href="#social">โซเชียลและ Shopee</a><a href="#products">สินค้า 30 ตัว</a>
-<a href="#stock">สต็อกไปงาน</a><a href="#kids">ลูกหมีขายของ</a><a href="#print">ของต้องพิมพ์</a><a href="#more">แนะนำเพิ่ม</a></nav>
+<a href="#stock">สต็อกไปงาน</a><a href="#kids">ลูก ๆ ขายของ</a><a href="#print">ของต้องพิมพ์</a><a href="#more">แนะนำเพิ่ม</a></nav>
 <header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">LAUNCH KIT · บูธ 23–25 ต.ค. 2569</span>
-<h1>ห้าหมี พร้อมออกบูธ</h1>
-<p class="lead">ทุกอย่างที่ต้องทำก่อนวันงาน ข้อความโพสต์ของสินค้า 30 ตัวสำหรับ 5 ช่องทาง และคู่มือให้ลูกหมีขายของเอง กดปุ่มคัดลอกแล้ววางในแอปได้เลย</p>
+<h1>OCT. 26 พร้อมออกบูธ</h1>
+<p class="lead">ทุกอย่างที่ต้องทำก่อนวันงาน ข้อความโพสต์ของสินค้า 30 ตัวสำหรับ 5 ช่องทาง และคู่มือให้ลูก ๆ ขายของเอง สินค้าแบ่งเป็นคอลเลกชัน Soi 2 และห้าหมี Love กดปุ่มคัดลอกแล้ววางในแอปได้เลย</p>
 <div class="grid s">
 <div class="card"><p class="cap">สินค้า</p><b style="font-family:var(--display);font-size:28px">30 แบบ</b></div>
 <div class="card"><p class="cap">เตรียมไปงาน</p><b style="font-family:var(--display);font-size:28px" class="mono">{tot['units']} ชิ้น</b></div>
@@ -249,7 +290,7 @@ def launch():
 <p class="lead">ทุกช่องใช้ชื่อ @{B.BRAND['handle']} รูปโปรไฟล์และปกอยู่ใน {link("brandbook", "Brand Book")} บัญชีต้องเปิดในชื่อพ่อหรือแม่ เพราะทุกแพลตฟอร์มกำหนดอายุขั้นต่ำ 13 ปี และ Shopee ต้องใช้บัตรประชาชนกับบัญชีธนาคาร</p>
 <div class="grid">{ch}</div>
 <div class="card"><h3>9 โพสต์แรก</h3><ol style="margin-top:6px">
-<li>เรื่องของห้าหมี (ใช้ข้อความใน Brand Book + รูปครอบครัวหมี)</li><li>แนะนำลูกหมีสามตัว และหน้าที่ที่บูธ</li>
+<li>ทำไมชื่อ OCT. 26 (ใช้ข้อความใน Brand Book + โลโก้แนวตั้ง)</li><li>เปิดตัวคอลเลกชัน Soi 2 และห้าหมี Love (ป้ายซอยกับป้าย Love)</li><li>แนะนำลูกสามคน และหน้าที่ที่บูธ</li>
 {"".join(f"<li>How-to {E(next(p['name'] for p in B.PRODUCTS if p['n']==h))}</li>" for h in B.HEROES[:6])}
 <li>เจอกันที่บูธ 23–25 ต.ค. พร้อมแผนที่และเลขบูธ</li></ol></div></section>
 
@@ -264,7 +305,7 @@ def launch():
 <div class="tbl"><table><thead><tr><th>#</th><th>สินค้า</th><th>ราคา</th><th>จำนวน</th><th>ชิ้นหนัง</th><th>ยอดถ้าขายหมด</th></tr></thead><tbody>{stock}</tbody></table></div>
 <p class="cap">เวลาประกอบรวมประมาณ {tot['assembly_h']:.1f} ชม. และแพ็คอีก {tot['pack_h']:.1f} ชม. แบ่งให้ลูก ๆ ช่วยวันเสาร์อาทิตย์ที่ 17–18 ต.ค. ได้</p></section>
 
-<section id="kids"><span class="eyebrow">ลูกหมีขายของ</span><h2>สามหน้าที่ ทำได้ตามวัย</h2>
+<section id="kids"><span class="eyebrow">ลูก ๆ ขายของ</span><h2>สามหน้าที่ ทำได้ตามวัย</h2>
 <div class="grid">{roles}</div>
 <h3>ประโยคที่ซ้อมไว้</h3><div class="tbl"><table><tbody>{scripts}</tbody></table></div>
 <div class="card"><h3>กติกาบูธ</h3><ul style="margin-top:6px">{rules}</ul></div></section>
@@ -279,23 +320,29 @@ def launch():
 def summary():
     tot = B.event_totals()
     rows = [("Brand Book", "brandbook", "ชื่อ เรื่องเล่า โลโก้ สี ฟอนต์ น้ำเสียง"),
-            ("Launch Kit", "launch", "แผน 9 วัน โซเชียล Shopee สินค้า 30 ตัว พร้อมโพสต์ 5 ช่องทาง คู่มือลูกหมีขายของ"),
-            ("สไลด์ของขวัญวันเกิด", "deck", "พรีเซนต์ทั้งหมดให้แม่หมี"),
+            ("Launch Kit", "launch", "แผนถึงวันงาน โซเชียล Shopee สินค้า 30 ตัวแบ่งตามคอลเลกชัน พร้อมโพสต์ 5 ช่องทาง คู่มือลูก ๆ ขายของ"),
+            ("สไลด์ของขวัญวันเกิด", "deck", "พรีเซนต์ OCT. 26 ให้เธอในวันเกิด 26.10"),
             ("Google Sheet ต้นทุน", "sheet", "ต้นทุน ราคาขาย กำไร 3 แท็บ"),
-            ("ทางเลือกแบรนด์ Luxury", "alternatives", "อีก 55 ชื่อ ล่าสุดรวมตัวย่อ ชื่อซอย และวันเกิดภรรยา 26.10 พร้อมโลโก้ ราคา และเครื่องมือลองตั้งชื่อ")]
+            ("ทางเลือกแบรนด์ทั้งหมด", "alternatives", "55 ชื่อที่คิดมา OCT. 26 ติดป้าย เลือกแล้ว")]
     links = "".join(f'<div class="card"><h3>{link(k, E(t))}</h3><p class="cap" style="font-size:14px;margin-top:4px">{E(d)}</p></div>' for t, k, d in rows)
     files = [("brand-20261014/brand.py", "ข้อมูลทั้งหมดของแบรนด์ แก้ที่นี่ที่เดียว"),
-             ("brand-20261014/logo/svg, logo/png", "โลโก้ 13 ไฟล์ แปลงตัวอักษรเป็นเส้นแล้ว"),
+             ("brand-20261014/logo/svg, logo/png", "โลโก้ 22 ไฟล์ OCT. 26 ป้าย Soi 2 ป้าย Love และห้าหมี แปลงตัวอักษรเป็นเส้นแล้ว"),
              ("brand-20261014/posters/png", "โปสเตอร์ How-to 30 ตัว × 2 ขนาด (60 ไฟล์)"),
              ("brand-20261014/site", "ต้นฉบับหน้าเว็บทั้งสาม"),
              ("brand-20261014/deck", "ต้นฉบับสไลด์"),
              ("brand-20261014/alternatives", "ทางเลือกแบรนด์ 55 แบบ โลโก้และป้ายห้อย")]
     ftable = "".join(f'<tr><td class="mono" style="white-space:nowrap">{E(f)}</td><td>{E(d)}</td></tr>' for f, d in files)
-    return f"""{head("ห้าหมี สรุปโปรเจกต์")}
+    return f"""{head("OCT. 26 สรุปโปรเจกต์")}
 <div class="wrap"><header style="padding-top:28px;display:flex;flex-direction:column;gap:14px">
-<span class="eyebrow">สรุปโปรเจกต์ · 14 ต.ค. 2569</span><h1>แบรนด์ห้าหมี ก่อนออกบูธ 23–25 ต.ค.</h1>
-<div class="paper"><img src="logo/family.svg" alt="หมีห้าตัว"></div>
-<p class="lead">ชื่อแบรนด์ เรื่องเล่า โลโก้และ brand book ช่องทางโซเชียลกับ Shopee สินค้า 30 ตัวพร้อมโปสเตอร์และโพสต์ทุกช่องทาง คู่มือให้ลูก ๆ ขายเอง และสไลด์สำหรับวันเกิดแม่หมี</p></header>
+<span class="eyebrow">สรุปโปรเจกต์ · 14 ต.ค. 2569</span><h1>OCT. 26 ก่อนออกบูธ 23–25 ต.ค.</h1>
+<div class="paper" style="aspect-ratio:16/7"><img src="logo/oct-horizontal.svg" alt="โลโก้ OCT. 26" style="max-height:100%"></div>
+<p class="lead">ชื่อแบรนด์ เรื่องเล่า โลโก้และ brand book ช่องทางโซเชียลกับ Shopee สินค้า 30 ตัวพร้อมโปสเตอร์และโพสต์ทุกช่องทาง คู่มือให้ลูก ๆ ขายเอง และสไลด์สำหรับวันเกิดเธอ</p></header>
+<section><span class="eyebrow">คำตอบ</span><h2>หมี 5 ตัวเป็นซับแบรนด์ได้</h2>
+<p class="lead">OCT. 26 เป็นแบรนด์หลัก Soi 2 เป็นคอลเลกชันแรก และห้าหมี FIVE BEARS by OCT. 26 เป็นซับแบรนด์ที่มีคอลเลกชันแรกชื่อ Love</p>
+<div class="grid">
+<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="paper" style="aspect-ratio:5/3"><img src="logo/soi2-sign.svg" alt="ป้ายซอย Soi 2"></div><h3>OCT. 26 · Soi 2</h3><p class="cap">ของใช้ทุกวัน {sum(p["coll"] == "soi2" for p in B.PRODUCTS)} แบบ จากแพตเทิร์น 02–06</p></div>
+<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="paper" style="aspect-ratio:5/3"><img src="logo/love-badge.svg" alt="ป้าย Love ห้าหมี"></div><h3>ห้าหมี by OCT. 26 · Love</h3><p class="cap">หัวหมีและสายหัวใจ {sum(p["coll"] == "love" for p in B.PRODUCTS)} แบบ จากแพตเทิร์น 01</p></div></div>
+<div class="grid">{"".join(f'<div class="card"><h3>{E(h)}</h3><p class="cap" style="font-size:14px;margin-top:4px">{E(t)}</p></div>' for h, t in B.SUB_ANSWER)}</div></section>
 <section><h2>เปิดดู</h2><div class="grid">{links}</div></section>
 <section><h2>ตัวเลขสำคัญ</h2><div class="grid s">
 <div class="card"><p class="cap">สินค้า</p><b style="font-family:var(--display);font-size:26px">30 แบบ</b></div>
@@ -306,7 +353,9 @@ def summary():
 <div class="card"><p class="cap">ต้นทุนของ</p><b style="font-family:var(--display);font-size:26px" class="mono">{tot['cost']:,.0f} ฿</b></div></div></section>
 <section><h2>ไฟล์</h2><div class="tbl"><table><tbody>{ftable}</tbody></table></div></section>
 <section><h2>ต้องเช็กก่อน</h2><div class="card"><ol>
-<li>ชื่อ @{B.BRAND['handle']} ยังว่างทุกช่องทาง ถ้าไม่ว่าง เลือกชื่อใหม่แล้วแก้ใน brand.py</li>
+<li>ชื่อ @{B.BRAND['handle']} ยังว่างทุกช่องทาง ถ้าไม่ว่าง เลือกชื่อใหม่แล้วแก้ใน brand.py ที่เดียว</li>
+<li>เลข 2 ใน Soi 2 มีความหมายอะไร (ซอยบ้าน หรือเหตุผลอื่น) บอกมาได้ จะเขียนลงเรื่องเล่าของคอลเลกชัน ตอนนี้เขียนแบบกลาง ๆ ไว้</li>
+<li>ค้นชื่อ OCT. 26 และห้าหมีในฐานข้อมูลเครื่องหมายการค้า ก่อนพิมพ์ของจำนวนมาก</li>
 <li>มีบล็อกแบบไหนแล้วบ้าง แบบที่ยังไม่มีต้องสั่งวันนี้</li>
 <li>สินค้าที่ติดป้าย “ลองต้นแบบก่อน” ต่อตัวอย่างหนึ่งชิ้นทุกตัว ก่อนลงขายใน Shopee</li>
 <li>ใส่ชื่องานและเลขบูธแทน [ชื่องาน] ในข้อความโพสต์</li>
