@@ -146,7 +146,41 @@ def svg(w, h, body, bg):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
             f'<rect width="{w}" height="{h}" fill="{bg}"/>{body}</svg>')
 
+def acro_word(o, size, cx, base):
+    """Lowercase word with its full stop drawn as the brand dot in the accent colour."""
+    word = o["name"].rstrip(".")
+    d, w, (x0, y0, x1, y1) = text_path(word, size, o["font"][0])
+    r = size * .085
+    gap = size * .06
+    total = (x1 - x0) + gap + 2 * r
+    x = cx - total / 2 - x0
+    return (f'<path transform="translate({x:.2f},{base:.2f})" d="{d}" fill="{o["fg"]}"/>'
+            f'<circle cx="{x + x1 + gap + r:.2f}" cy="{base - r:.2f}" r="{r:.2f}" fill="{o["acc"]}"/>')
+
+def board_acro(o):
+    W, H = 1200, 720
+    body = [acro_word(o, 230, 600, 360),
+            text(o["acro"], 34, 600, 460, o["fg"], "alt/IBMPlexMono-Medium.ttf", .06),
+            text(o["tag_th"], 32, 600, 560, o["fg"], o["thfont"][0])]
+    return svg(W, H, "".join(body), o["bg"])
+
+def tag_acro(o):
+    W, H = 560, 860
+    h = o["heroes"][0]
+    shape = (f'<path d="M80,40 H480 Q520,40 520,80 V780 Q520,820 480,820 H80 Q40,820 40,780 V80 Q40,40 80,40 Z" fill="{o["bg"]}"/>'
+             f'<circle cx="280" cy="100" r="16" fill="#E7E3DC"/><circle cx="280" cy="100" r="16" fill="none" stroke="{o["acc"]}" stroke-width="2"/>')
+    body = [shape, acro_word(o, 120, 280, 330),
+            text(o["acro"], 19, 280, 390, o["fg"], "alt/IBMPlexMono-Medium.ttf", .04),
+            f'<line x1="120" y1="440" x2="440" y2="440" stroke="{o["fg"]}" stroke-width="1.2" opacity=".5"/>',
+            text(h["name"], 32, 280, 515, o["fg"], o["thfont"][0]),
+            text(f"{h['price']:,} THB", 40, 280, 590, o["fg"], "alt/IBMPlexMono-Medium.ttf", .04),
+            text("ทำจากเศษหนังแท้ · ไม่มีด้าย · ไม่มีกาว", 22, 280, 690, o["fg"], o["thfont"][0]),
+            text("no. 001 / 100", 22, 280, 740, o["fg"], "alt/IBMPlexMono-Medium.ttf", .08)]
+    return svg(W, H, "".join(body), "#E7E3DC")
+
 def board(o):
+    if o.get("acro"):
+        return board_acro(o)
     W, H = 1200, 720
     m = f'<g transform="translate(600,190) scale(1.7)">{MARKS[o["key"]](o)}</g>'
     size = 116 if len(o["name"]) <= 7 else 96
@@ -169,6 +203,8 @@ def tag_line(o):
     return round(max(450, 405 + text_path(o["th"], 76, o["thfont"][0])[2][3] + 16))
 
 def tag(o):
+    if o.get("acro"):
+        return tag_acro(o)
     """Hang tag 500 x 800 with a punched hole, the way it would hang on a product."""
     W, H = 560, 860
     h = o["heroes"][0]
