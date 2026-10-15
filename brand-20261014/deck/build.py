@@ -18,12 +18,12 @@ MITR = "'Mitr', Tahoma, sans-serif"
 JOST = "'Jost', 'Anuphan', sans-serif"
 
 BLOB = {  # uploaded 15 Oct 2026
-    "date": "915f7f9845c947c7d9f3ba8819d6b27a", "name": "cbd7b46887eeaacf6ce45ad47596c8d5",
-    "tag": "3358011426da82c6a1459d2589ec2b75", "soi": "7bf0e920f1b67996d0c2fa2dd388b6fe",
-    "love": "e81474629390fb34de262d79d12a734a", "avatar": "36e808268b07d9fdad2eb13a3b3a9bcc",
-    "bear": "1bcb20f1e588ac9d3728ecf909c76d4a", "family": "03260054bd2967b10938cd7bfb3e9f33",
-    "p18": "57e917319b5e38fb1de6dc6709d2535c", "p21": "52a860ab280ae124298fa5926e1a0684",
-    "p23": "3fb9e12d251ea56f2d02bb4b47d0b15e", "p29": "de8348f1a21559105e0b84dd46d86c13",
+    "date": "915f7f9845c947c7d9f3ba8819d6b27a", "name": "995bc673267cb5543526f5828152538d",
+    "soi": "7bf0e920f1b67996d0c2fa2dd388b6fe",
+    "love": "e81474629390fb34de262d79d12a734a", "avatar": "594eacad64d97f0774f9b83ceab0102d",
+    "bear": "15387348361d35674b43a64672dbf652", "family": "e9dcaab887265b826410a402138bf25b",
+    "p18": "1790a12e181ae5bbddf33b8a4d956022", "p21": "00d8262ff381a9c65cbd821e4eb57efd",
+    "p23": "f08f3e10b56e0f2228853c323bf59638", "p29": "0a49758148dfe528ac70e7e13fc5e29d",
 }
 img = lambda k, alt, style: f'<img src="/_blob/{BLOB[k]}" alt="{alt}" style="{style}">'
 
@@ -60,15 +60,11 @@ S["gift"] = section("gift", I, P,
     "หยุดตรงนี้สักครู่ ให้เธอเดาว่าชื่อแบรนด์คืออะไร ใบ้ได้ว่าเป็นตัวเลขที่เธอรู้จักดีที่สุด")
 
 S["name"] = section("name", P, I,
-    f'<div style="display:grid;grid-template-columns:1fr 1.618fr;gap:89px;align-items:center;width:100%">'
-    + img("tag", "สัญลักษณ์ป้ายห้อย OCT. 26 สัดส่วน 1 ต่อ φ", "width:100%;height:610px;object-fit:contain")
-    + '<div style="display:flex;flex-direction:column;gap:34px">'
-    + eyebrow("ชื่อแบรนด์", CO)
-    + img("name", "OCT. 26", "width:839px;height:254px;object-fit:contain;object-position:left;margin-left:-55px")
+    eyebrow("ชื่อแบรนด์", CO) + "\n"
+    + img("name", "OCT. 26", "width:830px;height:254px;object-fit:contain;object-position:left;margin-left:-55px") + "\n"
     + f'<ul style="font-size:42px;line-height:1.5;color:{MU}"><li>O · C · T ย่อจาก our crafted things ของที่เราทำกันเอง</li>'
-      '<li>OCT. คือเดือนตุลาคม</li><li>26 คือวันเกิดของเธอ</li></ul></div></div>',
-    "ให้ลูก ๆ อ่านชื่อพร้อมกัน อ็อก ยี่สิบหก ป้ายห้อยทางซ้ายคือสัญลักษณ์ของแบรนด์ สัดส่วน 1 ต่อ 1.618 เลข 26 วางบนเส้นทองคำ ชื่ออื่นที่คิดมาทั้งหมด 55 ชื่ออยู่ในหน้าทางเลือกแบรนด์",
-    "flex-direction:row;align-items:center")
+      '<li>OCT. คือเดือนตุลาคม</li><li>26 คือวันเกิดของเธอ</li></ul>',
+    "ให้ลูก ๆ อ่านชื่อพร้อมกัน อ็อก ยี่สิบหก ชื่อนี้วาดเองจากวงกลมและเส้นตรง ส่วน OCT. กับ 26 แบ่งกันตามสัดส่วนทองคำ ชื่ออื่นที่คิดมาทั้งหมด 55 ชื่ออยู่ในหน้าทางเลือกแบรนด์")
 
 S["date"] = section("date", CO, P,
     eyebrow("แบรนด์นี้เกิดวันเดียวกับเธอ", SU) + "\n"

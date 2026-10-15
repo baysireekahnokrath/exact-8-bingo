@@ -46,8 +46,10 @@ def wordmark_construction():
     g.append(lbl(d + G.DOT / 2, 14, f"จุด = w·φ = {G.DOT:.1f}", anchor="middle"))
     two = st["2"]; six = st["6"]
     g.append(ln(two, 10, six + G.D, 10, "0")); g.append(lbl((two + six + G.D) / 2, 20, "เลข กว้าง D = H/φ = 61.8", anchor="middle"))
-    g.append(ln(d + G.DOT, -G.DOT - 6, two, -G.DOT - 6, "0")); g.append(lbl((d + G.DOT + two) / 2, -G.DOT - 9, "H/φ² = 38.2", 5.5, "middle"))
-    return svg(f"-14 {-G.H - 22} {w + 75:.0f} {G.H + 50}", "".join(g), "เส้นโครงของโลโก้ แสดงสัดส่วนทองคำ", "wide")
+    g.append(ln(0, 32, two, 32, "0")); g.append(lbl(two / 2, 42, "OCT. กับช่องว่าง = φ²", anchor="middle"))
+    g.append(ln(two, 32, w, 32, "0")); g.append(lbl((two + w) / 2, 42, "26 = 1", anchor="middle"))
+    g.append(ln(two, 26, two, 38, "0")); g.append(lbl(w + 12, 34, f"ทั้งคำ = 5H = {w:.0f}", 5.5))
+    return svg(f"-14 {-G.H - 22} {w + 75:.0f} {G.H + 72}", "".join(g), "เส้นโครงของโลโก้ แสดงสัดส่วนทองคำ", "wide")
 
 def favicon_A(ink=INK, dot=DOTC, bg=PAPER):
     # ring O and the dot, sitting on one baseline, centred in a square
@@ -69,19 +71,14 @@ def tag_body(fill=COB, ink=CREAM, dot=DOTC, uid="b", holebg=PAPER):
     s = (TWID - 2 * MARG) / dw
     base = THGT / PHI
     g.append(f'<g transform="translate({MARG:.2f},{base:.2f}) scale({s:.4f})">{d}</g>')
-    w, ww, _ = G.wordmark(ink, dot, uid + "w")
     # only OCT. : wordmark up to the dot
     oct_part, oct_w = _oct(ink, dot, uid + "o")
-    s2 = (TWID - 2 * MARG) / oct_w * .62
+    s2 = (TWID - 2 * MARG) / oct_w / PHI
     g.append(f'<g transform="translate({(TWID - oct_w * s2)/2:.2f},{THGT - CH:.2f}) scale({s2:.4f})">{oct_part}</g>')
     return "".join(g)
 
 def _oct(ink, dot, uid):
-    parts, x = [], 0.0
-    for fn, gap in ((G.glyph_O, G.GAP * .8), (G.glyph_C, G.GAP), (G.glyph_T, G.GAP / PHI)):
-        s, adv = fn(x, ink); parts.append(s); x += adv + gap
-    s, adv = G.glyph_dot(x, dot); parts.append(s)
-    return "".join(parts), x + adv
+    return G.word("OCT.", ink, dot, uid)
 
 def tag_construction():
     g = [tag_body("#E3E8FB", "#C9C4D6", DOTC, "bc", PAPER)]
@@ -162,7 +159,7 @@ def build():
     phi_rows = "".join(f'<tr><td>{E(a)}</td><td class="mono">{E(b)}</td><td class="n mono">{c}</td></tr>' for a, b, c in [
         ("ความสูงตัวอักษร", "H", "100"), ("ความหนาเส้น", "H ÷ φ⁴", f"{G.W:.1f}"), ("จุด (ส่วนที่โดดเด่น)", "เส้น × φ", f"{G.DOT:.1f}"),
         ("ความกว้างตัวเลข", "H ÷ φ", f"{G.D:.1f}"), ("ความกว้าง T", "H × φ ÷ 2", f"{G.TW:.1f}"),
-        ("ช่องเปิดของ C", "360° ÷ φ³", f"{G.C_OPEN:.0f}°"), ("ระยะระหว่างคำ", "H ÷ φ²", f"{G.WORD:.1f}"),
+        ("ช่องเปิดของ C", "360° ÷ φ³", f"{G.C_OPEN:.0f}°"), ("ระยะระหว่างคำ", "H ÷ φ² (ชื่ออื่น)", f"{G.WORD:.1f}"), ("OCT. : 26", "φ² : 1 ทั้งคำกว้าง 5H", "500"),
         ("ป้ายห้อย", "กว้าง : สูง = 1 : φ", "100 : 161.8"), ("ตราประทับ", "วงนอก : วงใน = φ : 1", "100 : 61.8")])
 
     # our own read, 1..3 for: clean, memorable, timeless, versatile, relevant
@@ -220,9 +217,9 @@ td i{vertical-align:middle}
     return f"""{head("OCT. 26 Logo Lab")}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500&family=IBM+Plex+Mono:wght@400&display=swap"><style>{css}</style>
 <div class="wrap">
 <nav class="top" aria-label="หัวข้อ">{nav}</nav>
-<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">LOGO LAB · 15 ต.ค. 2569 · เลือกแล้ว B + A + C</span>
+<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">LOGO LAB · 15 ต.ค. 2569 · สรุปแล้ว A เป็นชื่อ B เป็นสัญลักษณ์</span>
 <h1>โลโก้ OCT. 26 จากสัดส่วนทองคำ</h1>
-<p class="lead">สามทาง ใช้ตัวอักษรชุดใหม่ชุดเดียวกัน ที่วาดเองจากวงกลม เส้นตรง และ φ = 1.618 ไม่ใช้ฟอนต์สำเร็จ ทุกทางทดสอบตั้งแต่ไอคอน 16 พิกเซล จนถึงบิลบอร์ด ขาวดำ และปั๊มลงหนัง บ้านเราเลือกแล้ว ป้ายห้อยของทาง B เป็นสัญลักษณ์ ตัวอักษรของทาง A เป็นชื่อ และตราของทาง C ไว้ปั๊มหนัง ไฟล์จริงทั้งชุดอยู่ใน {link("brandbook", "Brand Book")}</p>
+<p class="lead">สามทาง ใช้ตัวอักษรชุดใหม่ชุดเดียวกัน ที่วาดเองจากวงกลม เส้นตรง และ φ = 1.618 ไม่ใช้ฟอนต์สำเร็จ ทุกทางทดสอบตั้งแต่ไอคอน 16 พิกเซล จนถึงบิลบอร์ด ขาวดำ และปั๊มลงหนัง สรุปแล้ว ตัวอักษรของทาง A คือโลโก้หลัก ป้ายห้อยของทาง B คือสัญลักษณ์ตอนพื้นที่เล็ก ใช้ทีละอย่าง ไม่วางคู่กัน ส่วนตราของทาง C ไม่ใช้ เพื่อให้คนจำได้ง่าย ไฟล์จริงทั้งชุดอยู่ใน {link("brandbook", "Brand Book")}</p>
 <div class="hero">{wordmark_svg()}</div></header>
 
 <section id="why"><span class="eyebrow">ทำไมต้องเปลี่ยน</span><h2>โลโก้เดิมไม่ cool เพราะอะไร</h2><div class="grid">
@@ -237,8 +234,8 @@ td i{vertical-align:middle}
 <section id="pick"><span class="eyebrow">เทียบและเลือก</span><h2>เทียบกับห้าข้อที่ต้องการ</h2>
 <div class="tbl"><table><thead><tr><th>ทาง</th>{"".join(f"<th>{c}</th>" for c in CRIT)}</tr></thead><tbody>{score}</tbody></table></div>
 <p class="cap">คะแนนเป็นความเห็นของเรา สามจุดคือดีที่สุด</p>
-<div class="card" style="border:2px solid var(--brick)"><h3>เลือกแล้ว: ทาง B ใช้คู่กับตัวอักษรของทาง A และตราของทาง C</h3>
-<p style="margin-top:6px">ตัวอักษรเรขาคณิตใช้เป็นชื่อแบรนด์ทุกที่ ป้ายห้อยทองคำเป็นสัญลักษณ์และไอคอน ส่วนตราประทับของทาง C เก็บไว้ใช้ปั๊มลงหนังและรุ่นวันเกิด สามอย่างนี้ใช้ตัวอักษรชุดเดียวกัน จึงไปด้วยกันได้</p>
+<div class="card" style="border:2px solid var(--brick)"><h3>สรุปแล้ว: A เป็นชื่อ B เป็นสัญลักษณ์ ใช้ทีละตัว ไม่ใช้ C</h3>
+<p style="margin-top:6px">OCT. 26 ตัวอักษรเรขาคณิตใช้เป็นชื่อแบรนด์ทุกที่ รวมถึงปั๊มลงหนัง ป้ายห้อยทองคำใช้แทนชื่อในที่เล็กหรือเป็นสี่เหลี่ยม เช่น รูปโปรไฟล์ ไอคอน และสติกเกอร์ ไม่วางสองอย่างคู่กัน เพราะป้ายก็บอก 26 อยู่แล้ว ระยะห่างระหว่าง OCT. กับ 26 ปรับให้เป็น φ² : 1 ทั้งคำจึงกว้าง 5 เท่าของความสูงพอดี</p>
 <p class="cap" style="margin-top:6px">สีในหน้านี้เป็นชุดที่ 2 Soi Candy ที่เลือกแล้ว ตัวอักษรที่เหลือ (S I M A R E P D N และเลข 0 1 3 4 7 9) วาดด้วยกติกาเดียวกันแล้ว ใช้กับ SOI. 02 และแบรนด์วันเกิดทุกแบรนด์</p></div></section>
 </div>"""
 

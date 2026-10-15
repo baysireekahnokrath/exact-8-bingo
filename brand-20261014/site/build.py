@@ -124,15 +124,16 @@ def brandbook():
     LL = importlib.util.module_from_spec(_sp); _sp.loader.exec_module(LL)
     golden_rows = "".join(f'<tr><td>{E(a)}</td><td class="mono">{E(c)}</td></tr>' for a, c in [
         ("ตัวอักษรโลโก้", "เส้น = ความสูง ÷ φ⁴ · จุด = เส้น × φ · ตัวเลขกว้าง = ความสูง ÷ φ"),
+        ("OCT. 26 ทั้งคำ", "OCT. กับช่องว่าง : 26 = φ² : 1 · ทั้งคำกว้าง 5 เท่าของความสูง"),
         ("ป้ายห้อยสัญลักษณ์", "กว้าง : สูง = 1 : φ · ฐานเลข 26 อยู่ที่เส้นแบ่งทองคำ"),
-        ("ตราประทับ", "วงนอก : วงใน = φ : 1 · ตัวหนังสือรอบวงยาวไม่เกิน 137.5° (มุมทองคำ)"),
         ("ป้ายคอลเลกชัน", "กว้าง : สูง = φ : 1 (SOI. 02) และ φ² : 1 (Love)"),
         ("ขนาดตัวอักษรบนเว็บ", " · ".join(f"{v:g}" for v in B.GOLDEN["type"]) + " px (16 × φ^(k/2))"),
         ("ระยะห่าง", " · ".join(str(v) for v in B.GOLDEN["space"]) + " px (ฟีโบนัชชี)"),
         ("โปสเตอร์", "ขอบ 89 · ช่องไฟ 13 / 21 / 34 / 55 · หัวข้อ 89 · ราคา 233 px"),
         ("งานพิมพ์ (มม.)", " · ".join(f"{k} {' × '.join(str(x) for x in v)}" for k, v in B.GOLDEN["print_mm"].items())),
         ("สัดส่วนสี", "พื้น 61.8% · หมึกและโคบอลต์ 23.6% · มะเขือเทศและสีครอบครัว 14.6%"),
-        ("ที่ว่างรอบโลโก้", "อย่างน้อย จุด × φ ทุกด้าน")])
+        ("ที่ว่างรอบโลโก้", "อย่างน้อย จุด × φ ทุกด้าน"),
+        ("ป้ายห้อยในกรอบสี่เหลี่ยม", "สูง = ด้านกรอบ ÷ φ (รูปโปรไฟล์ ไอคอน สติกเกอร์)")])
     mean = "".join(f'<div class="card"><h3 style="font-family:var(--logo);font-weight:500">{E(h)}</h3><p style="margin-top:6px">{E(t)}</p></div>' for h, t in meaning)
     arch = "".join(
         f'<div class="card" style="display:flex;flex-direction:column;gap:6px;{"border:2px solid var(--brick)" if i == 0 else ""}">'
@@ -148,16 +149,27 @@ def brandbook():
         f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>{E(h)}</h3><p class="cap" style="font-size:14px">{E(d)}</p>'
         f'<p><span class="chip ok">ใช้</span> {E(do)}</p><p><span class="chip ext">เลี่ยง</span> <s>{E(dont)}</s></p></div>'
         for h, d, do, dont in B.VOICE)
-    oct_logos = "".join(fig(f, c, cls) for f, c, cls in [
-        ("oct-horizontal", "โลโก้หลัก ป้ายห้อยคู่ตัวอักษร", ""), ("oct-stacked", "แนวตั้ง", ""),
-        ("oct-wordmark", "ตัวอักษรอย่างเดียว", ""), ("oct-stacked-reverse", "บนพื้นโคบอลต์", "dark"),
-        ("oct-mark", "ป้ายห้อย สัญลักษณ์และไอคอน", ""), ("oct-seal", "ตราประทับ สำหรับปั๊มหนัง", ""),
-        ("oct-horizontal-mono", "สีเดียว ใช้ปั๊มเลเซอร์ ตรายาง", ""), ("oct-sticker-34mm", "สติกเกอร์ปิดถุง 34 มม.", ""),
-        ("soi2-sign", "ป้ายคอลเลกชัน SOI. 02", "")])
-    bear_logos = "".join(fig(f, c, cls) for f, c, cls in [
-        ("fivebears-stacked", "ห้าหมี แนวตั้ง", ""), ("fivebears-horizontal", "ห้าหมี แนวนอน", ""),
-        ("fivebears-stacked-reverse", "บนพื้นเข้ม", "dark"), ("mark", "ตัวหมี ใช้เดี่ยว ๆ", ""),
-        ("fivebears-sticker-34mm", "สติกเกอร์หมี แจกเด็ก 34 มม.", ""), ("fivebears-horizontal-mono", "สีเดียว", "")])
+    LOGOS = [  # the four logos, one at a time, never side by side
+        ("1", "OCT. 26", "oct-wordmark", "โลโก้หลัก ชื่อเต็ม",
+         "แบ็คดรอปบูธ ถุง การ์ด ป้ายห้อย หัวเว็บ ปก Facebook และ Shopee ท้ายโปสเตอร์ ปั๊มลงหนัง"),
+        ("2", "ป้ายห้อย 26", "oct-mark", "สัญลักษณ์ ตอนพื้นที่เล็กหรือเป็นสี่เหลี่ยม",
+         "รูปโปรไฟล์ทุกช่องทาง ไอคอนเว็บ สติกเกอร์ปิดถุง ที่ที่เล็กจนชื่อเต็มอ่านไม่ออก"),
+        ("3", "ห้าหมี FIVE BEARS", "fivebears", "โลโก้ซับแบรนด์",
+         "ทุกอย่างของห้าหมี ป้ายห้อย Love โต๊ะห้าหมีที่บูธ"),
+        ("4", "หมีหัวใจ", "bear", "สัญลักษณ์ห้าหมี",
+         "สติกเกอร์แจกเด็ก ป้ายเล็ก รูปโปรไฟล์ถ้าวันหนึ่งห้าหมีแยกบัญชี")]
+    logo_rows = "".join(f'<tr><td><b>{n}. {E(nm)}</b><br><span class="cap">{E(role)}</span></td><td>{E(use)}</td></tr>' for n, nm, f, role, use in LOGOS)
+    def versions(f, has_rev=True):
+        out = [fig(f, "บนพื้นสว่าง")]
+        if has_rev: out.append(fig(f + "-reverse", "บนพื้นเข้ม", "dark"))
+        out.append(fig(f + "-mono", "สีเดียว ปั๊มหนัง ตรายาง พิมพ์สีเดียว"))
+        return "".join(out)
+    oct_logos = (f'<h3>1. OCT. 26</h3><div class="grid">{versions("oct-wordmark")}</div>'
+                 f'<h3>2. ป้ายห้อย 26</h3><div class="grid">{versions("oct-mark")}'
+                 + fig("avatar-1080", "ใช้จริง: รูปโปรไฟล์ 1080 × 1080") + fig("oct-sticker-34mm", "ใช้จริง: สติกเกอร์ปิดถุง 34 มม.") + "</div>")
+    bear_logos = (f'<h3>3. ห้าหมี FIVE BEARS</h3><div class="grid">{versions("fivebears")}</div>'
+                  f'<h3>4. หมีหัวใจ</h3><div class="grid">{fig("bear", "สี")}{fig("bear-mono", "สีเดียว ใช้ได้ทั้งพื้นสว่างและพื้นเข้ม")}'
+                  + fig("fivebears-sticker-34mm", "ใช้จริง: สติกเกอร์แจกเด็ก 34 มม.") + "</div>")
     colls = "".join(
         f'<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="paper" style="aspect-ratio:5/3"><img src="logo/{img}.svg" alt="ป้ายคอลเลกชัน {E(c["name"])}"></div>'
         f'<span class="eyebrow">{E(c["brand"])} · คอลเลกชันแรก</span><h3>{E(c["name"])}</h3><p class="cap" style="font-size:14px">{E(c["line"])}</p>'
@@ -171,7 +183,7 @@ def brandbook():
             ("ภาษาอังกฤษ", B.FONTS["latin"], "var(--logo)", 34, 500, "our crafted things."),
             ("หัวข้อภาษาไทย", B.FONTS["head"], "var(--display)", 34, 500, "กล่องของชำร่วย 159 บาท"),
             ("ห้าหมี", B.FONTS["sub"], "'Mitr',sans-serif", 32, 600, "ราวหมีห้าตัว 349 บาท"),
-            ("เนื้อความ", B.FONTS["body"], "var(--body)", 18, 400, "เศษหนังแท้ต่อกันด้วยปีกและร่อง ไม่ใช้กาว ไม่ต้องเย็บสักเข็ม")])
+            ("เนื้อความ", B.FONTS["body"], "var(--body)", 18, 400, "เศษหนังแท้ต่อกันด้วยปีกและร่อง ทุกชิ้นสีไม่ซ้ำกัน")])
     apps = [("avatar-1080.png", "รูปโปรไฟล์ทุกช่องทาง 1080 × 1080"), ("cover-facebook-1640x624.png", "ปก Facebook 1640 × 624"),
             ("cover-youtube-2560x1440.png", "ปก YouTube 2560 × 1440"), ("cover-shopee-1200x600.png", "ปกร้าน Shopee 1200 × 600")]
     app_cards = "".join(
@@ -182,7 +194,7 @@ def brandbook():
 <nav class="top" aria-label="หัวข้อ"><a href="#name">ชื่อ</a><a href="#arch">โครงสร้างแบรนด์</a><a href="#story">เรื่องเล่า</a><a href="#logo">โลโก้</a><a href="#golden">สัดส่วนทองคำ</a>
 <a href="#collections">คอลเลกชัน</a><a href="#fivebears">ห้าหมี</a><a href="#color">สี</a><a href="#type">ตัวอักษร</a><a href="#voice">น้ำเสียง</a><a href="#use">ตัวอย่างใช้งาน</a></nav>
 <header style="padding-top:28px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center">
- <div class="paper" style="aspect-ratio:1"><img src="logo/oct-stacked.svg" alt="โลโก้ OCT. 26 our crafted things" style="max-height:100%"></div>
+ <div class="paper" style="aspect-ratio:1"><img src="logo/oct-wordmark.svg" alt="โลโก้ OCT. 26" style="max-height:100%"></div>
  <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BOOK · ฉบับสัดส่วนทองคำ · 15 ต.ค. 2569</span>
  <h1>คู่มือแบรนด์ OCT. 26</h1><p class="lead">{E(b['tag_en'])} {E(b['tag_th'])} · {E(b['line'])}</p>
  <p>คู่มือนี้ใช้กับทุกอย่างที่มีชื่อ OCT. 26 และซับแบรนด์ห้าหมี ตั้งแต่ป้ายบูธ ถุง สติกเกอร์ ไปจนถึงโพสต์ในโซเชียล</p></div>
@@ -202,20 +214,24 @@ def brandbook():
 <div class="grid">{story}</div>
 <div class="card">{copybox("bio", B.STORY_BIO, "ประโยคแนะนำตัวสั้น ใช้เป็น bio")}</div></section>
 
-<section id="logo"><span class="eyebrow">โลโก้ OCT. 26</span><h2>ป้ายห้อยทองคำ และตัวอักษรที่วาดเอง</h2>
-<p class="lead">สัญลักษณ์คือป้ายห้อยสัดส่วน 1 : φ เป็นทั้งป้ายของงานทำมือและหน้าปฏิทิน ฐานของเลข 26 อยู่ตรงเส้นแบ่งทองคำ ตัวอักษรวาดเองจากวงกลมและเส้นตรง ไม่ใช่ฟอนต์ จุดสีมะเขือเทศเป็นส่วนเดียวที่ใหญ่กว่าเส้น จึงเป็นสิ่งที่คนจำ ตัวอักษรชุดเดียวกันใช้กับ SOI. 02 และแบรนด์วันเกิดของทุกคน</p>
-<div class="grid">{oct_logos}</div>
+<section id="logo"><span class="eyebrow">โลโก้</span><h2>สี่โลโก้ ใช้ทีละตัว</h2>
+<p class="lead">ทั้งบ้านมีโลโก้แค่สี่ตัว แบรนด์ละสอง คือชื่อเต็มหนึ่งตัว กับสัญลักษณ์ตอนพื้นที่เล็กหนึ่งตัว ใช้ทีละตัวเสมอ ไม่วางป้ายห้อยคู่กับชื่อ เพราะป้ายก็บอก 26 อยู่แล้ว คนจะเห็นแค่ OCT. 26 กับป้าย 26 ซ้ำ ๆ จนจำได้</p>
+<div class="tbl"><table><thead><tr><th>โลโก้</th><th>ใช้ที่ไหน</th></tr></thead><tbody>{logo_rows}</tbody></table></div>
+<p>ตัวอักษรวาดเองจากวงกลมและเส้นตรง ไม่ใช่ฟอนต์ จุดสีมะเขือเทศเป็นส่วนเดียวที่ใหญ่กว่าเส้น จึงเป็นสิ่งที่คนจำ ป้ายห้อยสัดส่วน 1 : φ ฐานของเลข 26 อยู่ตรงเส้นแบ่งทองคำ ทุกโลโก้มีสามแบบ บนพื้นสว่าง บนพื้นเข้ม และสีเดียว</p>
+{oct_logos}
 <div class="card"><h3>กติกาการใช้โลโก้</h3><ul style="margin-top:8px">
 <li>เขียนชื่อในข้อความว่า OCT. 26 ตัวใหญ่ มีจุด และเว้นวรรคหนึ่งครั้ง ชื่อบัญชีใช้ {E(b['handle'])}</li>
 <li>เว้นที่ว่างรอบโลโก้อย่างน้อย จุด × φ ทุกด้าน</li>
-<li>โลโก้แนวนอนเล็กสุดกว้าง 34 มม. ถ้าเล็กกว่านั้นใช้ป้ายห้อยอย่างเดียว เล็กสุดสูง 8 มม. ตราประทับเล็กสุด 21 มม.</li>
+<li>ใช้ทีละตัว ไม่วางป้ายห้อยคู่กับชื่อ OCT. 26 ในพื้นที่เดียวกัน</li>
+<li>OCT. 26 เล็กสุดกว้าง 34 มม. ถ้าเล็กกว่านั้นใช้ป้ายห้อย ซึ่งเล็กสุดสูง 8 มม.</li>
+<li>our crafted things. เป็นข้อความ ไม่ใช่ส่วนหนึ่งของโลโก้ วางใต้ชื่อได้เมื่อหน้างานมีที่ เช่น ปกโซเชียลและการ์ด</li>
 <li>จุดเป็นสีมะเขือเทศเสมอ ยกเว้นงานสีเดียว แบรนด์วันเกิดแต่ละแบรนด์ใช้สีของเจ้าของวันเกิด ห้ามบีบ ยืด หมุน หรือใส่เงา</li>
 <li>ไฟล์ SVG ทุกไฟล์แปลงตัวอักษรเป็นเส้นแล้ว ส่งร้านพิมพ์ได้เลยโดยไม่ต้องมีฟอนต์</li></ul></div></section>
 
 <section id="golden"><span class="eyebrow">สัดส่วนทองคำ</span><h2>ทุกอย่างมาจาก φ = 1.618</h2>
 <p class="lead">ขนาดของทุกชิ้น ตั้งแต่ความหนาเส้นในโลโก้ จนถึงขนาดถุงกระดาษ คำนวณจากตัวเลขเดียว ทุกส่วนจึงสัมพันธ์กันเอง ตาคนจึงรู้สึกว่าลงตัว</p>
 <div class="paper">{LL.wordmark_construction()}</div>
-<div class="grid"><div class="paper">{LL.tag_construction()}</div><div class="paper">{LL.seal_construction()}</div></div>
+<div class="paper" style="max-width:377px">{LL.tag_construction()}</div>
 <div class="tbl"><table><tbody>{golden_rows}</tbody></table></div>
 <p class="cap">ภาพเส้นโครงและการทดสอบตั้งแต่ 16 พิกเซลถึงบิลบอร์ดอยู่ใน {link("logolab", "Logo Lab")}</p></section>
 
@@ -226,7 +242,7 @@ def brandbook():
 <p class="lead">หมีในโลโก้คือเส้นตัดของแบบ 01 ที่หมุน 45 องศา ร่องสองเส้นเป็นแก้ม หัวใจตรงกลางคือแม่ ใช้กับสินค้าคอลเลกชัน Love และทุกอย่างที่ทำให้เด็ก</p><p class="cap">แบบ 01 หามาจากอินเทอร์เน็ต ใช้ช่วงเปิดตัวได้ แต่ต้องวาดหมีใหม่จากแพตเทิร์นของเราเองก่อนยื่นจดเครื่องหมายการค้า</p>
 <div class="paper"><img src="logo/family.svg" alt="หมีห้าตัว สีเดียวกับแบรนด์วันเกิดของแต่ละคน"></div>
 <div class="grid">{fam}</div>
-<div class="grid">{bear_logos}</div>
+{bear_logos}
 <p class="cap">ห้าหมีมีบรรทัด by OCT. 26 เสมอ ยกเว้นตัวหมีเดี่ยวและสติกเกอร์ ที่เล็กเกินจะอ่าน</p></section>
 
 <section id="color"><span class="eyebrow">สี · เลือกแล้ว ชุดที่ 2</span><h2>สีสด สะดุดตา หนึ่งคนหนึ่งสี</h2><p class="lead">เลือกแล้ววันที่ 15 ต.ค. 2569 จากหน้าสุ่มสี ชุดที่ 2 แต่ละสีของครอบครัวเป็นสีของคนหนึ่งคน ใช้กับแบรนด์วันเกิดและหมีของคนนั้น</p>
@@ -319,7 +335,7 @@ def launch():
 <p class="lead">ทุกช่องใช้ชื่อ @{B.BRAND['handle']} รูปโปรไฟล์และปกอยู่ใน {link("brandbook", "Brand Book")} บัญชีต้องเปิดในชื่อพ่อหรือแม่ เพราะทุกแพลตฟอร์มกำหนดอายุขั้นต่ำ 13 ปี และ Shopee ต้องใช้บัตรประชาชนกับบัญชีธนาคาร</p>
 <div class="grid">{ch}</div>
 <div class="card"><h3>9 โพสต์แรก</h3><ol style="margin-top:6px">
-<li>ทำไมชื่อ OCT. 26 (ใช้ข้อความใน Brand Book + โลโก้แนวตั้ง)</li><li>เปิดตัวคอลเลกชัน SOI. 02 และห้าหมี Love (ป้าย SOI. 02 กับป้าย Love)</li><li>แนะนำลูกสามคน และหน้าที่ที่บูธ</li>
+<li>ทำไมชื่อ OCT. 26 (ใช้ข้อความใน Brand Book + โลโก้ OCT. 26)</li><li>เปิดตัวคอลเลกชัน SOI. 02 และห้าหมี Love (ป้าย SOI. 02 กับป้าย Love)</li><li>แนะนำลูกสามคน และหน้าที่ที่บูธ</li>
 {"".join(f"<li>How-to {E(next(p['name'] for p in B.PRODUCTS if p['n']==h))}</li>" for h in B.HEROES[:6])}
 <li>เจอกันที่บูธ 23–25 ต.ค. พร้อมแผนที่และเลขบูธ</li></ol></div></section>
 
@@ -525,7 +541,7 @@ def bible():
 <div class="wrap">
 <nav class="top" aria-label="บท">{nav}</nav>
 <header style="padding-top:28px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center">
- <div class="paper dark" style="aspect-ratio:1"><img src="logo/oct-stacked-reverse.svg" alt="โลโก้ OCT. 26 บนพื้นน้ำเงินโคบอลต์" style="max-height:100%"></div>
+ <div class="paper dark" style="aspect-ratio:1"><img src="logo/oct-wordmark-reverse.svg" alt="โลโก้ OCT. 26 บนพื้นน้ำเงินโคบอลต์" style="max-height:100%"></div>
  <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BIBLE · ฉบับที่ 2 · 15 ต.ค. 2569</span>
  <h1 style="font-family:var(--logo);font-weight:500">OCT. 26</h1>
  <p class="lead">คู่มือว่าแบรนด์นี้คิด พูด และทำอย่างไร ใช้คู่กับ {link("brandbook", "Brand Book")} ที่เก็บโลโก้ สี และไฟล์ ส่วนข้อความโพสต์และสินค้าอยู่ใน {link("launch", "Launch Kit")}</p>
@@ -658,7 +674,7 @@ AUDIT = [
 
 def summary():
     tot = B.event_totals()
-    rows = [("Logo Lab", "logolab", "เลือกแล้ว ป้ายห้อย 1:φ ตัวอักษรเรขาคณิต และตราปั๊มหนัง ทำเป็นไฟล์จริงครบชุดแล้ว"),
+    rows = [("Logo Lab", "logolab", "สรุปแล้ว เหลือสี่โลโก้ ใช้ทีละตัว: OCT. 26 ป้ายห้อย 26 ห้าหมี และหมีหัวใจ"),
             ("Color Lab", "colorlab", "เลือกแล้ว ชุดที่ 2 Soi Candy ทางเลือกอื่นเก็บไว้เทียบ"),
             ("สุ่มสีแบบไม่มีชื่อแบรนด์", "palettes", "สุ่มสีสามแนวบนตัวอย่างที่ไม่มีโลโก้ ล็อกสี เก็บชุดที่ชอบ คัดลอกรหัสสี"),
             ("Product Lab", "productlab", "สินค้าหนังที่ขายดี ราคากระเป๋าเทียบตลาด กระเป๋าสะพายข้างสามแบบจากแพตเทิร์น และสินค้าที่เล่าเรื่อง"),
@@ -682,7 +698,7 @@ def summary():
     return f"""{head("OCT. 26 สรุปโปรเจกต์")}
 <div class="wrap"><header style="padding-top:28px;display:flex;flex-direction:column;gap:14px">
 <span class="eyebrow">สรุปโปรเจกต์ · อัปเดต 15 ต.ค. 2569</span><h1>OCT. 26 ก่อนออกบูธ 23–25 ต.ค.</h1>
-<div class="paper" style="aspect-ratio:16/7"><img src="logo/oct-horizontal.svg" alt="โลโก้ OCT. 26" style="max-height:100%"></div>
+<div class="paper" style="aspect-ratio:16/7"><img src="logo/oct-wordmark.svg" alt="โลโก้ OCT. 26" style="max-height:100%"></div>
 <p class="lead">ชื่อแบรนด์ เรื่องเล่า โลโก้และ brand book ช่องทางโซเชียลกับ Shopee สินค้า 30 ตัวพร้อมโปสเตอร์และโพสต์ทุกช่องทาง คู่มือให้ลูก ๆ ขายเอง และสไลด์สำหรับวันเกิดเธอ</p></header>
 <section><span class="eyebrow">คำตอบ</span><h2>หมี 5 ตัวเป็นซับแบรนด์ได้</h2>
 <p class="lead">OCT. 26 เป็นแบรนด์หลัก SOI. 02 เป็นคอลเลกชันแรก และห้าหมี FIVE BEARS by OCT. 26 เป็นซับแบรนด์ที่มีคอลเลกชันแรกชื่อ Love</p>

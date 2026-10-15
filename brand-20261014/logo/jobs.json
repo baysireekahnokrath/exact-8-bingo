@@ -2,40 +2,24 @@
  {
   "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-wordmark.svg",
   "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-wordmark.png",
-  "w": 582,
+  "w": 576,
   "h": 176,
   "scale": 2,
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-horizontal.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-horizontal.png",
-  "w": 721,
-  "h": 238,
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-wordmark-reverse.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-wordmark-reverse.png",
+  "w": 576,
+  "h": 176,
   "scale": 2,
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-stacked.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-stacked.png",
-  "w": 582,
-  "h": 576,
-  "scale": 2,
-  "transparent": true
- },
- {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-stacked-reverse.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-stacked-reverse.png",
-  "w": 582,
-  "h": 576,
-  "scale": 2,
-  "transparent": true
- },
- {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-horizontal-mono.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-horizontal-mono.png",
-  "w": 721,
-  "h": 238,
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-wordmark-mono.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-wordmark-mono.png",
+  "w": 576,
+  "h": 176,
   "scale": 2,
   "transparent": true
  },
@@ -48,26 +32,58 @@
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-mark-stamp.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-mark-stamp.png",
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-mark-reverse.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-mark-reverse.png",
   "w": 400,
   "h": 400,
   "scale": 2,
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-seal.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-seal.png",
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-mark-mono.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-mark-mono.png",
   "w": 400,
   "h": 400,
   "scale": 2,
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-sticker-34mm.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-sticker-34mm.png",
-  "w": 340,
-  "h": 340,
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears.png",
+  "w": 600,
+  "h": 762,
+  "scale": 2,
+  "transparent": true
+ },
+ {
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears-reverse.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears-reverse.png",
+  "w": 600,
+  "h": 762,
+  "scale": 2,
+  "transparent": true
+ },
+ {
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears-mono.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears-mono.png",
+  "w": 600,
+  "h": 762,
+  "scale": 2,
+  "transparent": true
+ },
+ {
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/bear.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/bear.png",
+  "w": 400,
+  "h": 400,
+  "scale": 2,
+  "transparent": true
+ },
+ {
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/bear-mono.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/bear-mono.png",
+  "w": 400,
+  "h": 400,
   "scale": 2,
   "transparent": true
  },
@@ -80,18 +96,18 @@
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/soi2-sign.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/soi2-sign.png",
-  "w": 582,
-  "h": 360,
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/oct-sticker-34mm.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/oct-sticker-34mm.png",
+  "w": 340,
+  "h": 340,
   "scale": 2,
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/love-badge.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/love-badge.png",
-  "w": 942,
-  "h": 360,
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears-sticker-34mm.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears-sticker-34mm.png",
+  "w": 340,
+  "h": 340,
   "scale": 2,
   "transparent": true
  },
@@ -120,62 +136,6 @@
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears-stacked.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears-stacked.png",
-  "w": 600,
-  "h": 762,
-  "scale": 2,
-  "transparent": true
- },
- {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears-stacked-reverse.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears-stacked-reverse.png",
-  "w": 600,
-  "h": 762,
-  "scale": 2,
-  "transparent": true
- },
- {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears-horizontal.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears-horizontal.png",
-  "w": 782,
-  "h": 300,
-  "scale": 2,
-  "transparent": true
- },
- {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears-horizontal-mono.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears-horizontal-mono.png",
-  "w": 782,
-  "h": 300,
-  "scale": 2,
-  "transparent": true
- },
- {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/mark.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/mark.png",
-  "w": 400,
-  "h": 400,
-  "scale": 2,
-  "transparent": true
- },
- {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/mark-mono.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/mark-mono.png",
-  "w": 400,
-  "h": 400,
-  "scale": 2,
-  "transparent": true
- },
- {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/mark-for-stamp.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/mark-for-stamp.png",
-  "w": 400,
-  "h": 400,
-  "scale": 2,
-  "transparent": true
- },
- {
   "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/family.svg",
   "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/family.png",
   "w": 1000,
@@ -184,10 +144,18 @@
   "transparent": true
  },
  {
-  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/fivebears-sticker-34mm.svg",
-  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/fivebears-sticker-34mm.png",
-  "w": 340,
-  "h": 340,
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/soi2-sign.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/soi2-sign.png",
+  "w": 582,
+  "h": 360,
+  "scale": 2,
+  "transparent": true
+ },
+ {
+  "src": "/home/user/exact-8-bingo/brand-20261014/logo/svg/love-badge.svg",
+  "out": "/home/user/exact-8-bingo/brand-20261014/logo/png/love-badge.png",
+  "w": 942,
+  "h": 360,
   "scale": 2,
   "transparent": true
  }

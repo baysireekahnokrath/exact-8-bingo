@@ -38,7 +38,7 @@ def _logo(f, vb=None):
     s = re.sub(r' width="[\d.]+" height="[\d.]+"', '', s, count=1)
     return re.sub(r'viewBox="[^"]+"', f'viewBox="{vb}"', s, count=1) if vb else s
 
-MARK = _logo("mark.svg")
+MARK = _logo("bear.svg")
 WORD = _logo("oct-wordmark.svg")
 FONTS = os.path.join(ROOT, "fonts")
 

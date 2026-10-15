@@ -7,6 +7,7 @@ Every measure comes from one unit: cap height H = 100 and phi = 1.618.
   T width       = H * phi/2  = 80.90
   C opening     = 360 / phi^3 = 84.98 degrees
   letter gap    = w,  word gap = H / phi^2 = 38.20
+  OCT. 26       "OCT. " : "26" = phi^2 : 1 (its word gap becomes 32.2)
 Glyphs are drawn as strokes on centre lines (butt caps), so they stay clean at any size.
 """
 import math
@@ -171,12 +172,26 @@ GLYPHS = {"O": glyph_O, "C": glyph_C, "T": glyph_T, "S": glyph_S, "I": glyph_I, 
           "R": glyph_R, "D": glyph_D, "M": glyph_M, "N": glyph_N, "A": glyph_A, "0": glyph_0, "1": glyph_1,
           "2": glyph_2, "3": glyph_3, "4": glyph_4, "6": glyph_6, "7": glyph_7, "9": glyph_9}
 
-def word(text, ink, dot, uid="w"):
-    """Lay out any brand name built from GLYPHS, '.' and ' '. Returns (svg, width)."""
-    parts, x = [], 0.0
+# The master logo is split on the golden ratio: "OCT. " : "26" = phi^2 : 1, so the whole word is (phi^2 + 1) : 1
+# of the number. Its word gap comes from that split (32.2); every other name uses the plain word gap H / phi^2.
+SPLIT = {"OCT. 26"}
+
+def _space(text):
+    if text in SPLIT:
+        left, right = text.split(" ")
+        return PHI ** 2 * word(right, "#000", "#000")[1] - word(left, "#000", "#000")[1]
+    return WORD
+
+def word(text, ink, dot, uid="w", stops=None):
+    """Lay out any brand name built from GLYPHS, '.' and ' '. Returns (svg, width).
+    Pass a dict as `stops` to get the x position where each character starts."""
+    parts, x, sp = [], 0.0, None
     for i, ch in enumerate(text):
+        if stops is not None:
+            stops.setdefault(ch, x)
         if ch == " ":
-            x += WORD; continue
+            sp = _space(text) if sp is None else sp
+            x += sp; continue
         if ch == ".":
             s, adv = glyph_dot(x, dot)
         else:
@@ -193,20 +208,9 @@ def word(text, ink, dot, uid="w"):
 
 def wordmark(ink, dot, uid="wm"):
     """OCT. 26 on the baseline y=0, cap line y=-H. Returns (svg, width, stops) where stops are x positions."""
-    parts, x, stops = [], 0.0, {}
-    for key, fn, gap in (("O", glyph_O, GAP * .8), ("C", glyph_C, GAP), ("T", glyph_T, GAP / PHI),
-                         (".", None, WORD), ("2", glyph_2, GAP), ("6", None, 0)):
-        stops[key] = x
-        if key == ".":
-            s, adv = glyph_dot(x, dot)
-        elif key == "6":
-            s, adv = glyph_6(x, ink, uid + "6")
-        elif key == "2":
-            s, adv = glyph_2(x, ink, uid + "2")
-        else:
-            s, adv = fn(x, ink)
-        parts.append(s); x += adv + gap
-    return "".join(parts), x, stops
+    st = {}
+    s, w = word("OCT. 26", ink, dot, uid, st)
+    return s, w, st
 
 def digits_26(x, ink, uid):
     a, adv = glyph_2(x, ink, uid + "a")

@@ -178,7 +178,7 @@ def tag_acro(o):
             text("no. 001 / 100", 22, 280, 740, o["fg"], "alt/IBMPlexMono-Medium.ttf", .08)]
     return svg(W, H, "".join(body), "#E7E3DC")
 
-STAMP = re.sub(r'<title>.*?</title>', '', open(os.path.join(ROOT, "logo", "svg", "mark-for-stamp.svg")).read())
+STAMP = re.sub(r'<title>.*?</title>', '', open(os.path.join(ROOT, "logo", "svg", "bear-mono.svg")).read())
 
 def maison_mark(o, size):
     """Small mark above the word; drawn in a size x size box centred on 0,0."""

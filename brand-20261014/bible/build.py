@@ -155,18 +155,14 @@ def tag_love(p):
 
 # ---------------------------------------------------------------- story card, 89 x 55 mm (phi : 1)
 def card():
-    """Front splits into a 55 mm square and a 34 mm band (the golden cut). Back tells why 26."""
+    """Front: the name alone, phi of the card's width, baseline on the golden line. Back tells why 26."""
     w, h = 89 * K, 55 * K; m = h / PHI ** 4
     W, H = w + 68, 2 * h + 3 * 34
     x, y1, y2 = 34, 34, 34 + h + 34
-    sq = h; band = w - sq
-    wm, cap = word_w("OCT. 26", sq - 2 * m, INK, TOM)
-    t1, t1w = fit("our crafted things.", cap / PHI, JOST, 0, sq - 2 * m, INK)
-    th = h / PHI; tw_ = th / PHI
+    wm, cap = word_w("OCT. 26", w / PHI, INK, TOM)
+    t1, t1w = fit("our crafted things.", cap / PHI, JOST, 0, w / PHI, COB)
     g = [f'<rect x="{x}" y="{y1}" width="{w}" height="{h}" fill="{PAPER}" stroke="{LINE}" stroke-width="2"/>',
-         f'<rect x="{x + sq}" y="{y1}" width="{band}" height="{h}" fill="{COB}"/>',
-         at(x + m, y1 + h / PHI, wm), at(x + m, y1 + h / PHI + cap / PHI + cap / PHI, t1),
-         tag(x + sq + (band - tw_) / 2, y1 + (h - th) / 2, th, PAPER, INK, TOM, COB)]
+         at(x + (w - w / PHI) / 2, y1 + h / PHI, wm), at(x + (w - t1w) / 2, y1 + h / PHI + cap / PHI + cap / PHI, t1)]
     # back
     g.append(f'<rect x="{x}" y="{y2}" width="{w}" height="{h}" fill="{PAPER}" stroke="{LINE}" stroke-width="2"/>')
     g.append(text("ทำไมชื่อ OCT. 26", 34, x + m, y2 + m + 26, INK, TH)[0])
