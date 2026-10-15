@@ -1,0 +1,233 @@
+<title>Unbranded Palette Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600&family=IBM+Plex+Sans+Thai:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  /* Layout: a sample-card wall, like paint chips pinned to a workshop board; every card is the same mock-up with no name on it. */
+  --bg:#F2EDE6;--paper:#FFFDF9;--ink:#2A2420;--muted:#6F655C;--line:#E2D8CC;--chip:#E9E1D6;--accent:#2A2420;--on-accent:#FFFDF9;--focus:#D9772B;
+  --display:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1B1816;--paper:#25211E;--ink:#F2EDE6;--muted:#BBAFA3;--line:#3A332E;--chip:#332D28;--accent:#F2EDE6;--on-accent:#1B1816;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1B1816;--paper:#25211E;--ink:#F2EDE6;--muted:#BBAFA3;--line:#3A332E;--chip:#332D28;--accent:#F2EDE6;--on-accent:#1B1816;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.25;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,6vw,42px)}h2{font-size:clamp(21px,4.4vw,27px)}
+p{margin:0}
+header{padding-top:28px;display:flex;flex-direction:column;gap:12px;max-width:68ch}
+.lead{color:var(--muted);font-size:17px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-family:var(--display);font-size:14px;cursor:pointer;border-radius:99px;border:1px solid var(--line);background:var(--chip);color:var(--ink);padding:6px 14px}
+button.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.spacer{flex:1}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr))}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card svg{width:100%;height:auto;display:block;border-radius:10px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tag{font-family:var(--display);font-size:13px;color:var(--muted)}
+.no{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.sw{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+.sw button{padding:0;border-radius:6px;height:38px;position:relative;border:1px solid #00000022}
+.sw button[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:1px}
+.sw button[aria-pressed="true"]::after{content:"";position:absolute;right:3px;top:3px;width:8px;height:8px;border-radius:50%;background:#fff;border:2px solid #000}
+.hex{font-family:var(--mono);font-size:11.5px;color:var(--muted);display:grid;grid-template-columns:repeat(3,1fr);gap:2px 8px}
+.hex span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.check{font-size:13px;color:var(--muted)}
+.check b{font-weight:600;color:var(--ink)}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.acts button{font-size:13px;padding:5px 11px}
+.empty{border:1px dashed var(--line);border-radius:16px;padding:18px;color:var(--muted)}
+.note{font-size:13.5px;color:var(--muted);max-width:75ch}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .15s}.card:hover{transform:translateY(-2px)}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="tag">ห้องทดลองสี · ไม่มีชื่อแบรนด์ ไม่มีโลโก้</span>
+  <h1>สีแบรนด์แบบไม่มีชื่อ</h1>
+  <p class="lead">ทุกการ์ดเป็นของชุดเดียวกัน แผงหลัก วงกลมรูปโปรไฟล์ ป้ายห้อย ถุง ห้าสีสำหรับคนในบ้าน และชิ้นหนังจริงสามสี ไม่มีตัวหนังสือมาชวนให้เอนเอียง ดูแค่สีอย่างเดียว</p>
+  <p class="note">แตะช่องสีเพื่อล็อกสีที่ชอบ แล้วกด สุ่มใหม่ สีที่ล็อกจะอยู่ต่อ ชุดที่ชอบกด เก็บไว้ ชุดที่เก็บอยู่ในเครื่องนี้เท่านั้น ส่งให้คนอื่นด้วยปุ่ม คัดลอกรหัสสี</p>
+</header>
+
+<div class="bar" role="toolbar" aria-label="ตัวเลือก">
+  <button type="button" data-mode="all" aria-pressed="true">ทั้งหมด</button>
+  <button type="button" data-mode="pop" aria-pressed="false">สีสด สะดุดตา</button>
+  <button type="button" data-mode="quiet" aria-pressed="false">หรูแบบเงียบ</button>
+  <button type="button" data-mode="joke" aria-pressed="false">หรูแบบตลก</button>
+  <span class="spacer"></span>
+  <button type="button" class="primary" id="rollAll">สุ่มใหม่ทั้งหมด</button>
+</div>
+
+<section id="favs" style="display:flex;flex-direction:column;gap:12px">
+  <h2>ที่เก็บไว้</h2>
+  <div class="grid" id="favGrid"></div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+  <h2>สุ่มใหม่</h2>
+  <p class="note">สร้างตามกติกาของแต่ละแนว สีสดใช้สีอิ่มตัวสูงห้าสีที่ห่างกันบนวงล้อสี หรูแบบเงียบใช้สีหม่นใกล้กันกับจุดสีทองเหลืองหรือแดงเลือดนก หรูแบบตลกใช้ดำ ครีม ทอง แล้วแกล้งใส่สีจัดหนึ่งหรือสองสี</p>
+  <div class="grid" id="genGrid"></div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+  <h2>เจ็ดชุดเดิม ถอดชื่อออกแล้ว</h2>
+  <p class="note">ชุดเดียวกับใน Color Lab เรียงตามลำดับเดิม แต่ไม่มีชื่อแบรนด์และไม่มีชื่อชุด</p>
+  <div class="grid" id="seedGrid"></div>
+</section>
+</div>
+
+<script>
+(function(){
+  const LEATHER = ["#B8743A","#6E4A2F","#C98B4E"];
+  const ROLES = ["พื้น","ตัวหนังสือ","สีหลัก","จุด","คนที่ 1","คนที่ 2","คนที่ 3","คนที่ 4","คนที่ 5"];
+  const MODE_TH = {pop:"สีสด สะดุดตา", quiet:"หรูแบบเงียบ", joke:"หรูแบบตลก", seed:"ชุดเดิม"};
+  const SEEDS = [
+    ["#F3E3CF","#3A2318","#3A2318","#D9772B","#D9772B","#8A6A3A","#B8743A","#6F9A8D","#C9A27A"],
+    ["#FFF6EC","#1C1B22","#2449D8","#FF5A36","#FF5A36","#2449D8","#FFC23C","#2EC4A0","#FF8AC4"],
+    ["#FFFBEF","#16302A","#0F6B52","#FFA21F","#FFA21F","#0F6B52","#8E6CF0","#36B7F0","#FF6B6B"],
+    ["#EFE9DF","#2B1D16","#2B1D16","#8B5A2B","#8B5A2B","#B08D57","#6B6155","#A0522D","#4E5B4A"],
+    ["#F5F2EC","#1E2430","#1E2430","#7A1F24","#7A1F24","#A88B55","#3D5A80","#5E6B4E","#8C6F8C"],
+    ["#F3EBDD","#121212","#121212","#FF6FAE","#FF6FAE","#C9A45C","#7FD1C1","#FFD23F","#9B8CFF"],
+    ["#FAF3E3","#161616","#9DBE6E","#E8553A","#E8553A","#9DBE6E","#C6A15B","#6FA8DC","#F2A7A0"]
+  ];
+
+  // ---------- colour helpers
+  const clamp = (v,a,b)=>Math.min(b,Math.max(a,v));
+  function hsl(h,s,l){h=((h%360)+360)%360;s=clamp(s,0,100)/100;l=clamp(l,0,100)/100;
+    const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,9-k(n),1));
+    return "#"+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,"0")).join("").toUpperCase();}
+  function lum(hex){const c=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));
+    return .2126*c[0]+.7152*c[1]+.0722*c[2];}
+  const contrast=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+  const on = hex => contrast(hex,"#FFFFFF")>=contrast(hex,"#141414")?"#FFFFFF":"#141414";
+  function rng(seed){let t=seed>>>0;return()=>{t+=0x6D2B79F5;let r=Math.imul(t^t>>>15,1|t);r^=r+Math.imul(r^r>>>7,61|r);return((r^r>>>14)>>>0)/4294967296;};}
+  const pick=(r,arr)=>arr[Math.floor(r()*arr.length)];
+  const between=(r,a,b)=>a+(b-a)*r();
+
+  // ---------- generators: each returns [paper, ink, deep, dot, f1..f5]
+  const GEN = {
+    pop(r){
+      const base=r()*360, step=between(r,62,82);
+      const fam=[0,1,2,3,4].map(i=>{const h=base+i*step+between(r,-8,8);const yellow=((h%360)+360)%360>35&&((h%360)+360)%360<110;
+        return hsl(h,between(r,72,92),yellow?between(r,55,62):between(r,46,58));});
+      const deep=fam.slice().sort((a,b)=>lum(a)-lum(b))[0];
+      return [hsl(base+30,between(r,40,70),between(r,96,98)), hsl(base+200,between(r,15,30),between(r,9,13)), deep, fam[0], ...fam];
+    },
+    quiet(r){
+      const warm=r()<.65, base=warm?between(r,15,45):between(r,200,230);
+      const dots=[hsl(40,between(r,35,48),between(r,45,54)),hsl(355,between(r,45,60),between(r,26,32)),hsl(26,between(r,45,60),between(r,32,40)),hsl(150,between(r,18,30),between(r,24,30))];
+      const fam=[0,1,2,3,4].map(i=>hsl(base+i*22-44+between(r,-6,6),between(r,16,40),between(r,30,60)));
+      return [hsl(base,between(r,16,30),between(r,91,95)), hsl(base,between(r,22,35),between(r,9,13)), hsl(base+between(r,-20,20),between(r,22,42),between(r,15,24)), pick(r,dots), ...fam];
+    },
+    joke(r){
+      const pops=[[330,85,70],[85,45,64],[10,78,56],[228,75,52],[50,95,58],[255,85,74],[165,50,66]].map(p=>hsl(p[0]+between(r,-6,6),p[1],p[2]));
+      const a=pick(r,pops); let b=pick(r,pops); if(b===a) b=pops[(pops.indexOf(a)+3)%pops.length];
+      const gold=hsl(42,between(r,40,50),between(r,50,58));
+      const deep=pick(r,[hsl(0,0,7),hsl(160,30,14),hsl(225,35,15),hsl(345,40,16)]);
+      return [hsl(40,between(r,38,50),between(r,92,95)), hsl(0,0,between(r,6,9)), deep, a, a, gold, b, hsl(between(r,0,360),between(r,40,60),between(r,78,86)), hsl(0,0,between(r,82,88))];
+    }
+  };
+
+  // ---------- mock-up: no words, no logo
+  function mock(c){
+    const [paper,ink,deep,dot,...fam]=c, lt=on(deep);
+    const chips=fam.map((f,i)=>`<rect x="${16+i*66}" y="196" width="58" height="34" rx="8" fill="${f}"/>`).join("");
+    const leather=LEATHER.map((l,i)=>`<rect x="${276+i*24}" y="152" width="20" height="30" rx="4" fill="${l}"/>`).join("");
+    return `<svg viewBox="0 0 360 244" role="img" aria-label="ตัวอย่างสีบนแผง ป้ายห้อย ถุง และชิ้นหนัง ไม่มีตัวหนังสือ">
+      <rect width="360" height="244" fill="${paper}"/>
+      <rect x="16" y="14" width="186" height="120" rx="12" fill="${deep}"/>
+      <rect x="40" y="52" width="92" height="20" rx="4" fill="${lt}"/><circle cx="144" cy="66" r="6" fill="${dot}"/><rect x="152" y="52" width="30" height="20" rx="4" fill="${lt}"/>
+      <rect x="40" y="88" width="120" height="6" rx="3" fill="${lt}" opacity=".6"/>
+      <circle cx="250" cy="60" r="44" fill="${dot}"/><circle cx="250" cy="60" r="16" fill="${on(dot)}" opacity=".9"/>
+      <path d="M312 14 h26 l10 10 v108 h-46 v-108 z" fill="${ink}"/><circle cx="325" cy="28" r="4" fill="${paper}"/>
+      <rect x="310" y="70" width="30" height="5" rx="2.5" fill="${on(ink)}" opacity=".85"/><rect x="314" y="82" width="22" height="4" rx="2" fill="${on(ink)}" opacity=".5"/>
+      <path d="M222 168 c0-22 36-22 36 0" fill="none" stroke="${ink}" stroke-width="3"/>
+      <rect x="212" y="150" width="56" height="34" rx="4" fill="${deep}"/><circle cx="240" cy="167" r="4" fill="${dot}"/>
+      <rect x="16" y="148" width="186" height="38" rx="8" fill="${paper}" stroke="${ink}" stroke-opacity=".18"/>
+      <rect x="28" y="158" width="110" height="7" rx="3.5" fill="${ink}"/><rect x="28" y="171" width="70" height="5" rx="2.5" fill="${ink}" opacity=".5"/>
+      <rect x="150" y="155" width="40" height="24" rx="12" fill="${dot}"/>
+      ${leather}${chips}</svg>`;
+  }
+
+  // ---------- state
+  let mode="all", serial=Date.now()%100000, gen=[];
+  const FKEY="unbranded-palettes-v1";
+  let favs=[]; try{favs=JSON.parse(localStorage.getItem(FKEY)||"[]")}catch(e){favs=[]}
+  const saveFavs=()=>{try{localStorage.setItem(FKEY,JSON.stringify(favs))}catch(e){}};
+
+  function make(m, seed, keep){
+    const c=GEN[m](rng(seed));
+    if(keep) keep.forEach((k,i)=>{ if(k) c[i]=k; });
+    return {m, c, locks:keep?keep.map(Boolean):Array(9).fill(false)};
+  }
+  function initial(){
+    gen=[]; const order=["pop","quiet","joke"];
+    for(let i=0;i<12;i++) gen.push(make(order[i%3], 1009+i*7919));
+  }
+  function roll(item){
+    const keep=item.c.map((v,i)=>item.locks[i]?v:null);
+    const n=make(item.m, ++serial*2654435761, keep); item.c=n.c;
+  }
+
+  function copyText(item){
+    return ROLES.map((r,i)=>`${r} ${item.c[i]}`).join("\n");
+  }
+  function card(item, idx, where){
+    const checks=[["ตัวหนังสือบนพื้น",contrast(item.c[1],item.c[0])],["ตัวหนังสือบนสีหลัก",contrast(on(item.c[2]),item.c[2])]]
+      .map(([t,v])=>`${t} <b>${v.toFixed(1)}:1</b> ${v>=4.5?"อ่านง่าย":"อ่านยาก"}`).join(" · ");
+    const sw=item.c.map((h,i)=>`<button type="button" data-act="lock" data-i="${i}" aria-pressed="${item.locks&&item.locks[i]?"true":"false"}" style="background:${h}" aria-label="${ROLES[i]} ${h} แตะเพื่อล็อก"></button>`).join("");
+    const hex=item.c.map((h,i)=>`<span>${ROLES[i]} ${h}</span>`).join("");
+    const acts = where==="gen"
+      ? `<button type="button" data-act="roll">สุ่มใหม่</button><button type="button" data-act="fav">เก็บไว้</button><button type="button" data-act="copy">คัดลอกรหัสสี</button>`
+      : where==="fav"
+      ? `<button type="button" data-act="unfav">เอาออก</button><button type="button" data-act="copy">คัดลอกรหัสสี</button>`
+      : `<button type="button" data-act="fav">เก็บไว้</button><button type="button" data-act="copy">คัดลอกรหัสสี</button>`;
+    return `<article class="card" data-where="${where}" data-idx="${idx}">
+      <div class="top"><span class="tag">${MODE_TH[item.m]}</span><span class="no">#${String(idx+1).padStart(2,"0")}</span></div>
+      ${mock(item.c)}
+      <div class="sw" role="group" aria-label="ช่องสี แตะเพื่อล็อก">${where==="gen"?sw:item.c.map((h,i)=>`<span style="height:38px;border-radius:6px;border:1px solid #00000022;background:${h}" title="${ROLES[i]} ${h}"></span>`).join("")}</div>
+      <div class="hex">${hex}</div>
+      <p class="check">${checks}</p>
+      <div class="acts">${acts}</div></article>`;
+  }
+  const show = m => mode==="all"||m===mode||m==="seed";
+  function render(){
+    const fg=document.getElementById("favGrid");
+    fg.innerHTML = favs.length ? favs.map((f,i)=>card(f,i,"fav")).join("") : `<p class="empty">ยังไม่มีชุดที่เก็บไว้ กด เก็บไว้ ที่การ์ดที่ชอบ แล้วชุดนั้นจะมาอยู่ตรงนี้</p>`;
+    document.getElementById("genGrid").innerHTML = gen.map((g,i)=>show(g.m)?card(g,i,"gen"):"").join("");
+    document.getElementById("seedGrid").innerHTML = SEEDS.map((c,i)=>card({m:"seed",c},i,"seed")).join("");
+  }
+
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    if(b.dataset.mode){ mode=b.dataset.mode; document.querySelectorAll("[data-mode]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); render(); return; }
+    if(b.id==="rollAll"){ gen.forEach(g=>{ if(show(g.m)) roll(g); }); render(); return; }
+    const cardEl=b.closest(".card"); if(!cardEl) return;
+    const where=cardEl.dataset.where, idx=+cardEl.dataset.idx;
+    const item = where==="gen"?gen[idx]: where==="fav"?favs[idx]: {m:"seed",c:SEEDS[idx]};
+    const act=b.dataset.act;
+    if(act==="lock"){ const i=+b.dataset.i; item.locks[i]=!item.locks[i]; b.setAttribute("aria-pressed", String(item.locks[i])); return; }
+    if(act==="roll"){ roll(item); render(); return; }
+    if(act==="fav"){ favs.unshift({m:item.m,c:item.c.slice()}); saveFavs(); render(); b.textContent="เก็บแล้ว"; return; }
+    if(act==="unfav"){ favs.splice(idx,1); saveFavs(); render(); return; }
+    if(act==="copy"){
+      const t=copyText(item);
+      const done=()=>{b.textContent="คัดลอกแล้ว"; setTimeout(()=>b.textContent="คัดลอกรหัสสี",1400);};
+      const fallback=()=>{ const pre=document.createElement("pre"); pre.textContent=t; pre.style.cssText="white-space:pre-wrap;font-family:var(--mono);font-size:12px;margin:0;user-select:all";
+        b.closest(".acts").after(pre); const r=document.createRange(); r.selectNodeContents(pre); const s=getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent="เลือกข้อความแล้ว กดคัดลอก"; };
+      try{ navigator.clipboard.writeText(t).then(done,fallback); }catch(_){ fallback(); }
+    }
+  });
+
+  initial(); render();
+})();
+</script>
