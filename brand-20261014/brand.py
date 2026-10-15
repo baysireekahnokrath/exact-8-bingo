@@ -147,8 +147,14 @@ VOICE = [
 ]
 
 # ---------------------------------------------------------------- products
-PIECE_COST = {"01": 6.212, "01-S200": 6.212, "01-S250": 6.212,
-              "02": 2.784, "03": 2.784, "04": 2.784, "05": 2.784, "06": 2.784}
+# cost of one cut piece = leather + cutting (1.5 THB, cost sheet) + die price spread over DIE_QTY pieces
+LEATHER_CUT = {"01": 5.262, "01-S200": 5.262, "01-S250": 5.262,       # big-scrap lot
+               "02": 1.834, "03": 1.834, "04": 1.834, "05": 1.834, "06": 1.834}   # small-scrap lot
+DIE_PRICE = {"01": 600, "02": 550, "03": 550, "04": 600, "05": 550, "06": 600}    # quoted 15 Oct 2026, THB
+DIE_PRICE_STRAP = 950          # heart strap die not quoted yet: the old 950 THB estimate stays until it is
+DIE_QTY = 1000                 # pieces cut per die over its life (cost-sheet assumption)
+PIECE_COST = {c: round(v + DIE_PRICE.get(c[:2] if "-S" not in c else "", DIE_PRICE_STRAP) / DIE_QTY, 3)
+              for c, v in LEATHER_CUT.items()}
 JOINT_COST = 20 / 3600 * 50      # 20 s per joint at 50 THB/h, same as the cost sheet
 PACK_COST = 60 / 3600 * 50
 PACKAGING = 5.0

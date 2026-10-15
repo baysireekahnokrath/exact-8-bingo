@@ -153,7 +153,10 @@ S["channels"] = section("channels", W, I,
     "ต้องเช็กก่อนว่าชื่อ oct26.crafted ยังว่างทุกช่องทาง ห้าหมีไม่ต้องเปิดบัญชีแยก ใช้หมวดในร้าน",
     "flex-direction:row;align-items:center")
 
-NUM = [("333", "ชิ้น จากเศษหนังที่ซื้อมา"), ("32,712", "บาท ถ้าขายหมดทั้งสามวัน"), ("5,601", "บาท ต้นทุนของทั้งหมด")]
+import sys; sys.path.insert(0, os.path.dirname(HERE)); import brand as B
+_T = B.event_totals()
+NUM = [(f"{_T['units']:,}", "ชิ้น จากเศษหนังที่ซื้อมา"), (f"{_T['sales']:,.0f}", "บาท ถ้าขายหมดทั้งสามวัน"),
+       (f"{_T['cost']:,.0f}", "บาท ต้นทุนของทั้งหมด")]
 S["numbers"] = section("numbers", I, P,
     h("ของที่เตรียมไปบูธ", 68, MITR, P) + "\n" + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:55px">'
     + "".join(f'<div style="display:flex;flex-direction:column;gap:8px"><p style="font-family:{JOST};font-size:140px;font-weight:500;line-height:1.1;color:{SU};font-variant-numeric:tabular-nums">{n}</p>'
