@@ -1,15 +1,23 @@
 """Build the OCT. 26 logo set and the FIVE BEARS sub-brand set as outlined SVG (no fonts needed by the printer).
 
-OCT. 26: Syne Bold wordmark, the full stop is a brick-orange dot. Thai lines use Anuphan.
+Every measure comes from phi (see logolab/geometry.py and the Logo Lab page):
+  OCT. 26 wordmark   letters drawn from circles and lines, stroke = cap / phi^4, dot = stroke * phi
+  symbol             a 1 : phi hang tag; the 26 sits on its golden line, OCT. near the foot
+  seal               rings phi : 1, for hot-stamping leather
+  clear space        one dot * phi around every mark
 FIVE BEARS (sub-brand, "by OCT. 26"):
 The bear is the real die outline of pattern 01, turned 45 degrees so the ears sit on top.
 Its two slits become the cheeks. The heart in the middle is Mama Bear.
 """
-import math, os, re, sys
+import json, math, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
-sys.path.insert(0, ROOT); sys.path.insert(0, HERE)
+sys.path.insert(0, ROOT); sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(ROOT, "logolab"))
 from brand import C, BRAND, SUB
 from textpath import text_path
+import geometry as G
+PHI = G.PHI
+JOST, JOSTR, TH = "alt/Jost-Medium.ttf", "alt/Jost-Regular.ttf", "alt/Anuphan-Medium.ttf"
+SYNE = JOST            # old name kept for drawings in other folders
 
 OUT = os.path.join(HERE, "svg"); os.makedirs(OUT, exist_ok=True)
 SRC = os.path.join(ROOT, "..", "diecut-leather-20261014", "svg", "01-bear-head.svg")
@@ -76,169 +84,284 @@ def svg(w, h, body, bg=None, title="OCT. 26"):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
             f'<title>{title}</title>{rect}{body}</svg>')
 
-def stacked(fg, bear_c, heart_c, face, bg=None):
-    W, H = 600, 640
-    b = bear(W / 2 - 190 * BW / BH / 2 * 1, 40, 190, bear_c, heart_c, face)
-    t1, _, _ = text(SUB["th"], 150, W / 2, 420, fg, anchor="middle")
-    t2, _, _ = text(SUB["en"], 44, W / 2, 500, fg, "Mitr-Medium.ttf", tracking=.22, anchor="middle")
-    t3, _, _ = text(SUB["by"], 30, W / 2, 568, bear_c if bg is None else fg, "alt/Syne-Bold.ttf", tracking=.04, anchor="middle")
-    return svg(W, H, b + t1 + t2 + t3, bg, "ห้าหมี FIVE BEARS by OCT. 26")
 
-def horizontal(fg, bear_c, heart_c, face, bg=None):
-    W, H = 1000, 300
-    b = bear(30, 45, 210, bear_c, heart_c, face)
-    t1, _, _ = text(SUB["th"], 150, 290, 185, fg)
-    t2, w2, _ = text(SUB["en"], 42, 296, 255, fg, "Mitr-Medium.ttf", tracking=.22)
-    t3, _, _ = text(SUB["by"], 30, 296 + w2 + 26, 255, bear_c if fg != "#000000" else fg, "alt/Syne-Bold.ttf", tracking=.04)
-    return svg(W, H, b + t1 + t2 + t3, bg, "ห้าหมี FIVE BEARS by OCT. 26")
+# ---------------------------------------------------------------- the wordmark
+def word(t, cap, fg, dot, uid):
+    """Any brand name (OCT. 26, SOI. 02, MAR. 23 ...) at cap height `cap`. Returns (svg group at 0,0 baseline, width)."""
+    s, w = G.word(t, fg, dot, uid)
+    k = cap / G.H
+    return f'<g transform="scale({k:.5f})">{s}</g>', w * k
 
-def mark(bear_c, heart_c, face, bg=None, pad=40):
-    h = 400 - 2 * pad; w = h * BW / BH
-    return svg(400, 400, bear((400 - w) / 2, pad + (400 - 2 * pad - h) / 2, h, bear_c, heart_c, face), bg)
-
-def family(bg=None):
-    sizes = [("cocoa", 1.0), ("heart", .9), ("honey", .7), ("peach", .64), ("sage", .58)]
-    H0 = 220; gap = 18; x = 30; parts = []
-    for k, f in sizes:
-        h = H0 * f; w = h * BW / BH
-        hc = C["cream"] if k == "heart" else C["heart"]
-        face = C["cream"] if k == "cocoa" else C["cocoa"]
-        parts.append(bear(x, 30 + H0 - h, h, C[k], hc, face)); x += w + gap
-    W = x + 12
-    t, _, _ = text(SUB["tag_th"], 46, W / 2, 330, C["cocoa"], "Mitr-Medium.ttf", anchor="middle")
-    return svg(round(W), 370, "".join(parts) + t, bg)
-
-def sticker():
-    W = 400; h = 190; w = h * BW / BH
-    b = bear((W - w) / 2, 70, h, C["cream"], C["heart"], C["cocoa"])
-    t, _, _ = text(SUB["th"], 64, W / 2, 335, C["cream"], anchor="middle")
-    return svg(W, W, f'<circle cx="200" cy="200" r="200" fill="{C["caramel"]}"/>' + b + t)
-
-
-# ---------------------------------------------------------------- OCT. 26
-SYNE, TH = "alt/Syne-Bold.ttf", "alt/Anuphan-Medium.ttf"
+_uid = [0]
+def _u(p):
+    _uid[0] += 1; return f"{p}{_uid[0]}"
 
 def wordmark(x, base, size, fg, dot, two_lines=False, anchor="start", left="OCT", right="26"):
-    """OCT + dot + 26 on one line, or OCT. over a larger 26. Returns (svg, width, height).
-    The same grammar names the collections (SOI. 02) and the birthday brands (MAR. 23)."""
-    d1, w1, b1 = text_path(left, size, SYNE)
-    r = size * .085
+    """Kept for other drawings. `size` is the old font size: cap height = size * 0.66.
+    Two lines: LEFT. over a bigger RIGHT, the second line phi times the first."""
+    cap = size * .66
     if not two_lines:
-        d2, w2, b2 = text_path(right, size, SYNE)
-        dx = b1[2] + size * .06 + 2 * r + size * .3 - b2[0]
-        total = dx + b2[2] - b1[0]
-        x0 = x - (total / 2 if anchor == "middle" else 0) - b1[0]
-        parts = (f'<path transform="translate({x0:.2f},{base:.2f})" d="{d1}" fill="{fg}"/>'
-                 f'<circle cx="{x0 + b1[2] + size * .06 + r:.2f}" cy="{base - r:.2f}" r="{r:.2f}" fill="{dot}"/>'
-                 f'<path transform="translate({x0 + dx:.2f},{base:.2f})" d="{d2}" fill="{fg}"/>')
-        return parts, total, size * .66
-    big = size * 1.62
-    d2, w2, b2 = text_path(right, big, SYNE)
-    w_top = b1[2] - b1[0] + size * .06 + 2 * r
-    cx = x if anchor == "middle" else x + max(w_top, b2[2] - b2[0]) / 2
-    x1 = cx - w_top / 2 - b1[0]
-    x2 = cx - (b2[0] + b2[2]) / 2
-    base2 = base + size * .2 + big * .66
-    parts = (f'<path transform="translate({x1:.2f},{base:.2f})" d="{d1}" fill="{fg}"/>'
-             f'<circle cx="{x1 + b1[2] + size * .06 + r:.2f}" cy="{base - r:.2f}" r="{r:.2f}" fill="{dot}"/>'
-             f'<path transform="translate({x2:.2f},{base2:.2f})" d="{d2}" fill="{fg}"/>')
-    return parts, max(w_top, b2[2] - b2[0]), base2 - base + size * .66
+        g, w = word(f"{left}. {right}", cap, fg, dot, _u("wm"))
+        x0 = x - (w / 2 if anchor == "middle" else 0)
+        return f'<g transform="translate({x0:.2f},{base:.2f})">{g}</g>', w, cap
+    g1, w1 = word(f"{left}.", cap, fg, dot, _u("wa"))
+    g2, w2 = word(right, cap * PHI, fg, dot, _u("wb"))
+    cx = x if anchor == "middle" else x + max(w1, w2) / 2
+    base2 = base + cap / PHI + cap * PHI
+    return (f'<g transform="translate({cx - w1/2:.2f},{base:.2f})">{g1}</g>'
+            f'<g transform="translate({cx - w2/2:.2f},{base2:.2f})">{g2}</g>'), max(w1, w2), base2 - base + cap
 
-def oct_horizontal(fg, dot, sub, bg=None):
-    W, H = 1000, 330
-    wm, w, _ = wordmark(W / 2, 185, 190, fg, dot, anchor="middle")
-    t, _, _ = text(BRAND["tag_en"], 40, W / 2, 268, sub, SYNE, tracking=.02, anchor="middle")
-    return svg(W, H, wm + t, bg)
+# ---------------------------------------------------------------- the tag symbol (1 : phi)
+TW_, TH_ = 100.0, 100.0 * PHI
+CH = TW_ / PHI ** 3; HOLE = TW_ / PHI ** 4; MARG = TW_ / PHI ** 4
 
-def oct_stacked(fg, dot, sub, bg=None):
-    W, H = 600, 680
-    wm, _, _ = wordmark(W / 2, 210, 150, fg, dot, two_lines=True, anchor="middle")
-    t1, _, _ = text(BRAND["tag_en"], 38, W / 2, 575, sub, SYNE, tracking=.02, anchor="middle")
-    t2, _, _ = text(BRAND["tag_th"], 34, W / 2, 630, sub, TH, anchor="middle")
-    return svg(W, H, wm + t1 + t2, bg)
+def tag(x, y, h, fill, ink, dot, hole, num="26", mon="OCT"):
+    """Hang tag of height h, top-left at (x, y). The number's baseline sits on the golden line."""
+    k = h / TH_
+    d, dw = G.word(num, ink, dot, _u("tn"))
+    sd = (TW_ - 2 * MARG) / dw
+    o, ow = G.word(f"{mon}.", ink, dot, _u("to"))
+    so = (TW_ - 2 * MARG) / ow / PHI
+    return (f'<g transform="translate({x:.2f},{y:.2f}) scale({k:.5f})">'
+            f'<path d="M{CH:.2f},0 H{TW_ - CH:.2f} L{TW_},{CH:.2f} V{TH_:.2f} H0 V{CH:.2f} Z" fill="{fill}"/>'
+            f'<circle cx="{TW_/2}" cy="{CH:.2f}" r="{HOLE/2:.2f}" fill="{hole}"/>'
+            f'<g transform="translate({MARG:.2f},{TH_/PHI:.2f}) scale({sd:.5f})">{d}</g>'
+            f'<g transform="translate({(TW_ - ow*so)/2:.2f},{TH_ - CH:.2f}) scale({so:.5f})">{o}</g></g>')
 
-def oct_mark(fill, fg, dot, W=400):
-    wm, _, _ = wordmark(W / 2, W * .39, W * .2, fg, dot, two_lines=True, anchor="middle")
-    return svg(W, W, f'<circle cx="{W/2}" cy="{W/2}" r="{W/2}" fill="{fill}"/>' + wm)
+# ---------------------------------------------------------------- seal (phi : 1), text outlined along the ring
+def ring_text(t, r, size, fill, top=True, font=JOST, tracking=.18, max_deg=360 / PHI ** 2):
+    """Letters around a circle. top=True reads clockwise over the top; False reads left to right along the bottom.
+    The text may span at most 360/phi^2 = 137.5 degrees (the golden angle), so it never reaches the side dots."""
+    while True:
+        widths = [text_path(ch, size, font)[1] for ch in t]
+        adv = [w + size * tracking for w in widths]
+        total = sum(adv) - size * tracking
+        if math.degrees(total / r) <= max_deg: break
+        size /= PHI ** .125
+    span = total / r                                     # radians
+    capH = size * .7
+    out = []
+    pos = -span / 2 if top else span / 2
+    for ch, w, a in zip(t, widths, adv):
+        dpath = text_path(ch, size, font)[0]
+        mid = pos + (w / 2 / r if top else -w / 2 / r)
+        if top:
+            ang = mid; rr = r - capH / 2
+            px, py = rr * math.sin(ang), -rr * math.cos(ang); rot_ = math.degrees(ang)
+        else:
+            ang = math.pi + mid; rr = r + capH / 2
+            px, py = rr * math.sin(ang), -rr * math.cos(ang); rot_ = math.degrees(ang) + 180
+        if dpath.strip():
+            out.append(f'<g transform="translate({px:.2f},{py:.2f}) rotate({rot_:.2f}) translate({-w/2:.2f},0)"><path d="{dpath}" fill="{fill}"/></g>')
+        pos += a / r if top else -a / r
+    return "".join(out)
 
-def oct_avatar():
+def seal(cx, cy, R, ink, dot, fill=None):
+    rin = R / PHI; band = R / PHI ** 6
+    g = [f'<g transform="translate({cx:.2f},{cy:.2f})">']
+    if fill: g.append(f'<circle r="{R:.2f}" fill="{fill}"/>')
+    g.append(f'<circle r="{R - band/2:.2f}" fill="none" stroke="{ink}" stroke-width="{band:.2f}"/>')
+    g.append(f'<circle r="{rin:.2f}" fill="none" stroke="{ink}" stroke-width="{band/PHI:.2f}"/>')
+    n, nw = word("26", rin * 2 / PHI * G.H / (2 * G.D + G.GAP), ink, dot, _u("sn"))
+    g.append(f'<g transform="translate({-nw/2:.2f},{rin * 2 / PHI * G.H / (2 * G.D + G.GAP) / 2:.2f})">{n}</g>')
+    rt = (R - band + rin) / 2; size = (R - band - rin) / PHI
+    g.append(ring_text("OUR CRAFTED THINGS", rt, size, ink, True))
+    g.append(ring_text("EST. 26 · 10 · 2026", rt, size, ink, False))
+    for sx in (-1, 1):
+        g.append(f'<circle cx="{sx * rt:.2f}" cy="0" r="{band * .9:.2f}" fill="{dot}"/>')
+    g.append("</g>")
+    return "".join(g)
+
+# ---------------------------------------------------------------- OCT. 26 files
+INK, PAPER, COB, TOM = C["ink"], C["paper"], C["cobalt"], C["tomato"]
+CAP = 100.0                                   # cap height in file units
+CLEAR = G.DOT * PHI                           # clear space
+
+def oct_wordmark(fg=INK, dot=TOM, bg=None):
+    g, w = word("OCT. 26", CAP, fg, dot, _u("ow"))
+    W, H = w + 2 * CLEAR, CAP + 2 * CLEAR
+    return svg(round(W), round(H), f'<g transform="translate({CLEAR:.2f},{CLEAR + CAP:.2f})">{g}</g>', bg)
+
+def oct_horizontal(fg=INK, dot=TOM, sub=COB, bg=None, tagfill=COB, tagink=PAPER, mono=False):
+    """Tag + wordmark: the tag is phi times the cap height; the wordmark fills the tag's top square."""
+    th = CAP * PHI; gap = CAP / PHI ** 2
+    g, w = word("OCT. 26", CAP, fg, dot, _u("oh"))
+    tl, _, _ = text("our crafted things.", CAP / PHI ** 3 / .5, 0, 0, sub, JOST, tracking=.04)
+    holebg = bg or PAPER
+    x0 = CLEAR; y0 = CLEAR
+    parts = tag(x0, y0, th, tagfill, tagink, dot if not mono else tagink, holebg)
+    parts += f'<g transform="translate({x0 + th/PHI + gap:.2f},{y0 + CAP:.2f})">{g}</g>'
+    parts += f'<g transform="translate({x0 + th/PHI + gap:.2f},{y0 + th:.2f})">{tl}</g>'
+    W = x0 + th / PHI + gap + w + CLEAR; H = th + 2 * CLEAR
+    return svg(round(W), round(H), parts, bg)
+
+def oct_stacked(fg=INK, dot=TOM, sub=COB, bg=None, tagfill=COB, tagink=PAPER):
+    g, w = word("OCT. 26", CAP, fg, dot, _u("os"))
+    th = CAP * PHI ** 2
+    tl, tlw, _ = text("our crafted things.", CAP / PHI ** 3 / .5, 0, 0, sub, JOST, tracking=.04)
+    W = w + 2 * CLEAR
+    y = CLEAR
+    parts = tag((W - th / PHI) / 2, y, th, tagfill, tagink, dot, bg or PAPER)
+    y += th + CAP / PHI
+    parts += f'<g transform="translate({CLEAR:.2f},{y + CAP:.2f})">{g}</g>'
+    y += CAP + CAP / PHI ** 2
+    parts += f'<g transform="translate({(W - tlw)/2:.2f},{y + CAP/PHI**2:.2f})">{tl}</g>'
+    H = y + CAP / PHI ** 2 + CLEAR
+    return svg(round(W), round(H), parts, bg)
+
+def oct_mark(fill=COB, ink=PAPER, dot=TOM, bg=None, side=400):
+    h = side / PHI * 1.1
+    return svg(side, side, tag((side - h / PHI) / 2, (side - h) / 2, h, fill, ink, dot, bg or "#FFFFFF"), bg)
+
+def oct_seal(ink=INK, dot=TOM, fill=None, side=400):
+    return svg(side, side, seal(side / 2, side / 2, side / 2 - 2, ink, dot, fill), None, "OCT. 26 seal")
+
+def avatar():
     W = 1080
-    wm, _, _ = wordmark(W / 2, 395, 200, C["chestnut"], C["brick"], two_lines=True, anchor="middle")
-    t, _, _ = text(BRAND["tag_en"], 50, W / 2, 870, C["leaf"], SYNE, tracking=.02, anchor="middle")
-    return svg(W, W, f'<circle cx="540" cy="540" r="540" fill="{C["oct_cream"]}"/>' + wm + t)
-
-def soi_sign(W=600, H=360):
-    """Collection mark for SOI. 02: the OCT. 26 wordmark grammar, so the collection reads as part of the
-    brand instead of a street sign. The home-soi meaning lives in the story, not in the mark."""
-    ink, lt = C["chestnut"], C["oct_cream"]
-    wm, _, _ = wordmark(W / 2, 196, 118, lt, C["brick"], anchor="middle", left="SOI", right="02")
-    line, _, _ = text("FROM OUR ROOT", 24, W / 2, 268, lt, SYNE, tracking=.32, anchor="middle")
-    by, _, _ = text("A COLLECTION BY OCT. 26", 16, W / 2, 318, C["brick"], SYNE, tracking=.22, anchor="middle")
-    body = (f'<rect width="{W}" height="{H}" rx="20" fill="{ink}"/>'
-            f'<line x1="{W/2-60}" y1="228" x2="{W/2+60}" y2="228" stroke="{C["brick"]}" stroke-width="3"/>')
-    return svg(W, H, body + wm + line + by, title="SOI. 02 by OCT. 26")
-
-def love_badge(W=600, H=360):
-    """Collection badge for Love, the first FIVE BEARS collection."""
-    h = 150; w = h * BW / BH
-    b = bear(70, (H - h) / 2 - 10, h, C["caramel"], C["heart"], C["cocoa"])
-    t1, _, _ = text("Love", 120, 300, 190, C["heart"], "Mitr-SemiBold.ttf")
-    t2, _, _ = text("ห้าหมี FIVE BEARS", 34, 304, 250, C["cocoa"], "Mitr-Medium.ttf")
-    t3, _, _ = text(SUB["by"], 22, 306, 292, C["caramel"], SYNE, tracking=.06)
-    body = f'<rect width="{W}" height="{H}" rx="34" fill="{C["cream"]}"/>'
-    return svg(W, H, body + b + t1 + t2 + t3, title="Love · ห้าหมี FIVE BEARS")
+    h = W / PHI
+    body = f'<circle cx="540" cy="540" r="540" fill="{COB}"/>' + tag((W - h / PHI) / 2, (W - h) / 2, h, PAPER, INK, TOM, COB)
+    return svg(W, W, body)
 
 def oct_sticker():
-    W = 400
-    wm, _, _ = wordmark(W / 2, 168, 82, C["oct_cream"], C["brick"], two_lines=True, anchor="middle")
-    return svg(W, W, f'<circle cx="200" cy="200" r="200" fill="{C["chestnut"]}"/>' + wm)
+    W = 340                                     # 34 mm at 10 px/mm
+    h = W / PHI
+    return svg(W, W, f'<circle cx="{W/2}" cy="{W/2}" r="{W/2}" fill="{TOM}"/>' + tag((W - h / PHI) / 2, (W - h) / 2, h, PAPER, INK, INK, TOM))
 
-def oct_banner(W, H, safe_w, safe_h):
-    """Cover: OCT. 26 and its line on the left of the safe area; the bear family and SOI. 02 sign on the right."""
+def _fit(t, cap, font, tracking, max_w, fill):
+    """Jost line at the given cap height, shrunk by phi steps until it fits max_w."""
+    while True:
+        p, w, _ = text(t, cap / .7, 0, 0, fill, font, tracking=tracking)
+        if w <= max_w: return p, w
+        cap /= PHI ** .25
+
+def soi_sign():
+    """Collection plate, phi : 1. SOI. 02 cap = plate height / phi^3, its baseline on the golden line."""
+    H_ = 360.0; W_ = H_ * PHI; m = H_ / PHI ** 4
+    cap = H_ / PHI ** 3
+    g, w = word("SOI. 02", cap, PAPER, TOM, _u("ss"))
+    t1, t1w = _fit("FROM OUR ROOT", cap / PHI ** 2, JOST, .3, W_ - 2 * m, PAPER)
+    t2, t2w = _fit("A COLLECTION BY OCT. 26", cap / PHI ** 3, JOST, .22, W_ - 2 * m, TOM)
+    base = H_ / PHI
+    body = (f'<rect width="{W_:.1f}" height="{H_:.0f}" rx="{H_/PHI**5:.1f}" fill="{INK}"/>'
+            f'<g transform="translate({(W_ - w)/2:.2f},{base:.2f})">{g}</g>'
+            f'<g transform="translate({(W_ - t1w)/2:.2f},{base + cap/PHI:.2f})">{t1}</g>'
+            f'<g transform="translate({(W_ - t2w)/2:.2f},{H_ - m:.2f})">{t2}</g>')
+    return svg(round(W_), round(H_), body, None, "SOI. 02 by OCT. 26")
+
+def love_badge():
+    """phi^2 : 1 plate. Bear = height / phi, Love cap = height / phi^2 on the golden line."""
+    H_ = 360.0; W_ = H_ * PHI ** 2; m = H_ / PHI ** 4
+    bh = H_ / PHI; bw = bh * BW / BH
+    b = bear(m, (H_ - bh) / 2, bh, C["sun"], TOM, INK)
+    x = m + bw + m
+    base = H_ / PHI
+    t1, _, _ = text("Love", H_ / PHI ** 2 / .72, x, base, INK, "Mitr-SemiBold.ttf")
+    t2, t2w, _ = text("ห้าหมี FIVE BEARS", H_ / PHI ** 5 / .72, x + 6, base + H_ / PHI ** 4, INK, "Mitr-Medium.ttf")
+    bl, blw = by_line(0, 0, H_ / PHI ** 6, INK, TOM)
+    body = (f'<rect width="{W_:.1f}" height="{H_:.0f}" rx="{H_/PHI**5:.1f}" fill="{C["pink"]}"/>' + b + t1 + t2
+            + f'<g transform="translate({x + 6:.2f},{base + H_/PHI**4 + H_/PHI**5:.2f})">{bl}</g>')
+    return svg(round(W_), round(H_), body, None, "Love · ห้าหมี FIVE BEARS")
+
+def banner(W, H, safe_w, safe_h):
+    """Cover: the lockup takes the left 1/phi of the safe area, the family of bears the rest."""
     cx, cy = (W - safe_w) / 2, (H - safe_h) / 2
-    size = min(safe_h * .46, safe_w * .145)
-    wm, ww, _ = wordmark(cx + safe_w * .04, cy + safe_h * .5, size, C["chestnut"], C["brick"])
-    t1, _, _ = text(BRAND["tag_en"], size * .27, cx + safe_w * .04 + size * .05, cy + safe_h * .5 + size * .5, C["leaf"], SYNE, tracking=.02)
-    t2, _, _ = text("SOI. 02  ·  ห้าหมี FIVE BEARS", size * .23, cx + safe_w * .04 + size * .05, cy + safe_h * .5 + size * .86, C["chestnut"], TH)
-    sizes = [("cocoa", 1.0), ("heart", .9), ("honey", .7), ("peach", .64), ("sage", .58)]
-    unit = sum(f * BW / BH for _, f in sizes) + .06 * 4
-    room = safe_w - (ww + safe_w * .12)
-    H0 = min(safe_h * .5, room / unit)
-    x = cx + safe_w - H0 * unit - safe_w * .02
-    base = cy + safe_h / 2 + H0 / 2
+    left_w = safe_w / PHI
+    cap = min(safe_h / PHI / PHI, left_w / (5.2 + PHI ** -1 + PHI ** -2) )
+    th = cap * PHI
+    g, w = word("OCT. 26", cap, INK, TOM, _u("bn"))
+    tl, _, _ = text("our crafted things.", cap / PHI ** 3 / .5, 0, 0, COB, JOST, tracking=.04)
+    y0 = cy + (safe_h - th) / 2
+    parts = tag(cx, y0, th, COB, PAPER, TOM, PAPER)
+    xw = cx + th / PHI + cap / PHI ** 2
+    parts += f'<g transform="translate({xw:.2f},{y0 + cap:.2f})">{g}</g><g transform="translate({xw:.2f},{y0 + th:.2f})">{tl}</g>'
+    parts += family_row(cx + left_w + safe_w / PHI ** 4, cy + safe_h / 2, safe_w / PHI ** 2 - safe_w / PHI ** 4, safe_h / PHI)
+    return svg(W, H, parts, PAPER)
+
+# ---------------------------------------------------------------- FIVE BEARS (sub-brand)
+FAM = [("cobalt", 1.0), ("tomato", PHI ** -.25), ("sun", PHI ** -.5), ("mint", PHI ** -.75), ("pink", PHI ** -1)]
+
+def family_row(x, mid_y, max_w, max_h):
+    unit = sum(f * BW / BH for _, f in FAM) + (len(FAM) - 1) / PHI ** 4
+    h0 = min(max_h, max_w / unit)
     parts = []
-    for k, f in sizes:
-        h = H0 * f; w = h * BW / BH
-        hc = C["cream"] if k == "heart" else C["heart"]
-        face = C["cream"] if k == "cocoa" else C["cocoa"]
-        parts.append(bear(x, base - h, h, C[k], hc, face)); x += w + H0 * .06
-    return svg(W, H, wm + t1 + t2 + "".join(parts), C["oct_cream"])
+    for k, f in FAM:
+        h = h0 * f; w = h * BW / BH
+        hc = PAPER if k == "tomato" else TOM
+        face = PAPER if k in ("cobalt",) else INK
+        parts.append(bear(x, mid_y + h0 / 2 - h, h, C[k], hc, face)); x += w + h0 / PHI ** 4
+    return "".join(parts)
+
+def by_line(x, y, cap, fg, dot):
+    t, tw, _ = text("by", cap / .7, x, y, fg, JOSTR)
+    g, w = word("OCT. 26", cap, fg, dot, _u("by"))
+    return t + f'<g transform="translate({x + tw + cap/PHI:.2f},{y:.2f})">{g}</g>', tw + cap / PHI + w
+
+def stacked(fg, bear_c, heart_c, face, bg=None):
+    W = 600.0
+    bh = W / PHI ** 2; bw = bh * BW / BH
+    y = W / PHI ** 4
+    b = bear((W - bw) / 2, y, bh, bear_c, heart_c, face); y += bh + W / PHI ** 5
+    t1, _, h1 = text(SUB["th"], W / PHI ** 3 / .62, W / 2, y + W / PHI ** 3, fg, anchor="middle"); y += W / PHI ** 3 + W / PHI ** 5
+    t2, _, _ = text(SUB["en"], W / PHI ** 6 / .7, W / 2, y + W / PHI ** 6, fg, JOST, tracking=.3, anchor="middle"); y += W / PHI ** 6 + W / PHI ** 5
+    byc = TOM if fg != "#000000" else fg
+    bl, blw = by_line(0, 0, W / PHI ** 7, fg, byc)
+    t3 = f'<g transform="translate({(W - blw)/2:.2f},{y + W/PHI**7:.2f})">{bl}</g>'; y += W / PHI ** 7 + W / PHI ** 4
+    return svg(round(W), round(y), b + t1 + t2 + t3, bg, "ห้าหมี FIVE BEARS by OCT. 26")
+
+def horizontal(fg, bear_c, heart_c, face, bg=None):
+    H_ = 300.0
+    bh = H_ / PHI; bw = bh * BW / BH
+    x = H_ / PHI ** 4
+    b = bear(x, (H_ - bh) / 2, bh, bear_c, heart_c, face); x += bw + H_ / PHI ** 4
+    t1, w1, _ = text(SUB["th"], H_ / PHI ** 2 / .62, x, H_ / 2 + H_ / PHI ** 5, fg)
+    t2, w2, _ = text(SUB["en"], H_ / PHI ** 5 / .7, x + 4, H_ / 2 + H_ / PHI ** 3, fg, JOST, tracking=.3)
+    byc = TOM if fg != "#000000" else fg
+    bl, blw = by_line(0, 0, H_ / PHI ** 6, fg, byc)
+    t3 = f'<g transform="translate({x + 4 + w2 + H_/PHI**5:.2f},{H_/2 + H_/PHI**3:.2f})">{bl}</g>'
+    W = x + max(w1, w2 + blw + H_ / PHI ** 5) + H_ / PHI ** 4
+    return svg(round(W), round(H_), b + t1 + t2 + t3, bg, "ห้าหมี FIVE BEARS by OCT. 26")
+
+def mark(bear_c, heart_c, face, bg=None, pad=None):
+    side = 400.0; h = side / PHI * 1.1; w = h * BW / BH
+    return svg(400, 400, bear((side - w) / 2, (side - h) / 2, h, bear_c, heart_c, face), bg, "ห้าหมี")
+
+def family(bg=None):
+    W = 1000.0
+    row = family_row(W / PHI ** 6, 160, W - 2 * W / PHI ** 6, 220)
+    t, _, _ = text(SUB["tag_th"], W / PHI ** 6 / .62, W / 2, 330, INK, "Mitr-Medium.ttf", anchor="middle")
+    return svg(round(W), 370, row + t, bg, "ห้าหมี ครอบครัวหมีห้าตัว")
+
+def sticker():
+    W = 340.0; h = W / PHI; w = h * BW / BH
+    return svg(340, 340, f'<circle cx="170" cy="170" r="170" fill="{C["sun"]}"/>' + bear((W - w) / 2, (W - h) / 2 - W / PHI ** 6, h, PAPER, TOM, INK), None, "ห้าหมี")
 
 FILES = {
     # OCT. 26 (master brand)
-    "oct-horizontal.svg": oct_horizontal(C["chestnut"], C["brick"], C["leaf"]),
-    "oct-stacked.svg": oct_stacked(C["chestnut"], C["brick"], C["leaf"]),
-    "oct-stacked-reverse.svg": oct_stacked(C["oct_cream"], C["brick"], C["oct_cream"], C["chestnut"]),
-    "oct-horizontal-mono.svg": oct_horizontal("#000000", "#000000", "#000000"),
-    "oct-mark.svg": oct_mark(C["chestnut"], C["oct_cream"], C["brick"]),
+    "oct-wordmark.svg": oct_wordmark(),
+    "oct-horizontal.svg": oct_horizontal(),
+    "oct-stacked.svg": oct_stacked(),
+    "oct-stacked-reverse.svg": oct_stacked(PAPER, TOM, PAPER, COB, PAPER, COB),
+    "oct-horizontal-mono.svg": oct_horizontal("#000000", "#000000", "#000000", None, "#000000", "#FFFFFF", True),
+    "oct-mark.svg": oct_mark(),
     "oct-mark-stamp.svg": oct_mark("#000000", "#FFFFFF", "#FFFFFF"),
-    "oct-sticker-3cm.svg": oct_sticker(),
-    "avatar-1080.svg": oct_avatar(),
+    "oct-seal.svg": oct_seal(),
+    "oct-sticker-34mm.svg": oct_sticker(),
+    "avatar-1080.svg": avatar(),
     "soi2-sign.svg": soi_sign(),
     "love-badge.svg": love_badge(),
-    "cover-facebook-1640x624.svg": oct_banner(1640, 624, 1400, 520),
-    "cover-youtube-2560x1440.svg": oct_banner(2560, 1440, 1546, 423),
-    "cover-shopee-1200x600.svg": oct_banner(1200, 600, 1080, 480),
+    "cover-facebook-1640x624.svg": banner(1640, 624, 1400, 520),
+    "cover-youtube-2560x1440.svg": banner(2560, 1440, 1546, 423),
+    "cover-shopee-1200x600.svg": banner(1200, 600, 1080, 480),
     # ห้าหมี FIVE BEARS by OCT. 26 (sub-brand)
-    "fivebears-stacked.svg": stacked(C["cocoa"], C["caramel"], C["heart"], C["cocoa"]),
-    "fivebears-stacked-reverse.svg": stacked(C["cream"], C["caramel"], C["heart"], C["cocoa"], C["cocoa"]),
-    "fivebears-horizontal.svg": horizontal(C["cocoa"], C["caramel"], C["heart"], C["cocoa"]),
+    "fivebears-stacked.svg": stacked(INK, C["sun"], TOM, INK),
+    "fivebears-stacked-reverse.svg": stacked(PAPER, C["sun"], TOM, INK, COB),
+    "fivebears-horizontal.svg": horizontal(INK, C["sun"], TOM, INK),
     "fivebears-horizontal-mono.svg": horizontal("#000000", "#000000", "#FFFFFF", "#FFFFFF"),
-    "mark.svg": mark(C["caramel"], C["heart"], C["cocoa"]),
-    "mark-mono.svg": mark(C["cocoa"], C["cream"], C["cream"]),
+    "mark.svg": mark(C["sun"], TOM, INK),
+    "mark-mono.svg": mark(INK, PAPER, PAPER),
     "mark-for-stamp.svg": mark("#000000", "#FFFFFF", "#FFFFFF"),
     "family.svg": family(),
-    "fivebears-sticker-3cm.svg": sticker(),
+    "fivebears-sticker-34mm.svg": sticker(),
 }
 
 if __name__ == "__main__":
@@ -246,4 +369,11 @@ if __name__ == "__main__":
         if f not in FILES: os.remove(os.path.join(OUT, f))
     for name, s in FILES.items():
         open(os.path.join(OUT, name), "w").write(s)
-    print(len(FILES), "files in", OUT)
+    # PNG render jobs come from each file's own viewBox: big pieces (covers, avatar, family) at 1x, marks at 2x
+    jobs = []
+    for name, s in FILES.items():
+        w, h = (round(float(v)) for v in re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', s).groups())
+        jobs.append({"src": os.path.join(OUT, name), "out": os.path.join(HERE, "png", name[:-4] + ".png"),
+                     "w": w, "h": h, "scale": 1 if max(w, h) >= 1000 else 2, "transparent": True})
+    json.dump(jobs, open(os.path.join(HERE, "jobs.json"), "w"), indent=1)
+    print(len(FILES), "files in", OUT, "· node tools/render.mjs logo/jobs.json for PNG")

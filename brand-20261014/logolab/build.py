@@ -1,4 +1,4 @@
-"""Logo Lab: three golden-ratio logo directions for OCT. 26, presented before any final artwork.
+"""Logo Lab: three golden-ratio logo directions for OCT. 26. Chosen 15 Oct 2026: B tag + A letters + C seal.
 
 python3 logolab/build.py -> site/logolab.html (all drawings inline)
 """
@@ -11,7 +11,8 @@ _spec = importlib.util.spec_from_file_location("site_build", os.path.join(ROOT, 
 _site = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_site)
 head, E, link = _site.head, _site.E, _site.link
 
-INK, CREAM, DOTC, PAPER, GUIDE, LEATHER = "#3A2318", "#F3E3CF", "#D9772B", "#FFFBF5", "#2F7FBF", "#9A5B2C"
+INK, CREAM, DOTC, PAPER, GUIDE, LEATHER = "#1C1B22", "#FFF6EC", "#FF5A36", "#FFFFFF", "#2449D8", "#9A5B2C"
+COB = "#2449D8"            # palette #2, chosen 15 Oct 2026
 PHI = G.PHI
 
 def svg(vb, body, label, cls=""):
@@ -27,7 +28,7 @@ def wordmark_svg(ink=INK, dot=DOTC, bg=None, uid="a", pad=24):
     return svg(f"{-pad} {-G.H - pad} {w + 2*pad:.1f} {G.H + 2*pad}", rect + s, "โลโก้ OCT. 26 แบบเส้นเรขาคณิต")
 
 def wordmark_construction():
-    s, w, st = G.wordmark("#C9B7A3", DOTC, "ac")
+    s, w, st = G.wordmark("#C9C4D6", DOTC, "ac")
     g = [s]
     ln = lambda x1, y1, x2, y2, dash="2 2": f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{GUIDE}" stroke-width=".6" stroke-dasharray="{dash}"/>'
     for y, t in ((0, "baseline"), (-G.H, "cap  H = 100"), (-G.H / PHI, "H/φ = 61.8"), (-G.H / PHI ** 2, "H/φ² = 38.2")):
@@ -62,7 +63,7 @@ TWID = 100.0; THGT = TWID * PHI; CH = TWID / PHI ** 3; HOLE = TWID / PHI ** 4; M
 def tag_shape(fill):
     return (f'<path d="M{CH:.2f},0 H{TWID - CH:.2f} L{TWID},{CH:.2f} V{THGT:.2f} H0 V{CH:.2f} Z" fill="{fill}"/>')
 
-def tag_body(fill=INK, ink=CREAM, dot=DOTC, uid="b", holebg=PAPER):
+def tag_body(fill=COB, ink=CREAM, dot=DOTC, uid="b", holebg=PAPER):
     g = [tag_shape(fill), f'<circle cx="{TWID/2}" cy="{CH:.2f}" r="{HOLE/2:.2f}" fill="{holebg}"/>']
     d, dw = G.digits_26(0, ink, uid + "d")
     s = (TWID - 2 * MARG) / dw
@@ -83,7 +84,7 @@ def _oct(ink, dot, uid):
     return "".join(parts), x + adv
 
 def tag_construction():
-    g = [tag_body("#E9DCCB", "#C9B7A3", DOTC, "bc", PAPER)]
+    g = [tag_body("#E3E8FB", "#C9C4D6", DOTC, "bc", PAPER)]
     ln = lambda x1, y1, x2, y2, dash="2 2": f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{GUIDE}" stroke-width=".5" stroke-dasharray="{dash}"/>'
     g.append(f'<rect x="0" y="0" width="{TWID}" height="{THGT:.1f}" fill="none" stroke="{GUIDE}" stroke-width=".5"/>')
     g.append(ln(0, TWID, TWID, TWID)); g.append(ln(TWID / PHI, TWID, TWID / PHI, THGT))
@@ -118,7 +119,7 @@ def seal_body(ink=INK, dot=DOTC, fillc=None, text=True, uid="c"):
     return "".join(g)
 
 def seal_construction():
-    g = [seal_body("#C9B7A3", DOTC, None, True, "cc")]
+    g = [seal_body("#C9C4D6", DOTC, None, True, "cc")]
     for i, (r, t) in enumerate(((R0, "D = 100"), (RIN, "D/φ = 61.8"), (RIN / PHI, "D/φ² = 38.2"))):
         g.append(f'<circle r="{r:.2f}" fill="none" stroke="{GUIDE}" stroke-width=".5" stroke-dasharray="2 2"/>')
         y = -R0 + 8 + i * 9
@@ -188,7 +189,7 @@ def build():
     B = direction("B", "ป้ายห้อยทองคำ · ตัวอักษรชุดเดียวกับทาง A",
                   "สัญลักษณ์คือป้ายห้อยสัดส่วน 1 : φ ซึ่งเป็นทั้งป้ายของงานทำมือ และหน้าปฏิทินที่บอกวันที่ 26 ฐานของเลข 26 อยู่ตรงเส้นแบ่งทองคำของป้ายพอดี",
                   tag_lockup, tag_construction(), favB,
-                  tile(svg(f"-10 -10 {TWID + 20} {THGT + 20:.0f}", tag_body(INK, CREAM, DOTC, "bd", INK) , "ป้ายบนพื้นเข้ม"), "บนพื้นเข้ม (รูป่วนเป็นสีพื้น)", True)
+                  tile(svg(f"-10 -10 {TWID + 20} {THGT + 20:.0f}", tag_body(CREAM, INK, DOTC, "bd", INK) , "ป้ายบนพื้นเข้ม"), "บนพื้นเข้ม (รูป่วนเป็นสีพื้น)", True)
                   + tile(svg(f"-10 -10 {TWID + 20} {THGT + 20:.0f}", tag_body("#000", "#FFF", "#FFF", "bk", "#FFF"), "ขาวดำ"), "ขาวดำ")
                   + tile(deb_B, "ปั๊มลงหนัง") + tile(svg(f"-10 -10 {TWID + 20} {THGT + 20:.0f}", tag_body(INK, CREAM, DOTC, "bs", PAPER), "ใช้เป็นป้ายห้อยจริง"), "ใช้เป็นป้ายห้อยจริงได้เลย"),
                   "รูปทรงที่คนจำได้แม้ไม่เห็นตัวหนังสือ เล่าทั้งงานทำมือ (ป้ายห้อย) และวันที่ (ปฏิทิน) ใช้ซ้ำได้ทุกแบรนด์วันเกิด แค่เปลี่ยนเลข",
@@ -211,7 +212,7 @@ def build():
 .sz{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}.sz div svg{width:100%;height:100%;display:block}
 .sz figcaption{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .tile{margin:0;display:flex;flex-direction:column;gap:6px}.tile>div{background:#FFFFFF;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:center;align-items:center;min-height:150px}
-.tile.dk>div{background:#1F140E}.tile svg{width:100%;height:auto;max-height:200px}.tile figcaption{font-size:13px;color:var(--muted)}
+.tile.dk>div{background:#1C1B22}.tile svg{width:100%;height:auto;max-height:200px}.tile figcaption{font-size:13px;color:var(--muted)}
 .duo{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 i.d{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:3px;background:var(--line)}i.d.on{background:var(--brick)}
 td i{vertical-align:middle}
@@ -219,9 +220,9 @@ td i{vertical-align:middle}
     return f"""{head("OCT. 26 Logo Lab")}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500&family=IBM+Plex+Mono:wght@400&display=swap"><style>{css}</style>
 <div class="wrap">
 <nav class="top" aria-label="หัวข้อ">{nav}</nav>
-<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">LOGO LAB · 16 ต.ค. 2569 · นำเสนอก่อนทำจริง</span>
+<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">LOGO LAB · 15 ต.ค. 2569 · เลือกแล้ว B + A + C</span>
 <h1>โลโก้ OCT. 26 จากสัดส่วนทองคำ</h1>
-<p class="lead">สามทาง ใช้ตัวอักษรชุดใหม่ชุดเดียวกัน ที่วาดเองจากวงกลม เส้นตรง และ φ = 1.618 ไม่ใช้ฟอนต์สำเร็จ ทุกทางทดสอบตั้งแต่ไอคอน 16 พิกเซล จนถึงบิลบอร์ด ขาวดำ และปั๊มลงหนัง เลือกทางแล้วค่อยทำไฟล์จริงทั้งชุด</p>
+<p class="lead">สามทาง ใช้ตัวอักษรชุดใหม่ชุดเดียวกัน ที่วาดเองจากวงกลม เส้นตรง และ φ = 1.618 ไม่ใช้ฟอนต์สำเร็จ ทุกทางทดสอบตั้งแต่ไอคอน 16 พิกเซล จนถึงบิลบอร์ด ขาวดำ และปั๊มลงหนัง บ้านเราเลือกแล้ว ป้ายห้อยของทาง B เป็นสัญลักษณ์ ตัวอักษรของทาง A เป็นชื่อ และตราของทาง C ไว้ปั๊มหนัง ไฟล์จริงทั้งชุดอยู่ใน {link("brandbook", "Brand Book")}</p>
 <div class="hero">{wordmark_svg()}</div></header>
 
 <section id="why"><span class="eyebrow">ทำไมต้องเปลี่ยน</span><h2>โลโก้เดิมไม่ cool เพราะอะไร</h2><div class="grid">
@@ -236,9 +237,9 @@ td i{vertical-align:middle}
 <section id="pick"><span class="eyebrow">เทียบและเลือก</span><h2>เทียบกับห้าข้อที่ต้องการ</h2>
 <div class="tbl"><table><thead><tr><th>ทาง</th>{"".join(f"<th>{c}</th>" for c in CRIT)}</tr></thead><tbody>{score}</tbody></table></div>
 <p class="cap">คะแนนเป็นความเห็นของเรา สามจุดคือดีที่สุด</p>
-<div class="card" style="border:2px solid var(--brick)"><h3>ข้อเสนอ: ทาง B ใช้คู่กับตัวอักษรของทาง A</h3>
+<div class="card" style="border:2px solid var(--brick)"><h3>เลือกแล้ว: ทาง B ใช้คู่กับตัวอักษรของทาง A และตราของทาง C</h3>
 <p style="margin-top:6px">ตัวอักษรเรขาคณิตใช้เป็นชื่อแบรนด์ทุกที่ ป้ายห้อยทองคำเป็นสัญลักษณ์และไอคอน ส่วนตราประทับของทาง C เก็บไว้ใช้ปั๊มลงหนังและรุ่นวันเกิด สามอย่างนี้ใช้ตัวอักษรชุดเดียวกัน จึงไปด้วยกันได้</p>
-<p class="cap" style="margin-top:6px">สีในหน้านี้ยังเป็นสีตั้งต้น เลือกสีจาก {link("colorlab", "Color Lab")} หรือ {link("palettes", "หน้าสุ่มสี")} ได้แยกกัน หลังเลือกทางแล้วจะวาดตัวอักษรที่เหลือ (S I M A R E P D N V และเลข 0 1 3 7 9) ด้วยกติกาเดียวกัน สำหรับ SOI. 02 และแบรนด์วันเกิด</p></div></section>
+<p class="cap" style="margin-top:6px">สีในหน้านี้เป็นชุดที่ 2 Soi Candy ที่เลือกแล้ว ตัวอักษรที่เหลือ (S I M A R E P D N และเลข 0 1 3 4 7 9) วาดด้วยกติกาเดียวกันแล้ว ใช้กับ SOI. 02 และแบรนด์วันเกิดทุกแบรนด์</p></div></section>
 </div>"""
 
 if __name__ == "__main__":

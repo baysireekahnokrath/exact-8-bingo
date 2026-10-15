@@ -10,12 +10,12 @@ HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, ROOT); sys.path.insert(0, os.path.join(ROOT, "logo"))
 spec = importlib.util.spec_from_file_location("logo_build", os.path.join(ROOT, "logo", "build.py"))
 L = importlib.util.module_from_spec(spec); spec.loader.exec_module(L)
-SYNE, TH, PLEX = "alt/Syne-Bold.ttf", "alt/Anuphan-Medium.ttf", "IBMPlexSansThai-Regular.ttf"
+SYNE, TH, PLEX = "alt/Jost-Medium.ttf", "alt/Anuphan-Medium.ttf", "IBMPlexSansThai-Regular.ttf"
 OUT = os.path.join(HERE, "svg"); os.makedirs(OUT, exist_ok=True)
 
 # key, family, name, idea, colours {paper, ink, dot, deep, a1..a5 for the five birthday brands}, notes
 OPTIONS = [
-    ("oct", "ตั้งต้น", "October Warm", "สีที่ใช้อยู่ตอนนี้ ครีม เกาลัด ส้มอิฐ อุ่นและปลอดภัย",
+    ("oct", "ตั้งต้น", "October Warm", "สีตั้งต้นเดิม ครีม เกาลัด ส้มอิฐ อุ่นและปลอดภัย",
      dict(paper="#F3E3CF", ink="#3A2318", dot="#D9772B", deep="#3A2318",
           fam=["#D9772B", "#8A6A3A", "#B8743A", "#6F9A8D", "#C9A27A"]),
      "อบอุ่น เป็นธรรมชาติ แต่ไม่สะดุดตาในบูธที่มีของเยอะ"),

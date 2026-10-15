@@ -1,0 +1,16 @@
+[
+ {
+  "src": "deck/assets/date-2610.svg",
+  "out": "deck/assets/date-2610.png",
+  "w": 911,
+  "h": 411,
+  "transparent": true
+ },
+ {
+  "src": "deck/assets/name-oct26.svg",
+  "out": "deck/assets/name-oct26.png",
+  "w": 839,
+  "h": 254,
+  "transparent": true
+ }
+]

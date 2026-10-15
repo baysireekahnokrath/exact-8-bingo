@@ -55,6 +55,7 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
   <span class="tag">ห้องทดลองสี · ไม่มีชื่อแบรนด์ ไม่มีโลโก้</span>
   <h1>สีแบรนด์แบบไม่มีชื่อ</h1>
   <p class="lead">ทุกการ์ดเป็นของชุดเดียวกัน แผงหลัก วงกลมรูปโปรไฟล์ ป้ายห้อย ถุง ห้าสีสำหรับคนในบ้าน และชิ้นหนังจริงสามสี ไม่มีตัวหนังสือมาชวนให้เอนเอียง ดูแค่สีอย่างเดียว</p>
+  <p class="lead"><b>เลือกแล้ว ชุดเดิม #02</b> เมื่อ 15 ต.ค. 2569 ทุกไฟล์ของแบรนด์ใช้ชุดนี้แล้ว หน้านี้ยังสุ่มเล่นต่อได้ เผื่อแบรนด์วันเกิดของคนอื่นในบ้าน</p>
   <p class="note">แตะช่องสีเพื่อล็อกสีที่ชอบ แล้วกด สุ่มใหม่ สีที่ล็อกจะอยู่ต่อ ชุดที่ชอบกด เก็บไว้ ชุดที่เก็บอยู่ในเครื่องนี้เท่านั้น ส่งให้คนอื่นด้วยปุ่ม คัดลอกรหัสสี</p>
 </header>
 
@@ -191,8 +192,8 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
       : where==="fav"
       ? `<button type="button" data-act="unfav">เอาออก</button><button type="button" data-act="copy">คัดลอกรหัสสี</button>`
       : `<button type="button" data-act="fav">เก็บไว้</button><button type="button" data-act="copy">คัดลอกรหัสสี</button>`;
-    return `<article class="card" data-where="${where}" data-idx="${idx}">
-      <div class="top"><span class="tag">${MODE_TH[item.m]}</span><span class="no">#${String(idx+1).padStart(2,"0")}</span></div>
+    return `<article class="card" data-where="${where}" data-idx="${idx}"${where==="seed"&&idx===1?' style="outline:3px solid #2449D8;outline-offset:2px"':""}>
+      <div class="top"><span class="tag">${MODE_TH[item.m]}${where==="seed"&&idx===1?" · เลือกแล้ว":""}</span><span class="no">#${String(idx+1).padStart(2,"0")}</span></div>
       ${mock(item.c)}
       <div class="sw" role="group" aria-label="ช่องสี แตะเพื่อล็อก">${where==="gen"?sw:item.c.map((h,i)=>`<span style="height:38px;border-radius:6px;border:1px solid #00000022;background:${h}" title="${ROLES[i]} ${h}"></span>`).join("")}</div>
       <div class="hex">${hex}</div>

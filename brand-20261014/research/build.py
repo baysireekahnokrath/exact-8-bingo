@@ -16,7 +16,7 @@ BBD = load("bible_build", os.path.join(ROOT, "bible", "build.py"))
 import research as R
 OUT = os.path.join(HERE, "svg"); os.makedirs(OUT, exist_ok=True)
 SHADES = ["#B8743A", "#8A5A33", "#C98B4E", "#6E4A2F", "#A3683A", "#D29A5F", "#7B4B2A"]
-INK, MUTE, PAPER = "#3A2318", "#8C735E", "#F6EADB"
+INK, MUTE, PAPER = "#1C1B22", "#4A4A55", "#FFF6EC"   # palette #2; leather shades stay, they are the material
 
 def grid(x0, y0, cols, rows, code, m, seed):
     g = []
@@ -35,7 +35,7 @@ def strap(x1, y1, x2, top):
         # cubic bezier point
         px = (1 - t) ** 3 * x1 + 3 * (1 - t) ** 2 * t * x1 + 3 * (1 - t) * t ** 2 * x2 + t ** 3 * x2
         py = (1 - t) ** 3 * y1 + 3 * (1 - t) ** 2 * t * top + 3 * (1 - t) * t ** 2 * top + t ** 3 * y1
-        g.append(f'<path d="{L.heart(px, py, 22)}" fill="#D6453D"/>')
+        g.append(f'<path d="{L.heart(px, py, 22)}" fill="#FF5A36"/>')
     for x in (x1, x2):
         g.append(f'<rect x="{x-7}" y="{y1-16}" width="14" height="22" rx="4" fill="#9A9A9A"/>')
     return "".join(g)
@@ -46,7 +46,7 @@ def label(t, x, y, size=22, fill=MUTE, anchor="middle"):
 def draw(b):
     W, H = 560, 600
     code, m = b["code"], 62
-    g = [f'<rect width="{W}" height="{H}" rx="20" fill="#FFFBF5"/>']
+    g = [f'<rect width="{W}" height="{H}" rx="20" fill="#FFFFFF"/>']
     key = b["key"]
     if key == "box":
         cols, rows = 3, 2
@@ -70,7 +70,7 @@ def draw(b):
         g.append(f'<path d="M{x0},{y0} l40,-30 h{cols*m} l-40,30 z" fill="#6E4A2F"/>')
         g.append(grid(x0, y0, cols, rows, code, m, 3))
         bh = 70; bw = bh * L.BW / L.BH
-        g.append(L.bear(x0 + cols * m + 30, y0 + rows * m - 10, bh, "#B8743A", "#D6453D", INK))
+        g.append(L.bear(x0 + cols * m + 30, y0 + rows * m - 10, bh, "#B8743A", "#FF5A36", INK))
     g.append(label(f"{b['name']} · {b['size']}", W / 2, H - 70, 26, INK))
     g.append(label(f"แบบ {code} × {b['pieces']} ชิ้น · รอยต่อ {b['joints']} จุด · สายหัวใจ 5 เส้น", W / 2, H - 32, 20))
     return L.svg(W, H, "".join(g), None, f"กระเป๋า {b['name']}")

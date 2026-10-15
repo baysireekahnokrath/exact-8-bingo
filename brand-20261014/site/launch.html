@@ -1,59 +1,64 @@
-<title>OCT. 26 Launch Kit</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600&family=IBM+Plex+Sans+Thai:wght@400;600&family=Mitr:wght@400;500;600&family=Syne:wght@700&display=swap"><style>
+<title>OCT. 26 Launch Kit</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600&family=IBM+Plex+Sans+Thai:wght@400;600&family=Mitr:wght@400;500;600&family=Jost:wght@400;500&display=swap"><style>
 :root{
-  /* Layout: one reading column of cards on warm October cream, like a craft-shop catalogue; wide tables scroll inside their box. */
-  --bg:#F6EADB;--paper:#FFFBF5;--ink:#3A2318;--muted:#6E5440;--line:#E3CDB1;
-  --caramel:#A9541A;--heart:#B8501A;--honey:#F0B43C;--peach:#F2A7A0;--sage:#6F9A8D;--cocoa:#3A2318;--cream:#F3E3CF;
-  --brick:#D9772B;--love:#D6453D;--leaf:#8A6A3A;--chestnut:#3A2318;--on-accent:#FFFFFF;--chip:#EFDCC4;
-  --logo:"Syne","Anuphan",system-ui,sans-serif;
+  /* Layout: one reading column of cards, every size from phi. Type steps 16 x phi^(k/2); spacing Fibonacci 5 8 13 21 34 55 89;
+     reading column 987px (a Fibonacci number); two-column splits 61.8 / 38.2. Palette #2, chosen 15 Oct 2026. */
+  --bg:#FFF6EC;--paper:#FFFFFF;--ink:#1C1B22;--muted:#4A4A55;--line:#F1DCCB;
+  --cobalt:#2449D8;--tomato:#FF5A36;--sun:#FFC23C;--mint:#2EC4A0;--pink:#FF8AC4;--leather:#B8743A;
+  --caramel:var(--cobalt);--heart:#E2401C;--brick:var(--tomato);--love:var(--pink);--honey:var(--sun);--peach:var(--pink);--sage:var(--mint);
+  --cocoa:var(--ink);--cream:var(--bg);--leaf:var(--cobalt);--chestnut:var(--ink);
+  --on-accent:#FFFFFF;--chip:#FBE9DA;
+  --t-1:12.6px;--t0:16px;--t1:20.4px;--t2:25.9px;--t3:32.9px;--t4:41.9px;
+  --s1:5px;--s2:8px;--s3:13px;--s4:21px;--s5:34px;--s6:55px;--s7:89px;
+  --logo:"Jost","Anuphan",system-ui,sans-serif;
   --display:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;
   --body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chestnut:#6B4A35;--chip:#3A281C;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chestnut:#6B4A35;--chip:#3A281C;color-scheme:dark}
+  --bg:#14131A;--paper:#1F1E27;--ink:#FFF6EC;--muted:#C9C4D6;--line:#34323F;--cobalt:#7C97FF;--caramel:#7C97FF;--heart:#FF7A5C;--chip:#2A2833;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14131A;--paper:#1F1E27;--ink:#FFF6EC;--muted:#C9C4D6;--line:#34323F;--cobalt:#7C97FF;--caramel:#7C97FF;--heart:#FF7A5C;--chip:#2A2833;color-scheme:dark}
 *{box-sizing:border-box}
 img{max-width:100%;height:auto;display:block}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;margin:0;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
-.wrap{max-width:860px;margin:0 auto}
-h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.25;text-wrap:balance;margin:0}
-h1{font-size:clamp(30px,7vw,46px)}h2{font-size:clamp(23px,5vw,30px)}h3{font-size:19px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:var(--t0);line-height:1.618;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 var(--s7)}
+.wrap{max-width:987px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.236;text-wrap:balance;margin:0}
+h1{font-size:clamp(var(--t3),7vw,var(--t4))}h2{font-size:clamp(var(--t2),5vw,var(--t3))}h3{font-size:var(--t1)}
 p{margin:0}
-a{color:var(--caramel)}
+a{color:var(--cobalt)}
 nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
-  margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));
-  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+  margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:var(--s3) max(16px,env(safe-area-inset-left,0px));
+  display:flex;gap:var(--s2);overflow-x:auto;scrollbar-width:none}
 nav.top a{flex:none;font-family:var(--display);font-size:14px;text-decoration:none;color:var(--ink);background:var(--chip);
-  border-radius:99px;padding:5px 13px}
-nav.top a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--honey);outline-offset:2px}
-section{padding-top:44px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:60px}
-.eyebrow{font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--caramel)}
-.lead{font-size:18px;color:var(--muted);max-width:62ch}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px}
-.paper{background:#FFFDF9;border-radius:18px;padding:18px;display:flex;align-items:center;justify-content:center}
-.paper.dark{background:#3A2318}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-.grid.s{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  border-radius:var(--s4);padding:var(--s1) var(--s3)}
+nav.top a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--tomato);outline-offset:2px}
+section{padding-top:var(--s6);display:flex;flex-direction:column;gap:var(--s4);scroll-margin-top:var(--s7)}
+.eyebrow{font-family:var(--logo);font-weight:500;font-size:var(--t-1);letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt)}
+.lead{font-size:var(--t1);color:var(--muted);max-width:61.8ch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--s4);padding:var(--s4)}
+.paper{background:#FFFFFF;border-radius:var(--s4);padding:var(--s4);display:flex;align-items:center;justify-content:center}
+.paper.dark{background:#2449D8}
+.grid{display:grid;gap:var(--s3);grid-template-columns:repeat(auto-fill,minmax(233px,1fr))}
+.grid.s{grid-template-columns:repeat(auto-fill,minmax(144px,1fr))}
 .grid>*{min-width:0}
-.cap{font-size:13px;color:var(--muted)}
+.cap{font-size:var(--t-1);color:var(--muted)}
 .mono{font-variant-numeric:tabular-nums}
-.chip{display:inline-block;font-size:12.5px;border-radius:99px;padding:2px 10px;background:var(--chip)}
-.chip.ok{background:#DCEBE5;color:#2F5A4E}.chip.mid{background:#FBE7C2;color:#7A4E0E}.chip.ext{background:#F8DAD7;color:#8A2A23}
-.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+.chip{display:inline-block;font-size:var(--t-1);border-radius:var(--s4);padding:2px var(--s3);background:var(--chip)}
+.chip.ok{background:#D7F3EA;color:#0E6B55}.chip.mid{background:#FFF0C7;color:#7A5200}.chip.ext{background:#FFE1D9;color:#A0300F}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--s3);background:var(--paper)}
 table{border-collapse:collapse;width:100%;font-size:14.5px}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:var(--display);font-weight:500;font-size:13px;color:var(--muted);white-space:nowrap}
+th,td{text-align:left;padding:var(--s2) var(--s3);border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:500;font-size:var(--t-1);color:var(--muted);white-space:nowrap}
 td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 tr:last-child td{border-bottom:0}
 ol,ul{margin:0;padding-left:1.3em}
-li+li{margin-top:4px}
-.copy{font-family:var(--display);font-size:13px;border:1px solid var(--line);background:var(--chip);color:var(--ink);
-  border-radius:99px;padding:4px 12px;cursor:pointer}
-pre.txt{white-space:pre-wrap;font-family:var(--body);font-size:14.5px;background:var(--bg);border-radius:12px;padding:12px;margin:0}
+li+li{margin-top:var(--s1)}
+.copy{font-family:var(--display);font-size:var(--t-1);border:1px solid var(--line);background:var(--chip);color:var(--ink);
+  border-radius:var(--s4);padding:var(--s1) var(--s3);cursor:pointer}
+pre.txt{white-space:pre-wrap;font-family:var(--body);font-size:14.5px;background:var(--bg);border-radius:var(--s3);padding:var(--s3);margin:0}
 details{border-top:1px solid var(--line)}
-details>summary{cursor:pointer;padding:10px 0;font-family:var(--display);font-size:15px}
-.ch{display:flex;flex-direction:column;gap:8px;padding-bottom:12px}
-.ch .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+details>summary{cursor:pointer;padding:var(--s3) 0;font-family:var(--display);font-size:15px}
+.ch{display:flex;flex-direction:column;gap:var(--s2);padding-bottom:var(--s3)}
+.ch .h{display:flex;justify-content:space-between;align-items:center;gap:var(--s2)}
 </style>
 <div class="wrap">
 <nav class="top" aria-label="หัวข้อ"><a href="#plan">แผนถึงวันงาน</a><a href="#social">โซเชียลและ Shopee</a><a href="#products">สินค้า 30 ตัว</a>
@@ -102,7 +107,7 @@ Shopee: OCT. 26</pre></div></div><div class="card" style="display:flex;flex-dire
 <p class="cap" style="font-size:14px">หัวหมี 01 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">59 บาท</b>
  <span class="cap">ต้นทุน 12.05 · กำไร 47 (80%) · เตรียมไปงาน 30 ชิ้น</span></p>
-<p><span class="chip" style="background:#F8DAD7;color:#8A2A23">ห้าหมี by OCT. 26 · Love</span> <span class="chip ok">พร้อมผลิต</span></p>
+<p><span class="chip" style="background:#FFE3F1;color:#A3215F">ห้าหมี by OCT. 26 · Love</span> <span class="chip ok">พร้อมผลิต</span></p>
 <p class="cap"><a href="posters/01-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/01-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb1">คัดลอก</button></div><pre class="txt" id="fb1">สายชาร์จพันกันในกระเป๋าทุกวัน หมีตัวนี้ช่วยได้
@@ -169,7 +174,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">หัวหมี 01 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">59 บาท</b>
  <span class="cap">ต้นทุน 12.05 · กำไร 47 (80%) · เตรียมไปงาน 20 ชิ้น</span></p>
-<p><span class="chip" style="background:#F8DAD7;color:#8A2A23">ห้าหมี by OCT. 26 · Love</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#FFE3F1;color:#A3215F">ห้าหมี by OCT. 26 · Love</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/02-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/02-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb2">คัดลอก</button></div><pre class="txt" id="fb2">หมีเฝ้าหน้าที่อ่านค้างไว้ให้
@@ -236,7 +241,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">หัวหมี 01 × 1 + สายหัวใจ 250 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">129 บาท</b>
  <span class="cap">ต้นทุน 18.81 · กำไร 110 (85%) · เตรียมไปงาน 20 ชิ้น</span></p>
-<p><span class="chip" style="background:#F8DAD7;color:#8A2A23">ห้าหมี by OCT. 26 · Love</span> <span class="chip ext">มีชิ้นเสริม</span></p>
+<p><span class="chip" style="background:#FFE3F1;color:#A3215F">ห้าหมี by OCT. 26 · Love</span> <span class="chip ext">มีชิ้นเสริม</span></p>
 <p class="cap"><a href="posters/03-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/03-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb3">คัดลอก</button></div><pre class="txt" id="fb3">เปิดเทอมนี้ กระเป๋าลูกจะไม่หายไปกับของเพื่อน
@@ -303,7 +308,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">หัวหมี 01 × 1 + สายหัวใจ 200 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">79 บาท</b>
  <span class="cap">ต้นทุน 18.81 · กำไร 60 (76%) · เตรียมไปงาน 10 ชิ้น</span></p>
-<p><span class="chip" style="background:#F8DAD7;color:#8A2A23">ห้าหมี by OCT. 26 · Love</span> <span class="chip ext">มีชิ้นเสริม</span></p>
+<p><span class="chip" style="background:#FFE3F1;color:#A3215F">ห้าหมี by OCT. 26 · Love</span> <span class="chip ext">มีชิ้นเสริม</span></p>
 <p class="cap"><a href="posters/04-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/04-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb4">คัดลอก</button></div><pre class="txt" id="fb4">โต๊ะวันเกิดเด็กที่หมีนั่งเฝ้าทุกจาน
@@ -370,7 +375,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กังหัน 02 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">69 บาท</b>
  <span class="cap">ต้นทุน 9.73 · กำไร 59 (86%) · เตรียมไปงาน 20 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/05-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/05-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb5">คัดลอก</button></div><pre class="txt" id="fb5">อั่งเปาที่ผู้รับเก็บไว้ใช้ต่อ ไม่ทิ้ง
@@ -437,7 +442,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กังหัน 02 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">69 บาท</b>
  <span class="cap">ต้นทุน 9.73 · กำไร 59 (86%) · เตรียมไปงาน 10 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/06-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/06-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb6">คัดลอก</button></div><pre class="txt" id="fb6">ห่อแหวนด้วยหนังแท้แทนกล่องกระดาษ
@@ -504,7 +509,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กังหัน 02 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">59 บาท</b>
  <span class="cap">ต้นทุน 9.73 · กำไร 49 (84%) · เตรียมไปงาน 10 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/07-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/07-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb7">คัดลอก</button></div><pre class="txt" id="fb7">การ์ดอวยพรที่ห่อมาอย่างตั้งใจ
@@ -571,7 +576,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 6</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">290 บาท</b>
  <span class="cap">ต้นทุน 25.87 · กำไร 264 (91%) · เตรียมไปงาน 2 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/08-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/08-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb8">คัดลอก</button></div><pre class="txt" id="fb8">กล่องแหวนที่เปิดทีละด้านได้ เซอร์ไพรส์นานขึ้นอีกนิด
@@ -638,7 +643,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 6</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">159 บาท</b>
  <span class="cap">ต้นทุน 25.87 · กำไร 133 (84%) · เตรียมไปงาน 3 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/09-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/09-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb9">คัดลอก</button></div><pre class="txt" id="fb9">ลูกเต๋าที่ทอยแล้วไม่ดัง เล่นตอนดึกได้
@@ -705,7 +710,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 2</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">129 บาท</b>
  <span class="cap">ต้นทุน 12.51 · กำไร 116 (90%) · เตรียมไปงาน 5 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/10-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/10-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb10">คัดลอก</button></div><pre class="txt" id="fb10">AirTag ห้อยกระเป๋าแบบไม่ต้องใช้ไขควง
@@ -772,7 +777,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 24 + ถุงผ้าและการ์ดวิธีเล่น</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">390 บาท</b>
  <span class="cap">ต้นทุน 82.65 · กำไร 307 (79%) · เตรียมไปงาน 2 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/11-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/11-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb11">คัดลอก</button></div><pre class="txt" id="fb11">ของเล่นที่ไม่มีพลาสติกสักชิ้น
@@ -839,7 +844,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">สี่เหลี่ยมมน 04 × 5</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">199 บาท</b>
  <span class="cap">ต้นทุน 21.98 · กำไร 177 (89%) · เตรียมไปงาน 2 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/12-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/12-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb12">คัดลอก</button></div><pre class="txt" id="fb12">ปากกาบนโต๊ะทำงานได้มงกุฎของตัวเอง
@@ -906,7 +911,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">สี่เหลี่ยมมน 04 × 12</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">390 บาท</b>
  <span class="cap">ต้นทุน 43.96 · กำไร 346 (89%) · เตรียมไปงาน 1 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/13-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/13-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb13">คัดลอก</button></div><pre class="txt" id="fb13">จานธรรมดาดูแพงขึ้นทันที
@@ -973,7 +978,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">วงกลม 05 × 4</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">149 บาท</b>
  <span class="cap">ต้นทุน 18.08 · กำไร 131 (88%) · เตรียมไปงาน 3 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/14-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/14-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb14">คัดลอก</button></div><pre class="txt" id="fb14">กาแฟร้อนแค่ไหนก็ถือได้
@@ -1040,7 +1045,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">วงกลม 05 × 2 + แผ่นไม้ก๊อก 6 × 6 ซม.</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">99 บาท</b>
  <span class="cap">ต้นทุน 22.51 · กำไร 76 (77%) · เตรียมไปงาน 5 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip ext">มีชิ้นเสริม</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip ext">มีชิ้นเสริม</span></p>
 <p class="cap"><a href="posters/15-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/15-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb15">คัดลอก</button></div><pre class="txt" id="fb15">แก้วเย็นแค่ไหนโต๊ะก็ไม่เปียก
@@ -1107,7 +1112,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">วงกลม 05 × 2</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">99 บาท</b>
  <span class="cap">ต้นทุน 12.23 · กำไร 87 (88%) · เตรียมไปงาน 10 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/16-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/16-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb16">คัดลอก</button></div><pre class="txt" id="fb16">เหรียญสิบไม่หล่นหายในกระเป๋าอีก
@@ -1174,7 +1179,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">สี่เหลี่ยมมน 04 × 3 + วงกลม 05 × 3</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">249 บาท</b>
  <span class="cap">ต้นทุน 25.87 · กำไร 223 (90%) · เตรียมไปงาน 2 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/17-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/17-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb17">คัดลอก</button></div><pre class="txt" id="fb17">กล่องของขวัญที่สวยกว่าของข้างใน
@@ -1241,7 +1246,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทนุ่ม 06 × 6</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">159 บาท</b>
  <span class="cap">ต้นทุน 25.87 · กำไร 133 (84%) · เตรียมไปงาน 8 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/18-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/18-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb18">คัดลอก</button></div><pre class="txt" id="fb18">ของชำร่วยที่แขกเก็บไว้ ไม่ทิ้งไว้บนโต๊ะ
@@ -1308,7 +1313,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทนุ่ม 06 × 5</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">199 บาท</b>
  <span class="cap">ต้นทุน 21.98 · กำไร 177 (89%) · เตรียมไปงาน 2 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/19-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/19-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb19">คัดลอก</button></div><pre class="txt" id="fb19">โต๊ะเครื่องแป้งเป็นระเบียบในหนึ่งนาที
@@ -1375,7 +1380,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทนุ่ม 06 × 6 + ริบบิ้น</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">159 บาท</b>
  <span class="cap">ต้นทุน 28.87 · กำไร 130 (82%) · เตรียมไปงาน 3 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip ext">มีชิ้นเสริม</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip ext">มีชิ้นเสริม</span></p>
 <p class="cap"><a href="posters/20-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/20-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb20">คัดลอก</button></div><pre class="txt" id="fb20">ต้นคริสต์มาสปีนี้มีของแขวนหนังแท้
@@ -1442,7 +1447,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">หัวหมี 01 × 5 + เชือกแขวน</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">349 บาท</b>
  <span class="cap">ต้นทุน 43.00 · กำไร 306 (88%) · เตรียมไปงาน 10 ชิ้น</span></p>
-<p><span class="chip" style="background:#F8DAD7;color:#8A2A23">ห้าหมี by OCT. 26 · Love</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#FFE3F1;color:#A3215F">ห้าหมี by OCT. 26 · Love</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/21-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/21-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb21">คัดลอก</button></div><pre class="txt" id="fb21">พ่อ แม่ และลูกสามคน แขวนไว้หน้าห้องให้รู้ว่าบ้านนี้มีกันกี่คน
@@ -1509,7 +1514,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">หัวหมี 01 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">59 บาท</b>
  <span class="cap">ต้นทุน 12.05 · กำไร 47 (80%) · เตรียมไปงาน 30 ชิ้น</span></p>
-<p><span class="chip" style="background:#F8DAD7;color:#8A2A23">ห้าหมี by OCT. 26 · Love</span> <span class="chip ok">พร้อมผลิต</span></p>
+<p><span class="chip" style="background:#FFE3F1;color:#A3215F">ห้าหมี by OCT. 26 · Love</span> <span class="chip ok">พร้อมผลิต</span></p>
 <p class="cap"><a href="posters/22-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/22-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb22">คัดลอก</button></div><pre class="txt" id="fb22">แก้วนมตอนเช้ามีหมีรองอยู่
@@ -1576,7 +1581,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">หัวหมี 01 × 1 + สายหัวใจ 200 × 1 + ห่วงกุญแจโลหะ</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">129 บาท</b>
  <span class="cap">ต้นทุน 26.81 · กำไร 102 (79%) · เตรียมไปงาน 30 ชิ้น</span></p>
-<p><span class="chip" style="background:#F8DAD7;color:#8A2A23">ห้าหมี by OCT. 26 · Love</span> <span class="chip ext">มีชิ้นเสริม</span></p>
+<p><span class="chip" style="background:#FFE3F1;color:#A3215F">ห้าหมี by OCT. 26 · Love</span> <span class="chip ext">มีชิ้นเสริม</span></p>
 <p class="cap"><a href="posters/23-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/23-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb23">คัดลอก</button></div><pre class="txt" id="fb23">หมีห้อยกระเป๋าที่บอกว่าใครรักคุณอยู่
@@ -1643,7 +1648,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กังหัน 02 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">49 บาท</b>
  <span class="cap">ต้นทุน 8.62 · กำไร 40 (82%) · เตรียมไปงาน 20 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
 <p class="cap"><a href="posters/24-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/24-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb24">คัดลอก</button></div><pre class="txt" id="fb24">ที่รองแก้วลายกังหัน หนังแท้ทั้งแผ่น
@@ -1710,7 +1715,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กังหัน 02 × 1 + ไม้เสียบและหมุด</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">89 บาท</b>
  <span class="cap">ต้นทุน 16.62 · กำไร 72 (81%) · เตรียมไปงาน 5 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip mid">ลองต้นแบบก่อน</span></p>
 <p class="cap"><a href="posters/25-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/25-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb25">คัดลอก</button></div><pre class="txt" id="fb25">ของเล่นที่ลูกเป่าเล่นได้ทั้งวัน
@@ -1777,7 +1782,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทแคปซูล 03 × 1 + เชือกปอ</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">39 บาท</b>
  <span class="cap">ต้นทุน 10.62 · กำไร 28 (73%) · เตรียมไปงาน 20 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
 <p class="cap"><a href="posters/26-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/26-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb26">คัดลอก</button></div><pre class="txt" id="fb26">ป้ายชื่อที่ผู้รับเก็บไว้ห้อยกุญแจต่อได้
@@ -1844,7 +1849,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">สี่เหลี่ยมมน 04 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">49 บาท</b>
  <span class="cap">ต้นทุน 8.62 · กำไร 40 (82%) · เตรียมไปงาน 15 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
 <p class="cap"><a href="posters/27-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/27-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb27">คัดลอก</button></div><pre class="txt" id="fb27">ที่รองแก้วทรงเหลี่ยมมน หนังแท้
@@ -1911,7 +1916,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">วงกลม 05 × 1</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">49 บาท</b>
  <span class="cap">ต้นทุน 8.62 · กำไร 40 (82%) · เตรียมไปงาน 15 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
 <p class="cap"><a href="posters/28-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/28-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb28">คัดลอก</button></div><pre class="txt" id="fb28">ที่รองแก้วทรงกลม หนังแท้
@@ -1978,7 +1983,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">หัวหมี 01 × 1 + กังหัน 02 × 1 + สี่เหลี่ยมมน 04 × 1 + วงกลม 05 × 1 + ถุงผ้าและเชือกปอ</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">179 บาท</b>
  <span class="cap">ต้นทุน 27.40 · กำไร 152 (85%) · เตรียมไปงาน 10 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
 <p class="cap"><a href="posters/29-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/29-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb29">คัดลอก</button></div><pre class="txt" id="fb29">สี่แก้ว สี่ลาย ไม่ต้องจำว่าแก้วไหนของใคร
@@ -2045,7 +2050,7 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap" style="font-size:14px">กากบาทนุ่ม 06 × 6 + ถุงและการ์ดวิธีต่อ</p>
 <p class="mono"><b style="font-family:var(--display);font-size:20px;color:var(--heart)">129 บาท</b>
  <span class="cap">ต้นทุน 32.54 · กำไร 96 (75%) · เตรียมไปงาน 10 ชิ้น</span></p>
-<p><span class="chip" style="background:#F3E3CF;color:#3A2318">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
+<p><span class="chip" style="background:#E3E8FB;color:#1A35A3">OCT. 26 · SOI. 02</span> <span class="chip ok">พร้อมผลิต</span></p>
 <p class="cap"><a href="posters/30-post.png" target="_blank" rel="noopener">โปสเตอร์ 1080 × 1350</a> · <a href="posters/30-story.png" target="_blank" rel="noopener">story 1080 × 1920</a></p></div>
 <div style="grid-column:1/-1;min-width:0">
 <details><summary>Facebook</summary><div class="ch"><div class="h"><span class="cap">โพสต์ + แนบโปสเตอร์ 1080 × 1350</span><button class="copy" data-for="fb30">คัดลอก</button></div><pre class="txt" id="fb30">ต่อเองได้ในห้านาที ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม
@@ -2115,12 +2120,12 @@ OCT. 26 · our crafted things. ทำและแพ็คกันเองท�
 <p class="cap">เวลาประกอบรวมประมาณ 3.7 ชม. และแพ็คอีก 5.5 ชม. แบ่งให้ลูก ๆ ช่วยวันเสาร์อาทิตย์ที่ 17–18 ต.ค. ได้</p></section>
 
 <section id="kids"><span class="eyebrow">ลูก ๆ ขายของ</span><h2>สามหน้าที่ ทำได้ตามวัย</h2>
-<div class="grid"><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #F0B43C"><h3>หัวหน้าร้าน</h3><span class="cap">ลูกหมีคนโต</span><ul><li>ดูแลกล่องเงินและป้าย QR พร้อมเพย์</li><li>บอกราคา ทอนเงิน จดยอดในสมุด</li><li>ส่งถุงและพูดขอบคุณ</li></ul></div><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #F2A7A0"><h3>นักสาธิต</h3><span class="cap">ลูกหมีคนกลาง</span><ul><li>นั่งต่อหนังให้ลูกค้าดูที่โต๊ะหน้าบูธ</li><li>ยื่นชิ้นที่ต่อเสร็จให้ลูกค้าลองดึง</li><li>ชวนดูชุดต่อเอง</li></ul></div><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #6F9A8D"><h3>ผู้ต้อนรับ</h3><span class="cap">ลูกหมีคนเล็ก</span><ul><li>ยิ้ม ทักทาย ยื่นการ์ดให้</li><li>ชวนลูกค้าเด็กลองต่อที่กล่องทดลอง</li><li>แจกสติกเกอร์หมีเมื่อซื้อ</li></ul></div></div>
+<div class="grid"><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #FFC23C"><h3>หัวหน้าร้าน</h3><span class="cap">ลูกหมีคนโต</span><ul><li>ดูแลกล่องเงินและป้าย QR พร้อมเพย์</li><li>บอกราคา ทอนเงิน จดยอดในสมุด</li><li>ส่งถุงและพูดขอบคุณ</li></ul></div><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #FF8AC4"><h3>นักสาธิต</h3><span class="cap">ลูกหมีคนกลาง</span><ul><li>นั่งต่อหนังให้ลูกค้าดูที่โต๊ะหน้าบูธ</li><li>ยื่นชิ้นที่ต่อเสร็จให้ลูกค้าลองดึง</li><li>ชวนดูชุดต่อเอง</li></ul></div><div class="card" style="display:flex;flex-direction:column;gap:6px;border-top:6px solid #2EC4A0"><h3>ผู้ต้อนรับ</h3><span class="cap">ลูกหมีคนเล็ก</span><ul><li>ยิ้ม ทักทาย ยื่นการ์ดให้</li><li>ชวนลูกค้าเด็กลองต่อที่กล่องทดลอง</li><li>แจกสติกเกอร์หมีเมื่อซื้อ</li></ul></div></div>
 <h3>ประโยคที่ซ้อมไว้</h3><div class="tbl"><table><tbody><tr><td style="white-space:nowrap"><b>ทักทาย</b></td><td>“สวัสดีค่ะ/ครับ ลองจับดูได้เลยนะ หนังแท้ ไม่ได้เย็บเลย”</td></tr><tr><td style="white-space:nowrap"><b>เล่าสั้น ๆ</b></td><td>“พ่อออกแบบให้มันล็อกกันเอง หนูต่อเองได้ ดูนะ สอดตรงนี้ ดัน เสร็จ”</td></tr><tr><td style="white-space:nowrap"><b>ช่วยเลือก</b></td><td>“ซื้อให้ตัวเองหรือเป็นของขวัญคะ/ครับ ถ้าของขวัญ ราวหมีห้าตัวของห้าหมีขายดีที่สุด”</td></tr><tr><td style="white-space:nowrap"><b>ปิดการขาย</b></td><td>“รับเป็นเงินสดหรือสแกนคะ/ครับ”</td></tr><tr><td style="white-space:nowrap"><b>ลูกค้าขอลด</b></td><td>“ถ้าซื้อสามชิ้น ได้สติกเกอร์หมีฟรีค่ะ/ครับ (ราคาเท่าเดิม ให้ของแถมแทน)”</td></tr><tr><td style="white-space:nowrap"><b>ขอบคุณ</b></td><td>“ขอบคุณนะคะ/ครับ ฝากกดติดตาม OCT. 26 ด้วย มีคลิปวิธีต่ออีกเยอะเลย”</td></tr></tbody></table></div>
 <div class="card"><h3>กติกาบูธ</h3><ul style="margin-top:6px"><li>พ่อหรือแม่อยู่ที่บูธตลอด เด็กไม่อยู่ลำพัง</li><li>เด็กทำกะละ 45 นาที พัก 15 นาที มีน้ำและขนมใต้โต๊ะ</li><li>นัดจุดเจอกันถ้าพลัดหลง และใส่ป้ายชื่อที่มีเบอร์พ่อแม่ไว้ด้านหลัง</li><li>เงินทอนตั้งต้น 1,500 บาท ใบละ 20 และ 100 กับเหรียญ 10 และ 5</li><li>ปิดยอดทุกเย็น นับเงิน เทียบสมุด แล้วแบ่งให้ลูกหมี 10% เข้ากระปุก</li></ul></div></section>
 
 <section id="print"><span class="eyebrow">ของต้องพิมพ์</span><h2>สั่งร้านพิมพ์ภายใน 15 ต.ค.</h2>
-<div class="tbl"><table><thead><tr><th>รายการ</th><th>จำนวน</th><th>หมายเหตุ</th></tr></thead><tbody><tr><td>ป้ายบูธ (แบ็คดรอปหรือไวนิล)</td><td class="n">1 ผืน</td><td>โลโก้ OCT. 26 + our crafted things + QR ไอจี</td></tr><tr><td>ป้ายตั้งโต๊ะ QR พร้อมเพย์</td><td class="n">2 ป้าย</td><td>A5 ตั้งได้</td></tr><tr><td>ป้ายราคาตามหมวด</td><td class="n">8 ใบ</td><td>39 / 49 / 59 / 99 / 129 / 159 / 199 / 290+</td></tr><tr><td>การ์ดเล่าเรื่อง OCT. 26 + QR</td><td class="n">300 ใบ</td><td>ขนาดนามบัตร ด้านหลังเล่าความหมาย 26 ตุลาคม ใส่ถุงทุกออเดอร์</td></tr><tr><td>สติกเกอร์ OCT. 26 วงกลม 3 ซม.</td><td class="n">300 ดวง</td><td>ปิดถุงทุกใบ</td></tr><tr><td>สติกเกอร์หมีห้าหมี 3 ซม.</td><td class="n">200 ดวง</td><td>แจกเด็ก และปิดถุงสินค้า Love</td></tr><tr><td>ป้ายตั้งโต๊ะคอลเลกชัน</td><td class="n">2 ป้าย</td><td>ป้าย SOI. 02 และป้ายห้าหมี Love แบ่งโต๊ะเป็นสองฝั่ง</td></tr><tr><td>ป้ายชื่อพนักงานลูกหมี</td><td class="n">3 อัน</td><td>สีประจำตัวของลูกแต่ละคน เบอร์พ่อแม่ด้านหลัง</td></tr><tr><td>โปสเตอร์ How-to สินค้าหลัก</td><td class="n">8 แผ่น</td><td>A4 จากไฟล์ในชุดนี้</td></tr><tr><td>ป้ายห้อยสินค้า SOI. 02 และ Love</td><td class="n">350 ใบ</td><td>5 × 9 ซม. แบบใน Brand Bible เขียนราคาและรหัสสินค้าด้วยมือได้</td></tr></tbody></table></div></section>
+<div class="tbl"><table><thead><tr><th>รายการ</th><th>จำนวน</th><th>หมายเหตุ</th></tr></thead><tbody><tr><td>ป้ายบูธ (แบ็คดรอปหรือไวนิล)</td><td class="n">1 ผืน</td><td>โลโก้ OCT. 26 + our crafted things + QR ไอจี</td></tr><tr><td>ป้ายตั้งโต๊ะ QR พร้อมเพย์</td><td class="n">2 ป้าย</td><td>A5 ตั้งได้</td></tr><tr><td>ป้ายราคาตามหมวด</td><td class="n">8 ใบ</td><td>39 / 49 / 59 / 99 / 129 / 159 / 199 / 290+</td></tr><tr><td>การ์ดเล่าเรื่อง OCT. 26 + QR</td><td class="n">300 ใบ</td><td>89 × 55 มม. ด้านหลังเล่าความหมาย 26 ตุลาคม ใส่ถุงทุกออเดอร์</td></tr><tr><td>สติกเกอร์ OCT. 26 วงกลม 34 มม.</td><td class="n">300 ดวง</td><td>ปิดถุงทุกใบ</td></tr><tr><td>สติกเกอร์ห้าหมี 34 มม.</td><td class="n">200 ดวง</td><td>แจกเด็ก และปิดถุงสินค้า Love</td></tr><tr><td>ป้ายตั้งโต๊ะคอลเลกชัน</td><td class="n">2 ป้าย</td><td>ป้าย SOI. 02 และป้ายห้าหมี Love แบ่งโต๊ะเป็นสองฝั่ง</td></tr><tr><td>ป้ายชื่อลูก ๆ ที่บูธ</td><td class="n">3 อัน</td><td>สีประจำตัวของแต่ละคน (ทานตะวัน มิ้นต์ ชมพู) เบอร์พ่อแม่ด้านหลัง</td></tr><tr><td>โปสเตอร์ How-to สินค้าหลัก</td><td class="n">8 แผ่น</td><td>A4 จากไฟล์ในชุดนี้</td></tr><tr><td>ป้ายห้อยสินค้า SOI. 02 และ Love</td><td class="n">350 ใบ</td><td>55 × 89 มม. (1 : φ) เขียนราคาและรหัสสินค้าด้วยมือได้</td></tr></tbody></table></div></section>
 
 <section id="more"><span class="eyebrow">ข้อ 7 · แนะนำเพิ่ม</span><h2>สิ่งที่ควรทำต่อ</h2><div class="grid"><div class="card"><h3>จดทะเบียนพาณิชย์</h3><p class="cap" style="font-size:14px;margin-top:4px">ร้านที่ขายออนไลน์ต้องจดทะเบียนพาณิชย์ ยื่นออนไลน์ที่ระบบ e-Registration ของกรมพัฒนาธุรกิจการค้า หรือที่สำนักงานเขต</p></div><div class="card"><h3>ยื่นจดเครื่องหมายการค้า</h3><p class="cap" style="font-size:14px;margin-top:4px">OCT. 26 เป็นตัวอักษรคู่ตัวเลข จดเป็นโลโก้คู่คำ our crafted things จะผ่านง่ายกว่าจดคำเดี่ยว ๆ และยื่นจดห้าหมี FIVE BEARS แยกอีกคำขอ เช็กในฐานข้อมูลกรมทรัพย์สินทางปัญญาก่อนพิมพ์ของจำนวนมาก</p></div><div class="card"><h3>เปิด LINE Official Account</h3><p class="cap" style="font-size:14px;margin-top:4px">ลูกค้าบูธที่สั่งทำจำนวนมาก (ของชำร่วยงานแต่ง ของขวัญองค์กร) จะทักทาง LINE มากกว่า</p></div><div class="card"><h3>รุ่นวันเกิดทุกปี</h3><p class="cap" style="font-size:14px;margin-top:4px">ทุกวันที่ 26 ตุลาคม ออกรุ่น OCT. 26 – No. อายุของแม่ ปีนี้ No. 42 ลูก ๆ เลือกสี เป็นเหตุผลให้ลูกค้ากลับมาทุกปี</p></div><div class="card"><h3>เวิร์กช็อปที่บูธ</h3><p class="cap" style="font-size:14px;margin-top:4px">ชุดต่อเองกล่องลูกบาศก์ 129 บาท นั่งต่อที่บูธ 5 นาที ดึงคนเข้าบูธ และได้คลิปลง TikTok</p></div><div class="card"><h3>รับออเดอร์จำนวนมาก</h3><p class="cap" style="font-size:14px;margin-top:4px">ทำแผ่นพับราคาส่ง ของชำร่วยงานแต่ง 50 ชิ้นขึ้นไป ปั๊มชื่อบ่าวสาวได้</p></div><div class="card"><h3>บันทึกยอดขายลง Google Sheet</h3><p class="cap" style="font-size:14px;margin-top:4px">เพิ่มแท็บบันทึกการขายในไฟล์ต้นทุน ลูกหมีคนโตกรอกทุกเย็น จะรู้ว่าตัวไหนขายดี</p></div><div class="card"><h3>ขออนุญาตก่อนโพสต์รูปลูก</h3><p class="cap" style="font-size:14px;margin-top:4px">ถ่ายมือ ไม่ต้องเห็นหน้าก็ได้ ถ้าโพสต์หน้าลูก ปิดตำแหน่งที่อยู่ และไม่บอกชื่อโรงเรียน</p></div></div></section>
 </div><script>

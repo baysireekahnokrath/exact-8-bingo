@@ -13,7 +13,7 @@ PAT = os.path.join(REPO, "diecut-leather-20261014", "svg")
 STRAP = os.path.join(REPO, "diecut-leather-20261013", "assembly-01")
 ICON_SRC = {"01": "01-bear-head.svg", "02": "02-pinwheel-4-lobe.svg", "03": "03-capsule-cross.svg",
             "04": "04-rounded-square-diagonal.svg", "05": "05-circle.svg", "06": "06-soft-cross.svg"}
-ACCENT = {"01": "caramel", "02": "peach", "03": "sage", "04": "honey", "05": "heart", "06": "cocoa"}
+ACCENT = {"01": "pink", "02": "pink", "03": "mint", "04": "sun", "05": "tomato", "06": "cobalt"}
 
 def icon(code, fill, slit):
     if code.startswith("01-S"):
@@ -39,66 +39,68 @@ def _logo(f, vb=None):
     return re.sub(r'viewBox="[^"]+"', f'viewBox="{vb}"', s, count=1) if vb else s
 
 MARK = _logo("mark.svg")
-WORD = _logo("oct-horizontal.svg", "90 50 820 145")      # wordmark only, tagline cropped off
+WORD = _logo("oct-wordmark.svg")
 FONTS = os.path.join(ROOT, "fonts")
 
+# Golden layout: every size is a Fibonacci number (13 21 34 55 89 144 233 377) or phi-derived.
 CSS = """
 @font-face{font-family:Mitr;font-weight:500;src:url(FONTS/Mitr-Medium.ttf)}
 @font-face{font-family:Mitr;font-weight:600;src:url(FONTS/Mitr-SemiBold.ttf)}
 @font-face{font-family:Anuphan;font-weight:500;src:url(FONTS/alt/Anuphan-Medium.ttf)}
+@font-face{font-family:Jost;font-weight:500;src:url(FONTS/alt/Jost-Medium.ttf)}
 @font-face{font-family:Plex;font-weight:400;src:url(FONTS/IBMPlexSansThai-Regular.ttf)}
 @font-face{font-family:Plex;font-weight:600;src:url(FONTS/IBMPlexSansThai-SemiBold.ttf)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:WPX;height:HPX;background:CREAM;color:COCOA;font-family:Plex,sans-serif;overflow:hidden}
-.page{position:relative;width:WPX;height:HPX;padding:TOPpx 72px BOTpx;display:flex;flex-direction:column}
-.band{position:absolute;left:0;right:0;top:0;height:14px;background:ACC}
-.head{display:flex;align-items:center;justify-content:space-between;font-family:HEADF;font-weight:500;font-size:30px}
-.brand{display:flex;align-items:center;gap:16px}.brand svg{width:64px;height:64px}.brand svg.word{width:250px;height:auto}
-.brand small{display:block;font-size:22px;color:CARAMEL;font-family:Plex}
-.tag{background:ACC;color:TAGFG;border-radius:40px;padding:8px 22px;font-size:26px;letter-spacing:.04em}
-h1{font-family:HEADF;font-weight:600;font-size:TITLEpx;line-height:1.18;margin-top:GAP1px}
-.hook{font-size:36px;line-height:1.45;margin-top:18px;color:MUTED}
-.label{font-family:HEADF;font-weight:500;font-size:28px;color:CARAMEL;margin-top:GAP2px;letter-spacing:.03em}
-.row{display:flex;align-items:center;gap:24px}.row>div:first-child{flex:1}
-.pieces{display:flex;gap:28px;margin-top:14px;align-items:flex-end;flex-wrap:wrap}
+.page{position:relative;width:WPX;height:HPX;padding:TOPpx 89px BOTpx;display:flex;flex-direction:column}
+.band{position:absolute;left:0;right:0;top:0;height:13px;background:ACC}
+.head{display:flex;align-items:center;justify-content:space-between;font-family:HEADF;font-weight:500;font-size:34px;height:55px}
+.brand{display:flex;align-items:center;gap:13px}.brand svg{width:55px;height:55px}.brand svg.word{width:233px;height:auto}
+.brand small{display:block;font-size:21px;color:CARAMEL;font-family:Jost;letter-spacing:.06em}
+.tag{background:ACC;color:TAGFG;border-radius:34px;padding:8px 21px;font-size:21px;letter-spacing:.12em;font-family:Jost;font-weight:500}
+h1{font-family:HEADF;font-weight:600;font-size:TITLEpx;line-height:1.236;margin-top:GAP1px}
+.hook{font-size:34px;line-height:1.5;margin-top:13px;color:MUTED}
+.label{font-family:HEADF;font-weight:500;font-size:21px;color:CARAMEL;margin-top:GAP2px;letter-spacing:.06em}
+.row{display:flex;align-items:center;gap:34px}.row>div:first-child{flex:1}
+.pieces{display:flex;gap:34px;margin-top:13px;align-items:flex-end;flex-wrap:wrap}
 .pc{display:flex;flex-direction:column;align-items:center;gap:8px}
-.pc svg{height:ICONpx;width:auto;max-width:300px}
-.pc .q{font-family:HEADF;font-weight:600;font-size:34px}
-.pc .n{font-size:22px;color:MUTED}
+.pc svg{height:ICONpx;width:auto;max-width:233px}
+.pc .q{font-family:Jost;font-weight:500;font-size:34px}
+.pc .n{font-size:21px;color:MUTED}
 .steps{margin-top:GAP2px;display:flex;flex-direction:column;gap:STEPGAPpx}
-.st{display:flex;align-items:center;gap:26px;background:#fff;border-radius:28px;padding:22px 26px}
-.st b{flex:none;width:76px;height:76px;border-radius:50%;background:ACC;color:TAGFG;font-family:HEADF;font-weight:600;
-      font-size:42px;display:flex;align-items:center;justify-content:center}
-.st span{font-size:38px;line-height:1.3}
+.st{display:flex;align-items:center;gap:21px;background:#fff;border-radius:21px;padding:21px}
+.st b{flex:none;width:55px;height:55px;border-radius:50%;background:ACC;color:TAGFG;font-family:Jost;font-weight:500;
+      font-size:34px;display:flex;align-items:center;justify-content:center}
+.st span{font-size:34px;line-height:1.3}
 .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between}
-.price{flex:none;width:210px;height:210px;border-radius:50%;background:HEART;color:#fff;display:flex;flex-direction:column;
-       align-items:center;justify-content:center;font-family:HEADF;transform:rotate(-6deg)}
-.price b{font-size:72px;font-weight:600;line-height:1}.price i{font-style:normal;font-size:28px}
-.claims{font-family:HEADF;font-weight:500;font-size:30px;line-height:1.5;display:flex;justify-content:space-between;width:100%;border-top:2px solid LINE;padding-top:22px}
-.claims small{font-family:Plex;font-weight:400;font-size:28px;color:MUTED}
+.price{flex:none;width:233px;height:233px;border-radius:50%;background:HEART;color:#fff;display:flex;flex-direction:column;
+       align-items:center;justify-content:center;font-family:Jost;font-weight:500}
+.price b{font-size:89px;font-weight:500;line-height:1}.price i{font-style:normal;font-size:21px;font-family:Plex}
+.claims{font-family:HEADF;font-weight:500;font-size:21px;line-height:1.5;display:flex;justify-content:space-between;width:100%;border-top:2px solid LINE;padding-top:21px}
+.claims small{font-family:Jost;font-weight:500;font-size:21px;color:MUTED;letter-spacing:.04em}
 """
+
 
 def page(p, W, H, vertical):
     love = p["coll"] == "love"
-    if love:      # ห้าหมี FIVE BEARS · Love: the bear family colours and Mitr
-        acc_k = ACCENT[p["parts"][0][0][:2]]
-        T = dict(BG=C["cream"], INK=C["cocoa"], ACC=C[acc_k], TAGFG=C["cocoa"] if acc_k in ("honey", "peach") else "#fff",
-                 CARAMEL=C["caramel"], PRICE=C["heart"], HEADF="Mitr", MUTED="#7a5a45", LINE="#e2cdb6")
-        fill = C["caramel"] if acc_k != "caramel" else C["cocoa"]
+    if love:      # ห้าหมี FIVE BEARS · Love: pink, Mitr
+        T = dict(BG=C["paper"], INK=C["ink"], ACC=C["pink"], TAGFG=C["ink"],
+                 CARAMEL=C["tomato"], PRICE=C["tomato"], HEADF="Mitr", MUTED="#4A4A55", LINE="#F1DCCB")
+        fill = C["leather"]
         brand = f'{MARK}<span>{SUB["th"]} · {SUB["en"]}<small>{SUB["by"]}</small></span>'
         coll, shop = "LOVE", "Shopee OCT. 26 · หมวดห้าหมี"
-    else:         # OCT. 26 · SOI. 02: the master brand colours and Anuphan
-        T = dict(BG=C["oct_cream"], INK=C["chestnut"], ACC=C["brick"], TAGFG="#fff",
-                 CARAMEL=C["leaf"], PRICE=C["chestnut"], HEADF="Anuphan", MUTED="#6E5440", LINE="#DCC4A6")
-        fill = C["caramel"]
+    else:         # OCT. 26 · SOI. 02: cobalt, Anuphan
+        T = dict(BG=C["paper"], INK=C["ink"], ACC=C["cobalt"], TAGFG="#fff",
+                 CARAMEL=C["cobalt"], PRICE=C["tomato"], HEADF="Anuphan", MUTED="#4A4A55", LINE="#F1DCCB")
+        fill = C["leather"]
         brand = WORD.replace("<svg ", '<svg class="word" ', 1)
         coll, shop = "SOI. 02", "Shopee OCT. 26"
     sub = dict(WPX=f"{W}px", HPX=f"{H}px", CREAM=T["BG"], COCOA=T["INK"], ACC=T["ACC"], TAGFG=T["TAGFG"],
                CARAMEL=T["CARAMEL"], HEART=T["PRICE"], HEADF=T["HEADF"], MUTED=T["MUTED"], LINE=T["LINE"],
                FONTS="file://" + FONTS,
-               TOP="240" if vertical else "64", BOT="420" if vertical else "64",
-               TITLE="88" if len(p["name"]) < 18 else "76", GAP1="40" if vertical else "34",
-               GAP2="44" if vertical else "30", ICON="190" if vertical else "130", STEPGAP="20" if vertical else "16")
+               TOP="233" if vertical else "55", BOT="377" if vertical else "55",
+               TITLE="89" if len(p["name"]) < 16 else "68" if len(p["name"]) < 22 else "55", GAP1="34" if vertical else "21",
+               GAP2="55" if vertical else "34", ICON="144" if vertical else "89", STEPGAP="21" if vertical else "13")
     css = CSS
     for k in sorted(sub, key=len, reverse=True):
         css = css.replace(k, sub[k])

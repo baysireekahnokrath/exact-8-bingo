@@ -15,64 +15,69 @@ URLS = json.load(open(os.path.join(HERE, "urls.json"))) if os.path.exists(os.pat
 
 CSS = """
 :root{
-  /* Layout: one reading column of cards on warm October cream, like a craft-shop catalogue; wide tables scroll inside their box. */
-  --bg:#F6EADB;--paper:#FFFBF5;--ink:#3A2318;--muted:#6E5440;--line:#E3CDB1;
-  --caramel:#A9541A;--heart:#B8501A;--honey:#F0B43C;--peach:#F2A7A0;--sage:#6F9A8D;--cocoa:#3A2318;--cream:#F3E3CF;
-  --brick:#D9772B;--love:#D6453D;--leaf:#8A6A3A;--chestnut:#3A2318;--on-accent:#FFFFFF;--chip:#EFDCC4;
-  --logo:"Syne","Anuphan",system-ui,sans-serif;
+  /* Layout: one reading column of cards, every size from phi. Type steps 16 x phi^(k/2); spacing Fibonacci 5 8 13 21 34 55 89;
+     reading column 987px (a Fibonacci number); two-column splits 61.8 / 38.2. Palette #2, chosen 15 Oct 2026. */
+  --bg:#FFF6EC;--paper:#FFFFFF;--ink:#1C1B22;--muted:#4A4A55;--line:#F1DCCB;
+  --cobalt:#2449D8;--tomato:#FF5A36;--sun:#FFC23C;--mint:#2EC4A0;--pink:#FF8AC4;--leather:#B8743A;
+  --caramel:var(--cobalt);--heart:#E2401C;--brick:var(--tomato);--love:var(--pink);--honey:var(--sun);--peach:var(--pink);--sage:var(--mint);
+  --cocoa:var(--ink);--cream:var(--bg);--leaf:var(--cobalt);--chestnut:var(--ink);
+  --on-accent:#FFFFFF;--chip:#FBE9DA;
+  --t-1:12.6px;--t0:16px;--t1:20.4px;--t2:25.9px;--t3:32.9px;--t4:41.9px;
+  --s1:5px;--s2:8px;--s3:13px;--s4:21px;--s5:34px;--s6:55px;--s7:89px;
+  --logo:"Jost","Anuphan",system-ui,sans-serif;
   --display:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;
   --body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chestnut:#6B4A35;--chip:#3A281C;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chestnut:#6B4A35;--chip:#3A281C;color-scheme:dark}
+  --bg:#14131A;--paper:#1F1E27;--ink:#FFF6EC;--muted:#C9C4D6;--line:#34323F;--cobalt:#7C97FF;--caramel:#7C97FF;--heart:#FF7A5C;--chip:#2A2833;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14131A;--paper:#1F1E27;--ink:#FFF6EC;--muted:#C9C4D6;--line:#34323F;--cobalt:#7C97FF;--caramel:#7C97FF;--heart:#FF7A5C;--chip:#2A2833;color-scheme:dark}
 *{box-sizing:border-box}
 img{max-width:100%;height:auto;display:block}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;margin:0;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
-.wrap{max-width:860px;margin:0 auto}
-h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.25;text-wrap:balance;margin:0}
-h1{font-size:clamp(30px,7vw,46px)}h2{font-size:clamp(23px,5vw,30px)}h3{font-size:19px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:var(--t0);line-height:1.618;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 var(--s7)}
+.wrap{max-width:987px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.236;text-wrap:balance;margin:0}
+h1{font-size:clamp(var(--t3),7vw,var(--t4))}h2{font-size:clamp(var(--t2),5vw,var(--t3))}h3{font-size:var(--t1)}
 p{margin:0}
-a{color:var(--caramel)}
+a{color:var(--cobalt)}
 nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
-  margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));
-  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+  margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:var(--s3) max(16px,env(safe-area-inset-left,0px));
+  display:flex;gap:var(--s2);overflow-x:auto;scrollbar-width:none}
 nav.top a{flex:none;font-family:var(--display);font-size:14px;text-decoration:none;color:var(--ink);background:var(--chip);
-  border-radius:99px;padding:5px 13px}
-nav.top a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--honey);outline-offset:2px}
-section{padding-top:44px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:60px}
-.eyebrow{font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--caramel)}
-.lead{font-size:18px;color:var(--muted);max-width:62ch}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px}
-.paper{background:#FFFDF9;border-radius:18px;padding:18px;display:flex;align-items:center;justify-content:center}
-.paper.dark{background:#3A2318}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-.grid.s{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  border-radius:var(--s4);padding:var(--s1) var(--s3)}
+nav.top a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--tomato);outline-offset:2px}
+section{padding-top:var(--s6);display:flex;flex-direction:column;gap:var(--s4);scroll-margin-top:var(--s7)}
+.eyebrow{font-family:var(--logo);font-weight:500;font-size:var(--t-1);letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt)}
+.lead{font-size:var(--t1);color:var(--muted);max-width:61.8ch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--s4);padding:var(--s4)}
+.paper{background:#FFFFFF;border-radius:var(--s4);padding:var(--s4);display:flex;align-items:center;justify-content:center}
+.paper.dark{background:#2449D8}
+.grid{display:grid;gap:var(--s3);grid-template-columns:repeat(auto-fill,minmax(233px,1fr))}
+.grid.s{grid-template-columns:repeat(auto-fill,minmax(144px,1fr))}
 .grid>*{min-width:0}
-.cap{font-size:13px;color:var(--muted)}
+.cap{font-size:var(--t-1);color:var(--muted)}
 .mono{font-variant-numeric:tabular-nums}
-.chip{display:inline-block;font-size:12.5px;border-radius:99px;padding:2px 10px;background:var(--chip)}
-.chip.ok{background:#DCEBE5;color:#2F5A4E}.chip.mid{background:#FBE7C2;color:#7A4E0E}.chip.ext{background:#F8DAD7;color:#8A2A23}
-.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+.chip{display:inline-block;font-size:var(--t-1);border-radius:var(--s4);padding:2px var(--s3);background:var(--chip)}
+.chip.ok{background:#D7F3EA;color:#0E6B55}.chip.mid{background:#FFF0C7;color:#7A5200}.chip.ext{background:#FFE1D9;color:#A0300F}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--s3);background:var(--paper)}
 table{border-collapse:collapse;width:100%;font-size:14.5px}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:var(--display);font-weight:500;font-size:13px;color:var(--muted);white-space:nowrap}
+th,td{text-align:left;padding:var(--s2) var(--s3);border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:500;font-size:var(--t-1);color:var(--muted);white-space:nowrap}
 td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 tr:last-child td{border-bottom:0}
 ol,ul{margin:0;padding-left:1.3em}
-li+li{margin-top:4px}
-.copy{font-family:var(--display);font-size:13px;border:1px solid var(--line);background:var(--chip);color:var(--ink);
-  border-radius:99px;padding:4px 12px;cursor:pointer}
-pre.txt{white-space:pre-wrap;font-family:var(--body);font-size:14.5px;background:var(--bg);border-radius:12px;padding:12px;margin:0}
+li+li{margin-top:var(--s1)}
+.copy{font-family:var(--display);font-size:var(--t-1);border:1px solid var(--line);background:var(--chip);color:var(--ink);
+  border-radius:var(--s4);padding:var(--s1) var(--s3);cursor:pointer}
+pre.txt{white-space:pre-wrap;font-family:var(--body);font-size:14.5px;background:var(--bg);border-radius:var(--s3);padding:var(--s3);margin:0}
 details{border-top:1px solid var(--line)}
-details>summary{cursor:pointer;padding:10px 0;font-family:var(--display);font-size:15px}
-.ch{display:flex;flex-direction:column;gap:8px;padding-bottom:12px}
-.ch .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+details>summary{cursor:pointer;padding:var(--s3) 0;font-family:var(--display);font-size:15px}
+.ch{display:flex;flex-direction:column;gap:var(--s2);padding-bottom:var(--s3)}
+.ch .h{display:flex;justify-content:space-between;align-items:center;gap:var(--s2)}
 """
 
 FONT_LINK = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600&family=IBM+Plex+Sans+Thai:wght@400;600&family=Mitr:wght@400;500;600&family=Syne:wght@700&display=swap">')
+             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600&family=IBM+Plex+Sans+Thai:wght@400;600&family=Mitr:wght@400;500;600&family=Jost:wght@400;500&display=swap">')
 
 COPY_JS = """<script>
 document.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;
@@ -114,7 +119,21 @@ def brandbook():
                ("OCT.", "ตุลาคม เดือนที่แบรนด์เกิด และเดือนที่ลูก ๆ ออกบูธครั้งแรก"),
                ("26", "วันเกิดของแม่ แบรนด์เกิดวันเดียวกัน 26 ตุลาคม 2569"),
                ("อ่านว่า", f"{b['say']} เขียนตัวใหญ่ มีจุดหลัง OCT และเว้นวรรคก่อน 26 ทุกครั้ง")]
-    mean = "".join(f'<div class="card"><h3 style="font-family:var(--logo);font-weight:700">{E(h)}</h3><p style="margin-top:6px">{E(t)}</p></div>' for h, t in meaning)
+    import importlib.util
+    _sp = importlib.util.spec_from_file_location("logolab_build", os.path.join(ROOT, "logolab", "build.py"))
+    LL = importlib.util.module_from_spec(_sp); _sp.loader.exec_module(LL)
+    golden_rows = "".join(f'<tr><td>{E(a)}</td><td class="mono">{E(c)}</td></tr>' for a, c in [
+        ("ตัวอักษรโลโก้", "เส้น = ความสูง ÷ φ⁴ · จุด = เส้น × φ · ตัวเลขกว้าง = ความสูง ÷ φ"),
+        ("ป้ายห้อยสัญลักษณ์", "กว้าง : สูง = 1 : φ · ฐานเลข 26 อยู่ที่เส้นแบ่งทองคำ"),
+        ("ตราประทับ", "วงนอก : วงใน = φ : 1 · ตัวหนังสือรอบวงยาวไม่เกิน 137.5° (มุมทองคำ)"),
+        ("ป้ายคอลเลกชัน", "กว้าง : สูง = φ : 1 (SOI. 02) และ φ² : 1 (Love)"),
+        ("ขนาดตัวอักษรบนเว็บ", " · ".join(f"{v:g}" for v in B.GOLDEN["type"]) + " px (16 × φ^(k/2))"),
+        ("ระยะห่าง", " · ".join(str(v) for v in B.GOLDEN["space"]) + " px (ฟีโบนัชชี)"),
+        ("โปสเตอร์", "ขอบ 89 · ช่องไฟ 13 / 21 / 34 / 55 · หัวข้อ 89 · ราคา 233 px"),
+        ("งานพิมพ์ (มม.)", " · ".join(f"{k} {' × '.join(str(x) for x in v)}" for k, v in B.GOLDEN["print_mm"].items())),
+        ("สัดส่วนสี", "พื้น 61.8% · หมึกและโคบอลต์ 23.6% · มะเขือเทศและสีครอบครัว 14.6%"),
+        ("ที่ว่างรอบโลโก้", "อย่างน้อย จุด × φ ทุกด้าน")])
+    mean = "".join(f'<div class="card"><h3 style="font-family:var(--logo);font-weight:500">{E(h)}</h3><p style="margin-top:6px">{E(t)}</p></div>' for h, t in meaning)
     arch = "".join(
         f'<div class="card" style="display:flex;flex-direction:column;gap:6px;{"border:2px solid var(--brick)" if i == 0 else ""}">'
         f'<span class="eyebrow">{E(lv)}</span><h3>{E(nm)}</h3><p class="cap" style="font-size:14px">{E(what)}</p><p style="font-size:14.5px">{E(note)}</p></div>'
@@ -130,13 +149,15 @@ def brandbook():
         f'<p><span class="chip ok">ใช้</span> {E(do)}</p><p><span class="chip ext">เลี่ยง</span> <s>{E(dont)}</s></p></div>'
         for h, d, do, dont in B.VOICE)
     oct_logos = "".join(fig(f, c, cls) for f, c, cls in [
-        ("oct-stacked", "โลโก้หลัก แนวตั้ง", ""), ("oct-horizontal", "แนวนอน ใช้ป้ายบูธ หัวเว็บ", ""),
-        ("oct-stacked-reverse", "บนพื้นเข้ม", "dark"), ("oct-horizontal-mono", "สีเดียว ใช้ปั๊มเลเซอร์ ตรายาง", ""),
-        ("oct-mark", "ตราวงกลม ใช้เดี่ยว ๆ", ""), ("oct-sticker-3cm", "สติกเกอร์ปิดถุง 3 ซม.", "")])
+        ("oct-horizontal", "โลโก้หลัก ป้ายห้อยคู่ตัวอักษร", ""), ("oct-stacked", "แนวตั้ง", ""),
+        ("oct-wordmark", "ตัวอักษรอย่างเดียว", ""), ("oct-stacked-reverse", "บนพื้นโคบอลต์", "dark"),
+        ("oct-mark", "ป้ายห้อย สัญลักษณ์และไอคอน", ""), ("oct-seal", "ตราประทับ สำหรับปั๊มหนัง", ""),
+        ("oct-horizontal-mono", "สีเดียว ใช้ปั๊มเลเซอร์ ตรายาง", ""), ("oct-sticker-34mm", "สติกเกอร์ปิดถุง 34 มม.", ""),
+        ("soi2-sign", "ป้ายคอลเลกชัน SOI. 02", "")])
     bear_logos = "".join(fig(f, c, cls) for f, c, cls in [
         ("fivebears-stacked", "ห้าหมี แนวตั้ง", ""), ("fivebears-horizontal", "ห้าหมี แนวนอน", ""),
         ("fivebears-stacked-reverse", "บนพื้นเข้ม", "dark"), ("mark", "ตัวหมี ใช้เดี่ยว ๆ", ""),
-        ("fivebears-sticker-3cm", "สติกเกอร์หมี แจกเด็ก 3 ซม.", ""), ("fivebears-horizontal-mono", "สีเดียว", "")])
+        ("fivebears-sticker-34mm", "สติกเกอร์หมี แจกเด็ก 34 มม.", ""), ("fivebears-horizontal-mono", "สีเดียว", "")])
     colls = "".join(
         f'<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="paper" style="aspect-ratio:5/3"><img src="logo/{img}.svg" alt="ป้ายคอลเลกชัน {E(c["name"])}"></div>'
         f'<span class="eyebrow">{E(c["brand"])} · คอลเลกชันแรก</span><h3>{E(c["name"])}</h3><p class="cap" style="font-size:14px">{E(c["line"])}</p>'
@@ -147,8 +168,8 @@ def brandbook():
     fonts = "".join(
         f'<div class="card"><p class="cap">{E(role)} · {E(nm)}</p><p style="font-family:{css};font-size:{sz}px;font-weight:{w};line-height:1.25">{E(sample)}</p><p class="cap">{E(use)}</p></div>'
         for role, (nm, use), css, sz, w, sample in [
-            ("โลโก้", B.FONTS["logo"], "var(--logo)", 40, 700, "OCT. 26"),
-            ("หัวข้อ OCT. 26", B.FONTS["head"], "var(--display)", 32, 500, "กล่องของชำร่วย 159 บาท"),
+            ("ภาษาอังกฤษ", B.FONTS["latin"], "var(--logo)", 34, 500, "our crafted things."),
+            ("หัวข้อภาษาไทย", B.FONTS["head"], "var(--display)", 34, 500, "กล่องของชำร่วย 159 บาท"),
             ("ห้าหมี", B.FONTS["sub"], "'Mitr',sans-serif", 32, 600, "ราวหมีห้าตัว 349 บาท"),
             ("เนื้อความ", B.FONTS["body"], "var(--body)", 18, 400, "เศษหนังแท้ต่อกันด้วยปีกและร่อง ไม่ใช้กาว ไม่ต้องเย็บสักเข็ม")])
     apps = [("avatar-1080.png", "รูปโปรไฟล์ทุกช่องทาง 1080 × 1080"), ("cover-facebook-1640x624.png", "ปก Facebook 1640 × 624"),
@@ -158,12 +179,12 @@ def brandbook():
         f'<figcaption class="cap">{E(c)}</figcaption></figure>' for f, c in apps)
     return f"""{head("OCT. 26 Brand Book")}
 <div class="wrap">
-<nav class="top" aria-label="หัวข้อ"><a href="#name">ชื่อ</a><a href="#arch">โครงสร้างแบรนด์</a><a href="#story">เรื่องเล่า</a><a href="#logo">โลโก้</a>
+<nav class="top" aria-label="หัวข้อ"><a href="#name">ชื่อ</a><a href="#arch">โครงสร้างแบรนด์</a><a href="#story">เรื่องเล่า</a><a href="#logo">โลโก้</a><a href="#golden">สัดส่วนทองคำ</a>
 <a href="#collections">คอลเลกชัน</a><a href="#fivebears">ห้าหมี</a><a href="#color">สี</a><a href="#type">ตัวอักษร</a><a href="#voice">น้ำเสียง</a><a href="#use">ตัวอย่างใช้งาน</a></nav>
 <header style="padding-top:28px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center">
  <div class="paper" style="aspect-ratio:1"><img src="logo/oct-stacked.svg" alt="โลโก้ OCT. 26 our crafted things" style="max-height:100%"></div>
- <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BOOK · ฉบับ OCT. 26 · 14 ต.ค. 2569</span>
- <h1 style="font-family:var(--logo);font-weight:700">OCT. 26</h1><p class="lead">{E(b['tag_en'])} {E(b['tag_th'])} · {E(b['line'])}</p>
+ <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BOOK · ฉบับสัดส่วนทองคำ · 15 ต.ค. 2569</span>
+ <h1>คู่มือแบรนด์ OCT. 26</h1><p class="lead">{E(b['tag_en'])} {E(b['tag_th'])} · {E(b['line'])}</p>
  <p>คู่มือนี้ใช้กับทุกอย่างที่มีชื่อ OCT. 26 และซับแบรนด์ห้าหมี ตั้งแต่ป้ายบูธ ถุง สติกเกอร์ ไปจนถึงโพสต์ในโซเชียล</p></div>
 </header>
 
@@ -181,32 +202,40 @@ def brandbook():
 <div class="grid">{story}</div>
 <div class="card">{copybox("bio", B.STORY_BIO, "ประโยคแนะนำตัวสั้น ใช้เป็น bio")}</div></section>
 
-<section id="logo"><span class="eyebrow">โลโก้ OCT. 26</span><h2>จุดกลางชื่อคือหัวใจของโลโก้</h2>
-<p class="lead">ตัวอักษร Syne ตัวหนา จุดหลัง OCT เป็นวงกลมสีแทนจุดธรรมดา ในโลโก้แนวตั้ง 26 ตัวใหญ่กว่า OCT เพราะวันที่คือเรื่องที่สำคัญที่สุด ไวยากรณ์เดียวกันนี้ใช้กับคอลเลกชัน SOI. 02 และแบรนด์วันเกิดของทุกคน</p>
+<section id="logo"><span class="eyebrow">โลโก้ OCT. 26</span><h2>ป้ายห้อยทองคำ และตัวอักษรที่วาดเอง</h2>
+<p class="lead">สัญลักษณ์คือป้ายห้อยสัดส่วน 1 : φ เป็นทั้งป้ายของงานทำมือและหน้าปฏิทิน ฐานของเลข 26 อยู่ตรงเส้นแบ่งทองคำ ตัวอักษรวาดเองจากวงกลมและเส้นตรง ไม่ใช่ฟอนต์ จุดสีมะเขือเทศเป็นส่วนเดียวที่ใหญ่กว่าเส้น จึงเป็นสิ่งที่คนจำ ตัวอักษรชุดเดียวกันใช้กับ SOI. 02 และแบรนด์วันเกิดของทุกคน</p>
 <div class="grid">{oct_logos}</div>
 <div class="card"><h3>กติกาการใช้โลโก้</h3><ul style="margin-top:8px">
 <li>เขียนชื่อในข้อความว่า OCT. 26 ตัวใหญ่ มีจุด และเว้นวรรคหนึ่งครั้ง ชื่อบัญชีใช้ {E(b['handle'])}</li>
-<li>เว้นที่ว่างรอบโลโก้อย่างน้อยเท่าความสูงตัว O</li>
-<li>โลโก้แนวนอนเล็กสุดกว้าง 25 มม. ถ้าเล็กกว่านั้นใช้ตราวงกลม เล็กสุด 10 มม.</li>
-<li>จุดใช้สีจุดของแบรนด์เสมอ ตอนนี้คือส้มอิฐ จนกว่าจะเลือกสีแบรนด์เสร็จ ยกเว้นงานสีเดียว ห้ามบีบ ยืด หมุน หรือใส่เงา</li>
+<li>เว้นที่ว่างรอบโลโก้อย่างน้อย จุด × φ ทุกด้าน</li>
+<li>โลโก้แนวนอนเล็กสุดกว้าง 34 มม. ถ้าเล็กกว่านั้นใช้ป้ายห้อยอย่างเดียว เล็กสุดสูง 8 มม. ตราประทับเล็กสุด 21 มม.</li>
+<li>จุดเป็นสีมะเขือเทศเสมอ ยกเว้นงานสีเดียว แบรนด์วันเกิดแต่ละแบรนด์ใช้สีของเจ้าของวันเกิด ห้ามบีบ ยืด หมุน หรือใส่เงา</li>
 <li>ไฟล์ SVG ทุกไฟล์แปลงตัวอักษรเป็นเส้นแล้ว ส่งร้านพิมพ์ได้เลยโดยไม่ต้องมีฟอนต์</li></ul></div></section>
+
+<section id="golden"><span class="eyebrow">สัดส่วนทองคำ</span><h2>ทุกอย่างมาจาก φ = 1.618</h2>
+<p class="lead">ขนาดของทุกชิ้น ตั้งแต่ความหนาเส้นในโลโก้ จนถึงขนาดถุงกระดาษ คำนวณจากตัวเลขเดียว ทุกส่วนจึงสัมพันธ์กันเอง ตาคนจึงรู้สึกว่าลงตัว</p>
+<div class="paper">{LL.wordmark_construction()}</div>
+<div class="grid"><div class="paper">{LL.tag_construction()}</div><div class="paper">{LL.seal_construction()}</div></div>
+<div class="tbl"><table><tbody>{golden_rows}</tbody></table></div>
+<p class="cap">ภาพเส้นโครงและการทดสอบตั้งแต่ 16 พิกเซลถึงบิลบอร์ดอยู่ใน {link("logolab", "Logo Lab")}</p></section>
 
 <section id="collections"><span class="eyebrow">คอลเลกชัน</span><h2>SOI. 02 และ Love</h2>
 <div class="grid">{colls}</div></section>
 
 <section id="fivebears"><span class="eyebrow">ซับแบรนด์</span><h2>ห้าหมี FIVE BEARS by OCT. 26</h2>
 <p class="lead">หมีในโลโก้คือเส้นตัดของแบบ 01 ที่หมุน 45 องศา ร่องสองเส้นเป็นแก้ม หัวใจตรงกลางคือแม่ ใช้กับสินค้าคอลเลกชัน Love และทุกอย่างที่ทำให้เด็ก</p><p class="cap">แบบ 01 หามาจากอินเทอร์เน็ต ใช้ช่วงเปิดตัวได้ แต่ต้องวาดหมีใหม่จากแพตเทิร์นของเราเองก่อนยื่นจดเครื่องหมายการค้า</p>
-<div class="paper"><img src="logo/family.svg" alt="หมีห้าตัวเรียงจากพ่อหมีถึงลูกหมีคนเล็ก"></div>
+<div class="paper"><img src="logo/family.svg" alt="หมีห้าตัว สีเดียวกับแบรนด์วันเกิดของแต่ละคน"></div>
 <div class="grid">{fam}</div>
 <div class="grid">{bear_logos}</div>
 <p class="cap">ห้าหมีมีบรรทัด by OCT. 26 เสมอ ยกเว้นตัวหมีเดี่ยวและสติกเกอร์ ที่เล็กเกินจะอ่าน</p></section>
 
-<section id="color"><span class="eyebrow">สี · ชุดตั้งต้น ยังไม่สรุป</span><h2>สีเดือนตุลาคม และสีหมีห้าตัว</h2><p class="lead">ทุกไฟล์ในชุดนี้ใช้สีตั้งต้นนี้ไปก่อน ทางเลือกอื่นอยู่ใน {link("colorlab", "Color Lab")} และ {link("palettes", "หน้าสุ่มสี")} เลือกได้เมื่อไร แก้ใน brand.py ที่เดียว ทุกไฟล์เปลี่ยนตาม</p>
-<h3>OCT. 26</h3><div class="grid s">{swatches(B.MASTER_KEYS)}</div>
-<p class="cap">ครีมตุลา 60% เกาลัด 30% ส้มอิฐและใบไม้แห้ง 10% ส้มอิฐใช้กับจุด ราคา และปุ่มสั่งซื้อ ถ้าเป็นตัวหนังสือบนพื้นครีมใช้ส้มอิฐเข้ม #A9541A จะอ่านง่ายกว่า</p>
-<h3>ห้าหมี</h3><div class="grid s">{swatches([k for k, *_ in B.PALETTE if k not in B.MASTER_KEYS])}</div></section>
+<section id="color"><span class="eyebrow">สี · เลือกแล้ว ชุดที่ 2</span><h2>สีสด สะดุดตา หนึ่งคนหนึ่งสี</h2><p class="lead">เลือกแล้ววันที่ 15 ต.ค. 2569 จากหน้าสุ่มสี ชุดที่ 2 แต่ละสีของครอบครัวเป็นสีของคนหนึ่งคน ใช้กับแบรนด์วันเกิดและหมีของคนนั้น</p>
+<h3>สีหลัก</h3><div class="grid s">{swatches(B.MASTER_KEYS)}</div>
+<p class="cap">สัดส่วนตาม φ: พื้นครีมนม 61.8% หมึกและโคบอลต์ 23.6% มะเขือเทศและสีครอบครัว 14.6% ตัวหนังสือเล็กใช้หมึกหรือโคบอลต์ มะเขือเทศใช้กับจุด ราคา และปุ่ม</p>
+<h3>สีครอบครัว</h3><div class="grid s">{swatches([k for k, *_ in B.PALETTE if k not in B.MASTER_KEYS])}</div></section>
 
-<section id="type"><span class="eyebrow">ตัวอักษร</span><h2>สี่ฟอนต์ ฟรีจาก Google Fonts</h2>
+<section id="type"><span class="eyebrow">ตัวอักษร</span><h2>ตัวอักษรโลโก้ที่วาดเอง และสี่ฟอนต์จาก Google Fonts</h2>
+<div class="paper"><img src="logo/oct-wordmark.svg" alt="ตัวอักษรโลโก้ OCT. Geometric" style="max-height:89px"></div><p class="cap">{E(B.FONTS["logo"][0])} · {E(B.FONTS["logo"][1])}</p>
 <div class="grid">{fonts}</div></section>
 
 <section id="voice"><span class="eyebrow">น้ำเสียง</span><h2>พูดแบบ OCT. 26</h2><div class="grid">{voice}</div></section>
@@ -216,9 +245,9 @@ def brandbook():
 <div class="grid">{app_cards}</div>
 <div class="grid">
 <figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="posters/18-post.png" alt="ตัวอย่างโปสเตอร์ SOI. 02 กล่องของชำร่วยงานแต่ง" style="border-radius:10px">
-<figcaption class="cap">โปสเตอร์ SOI. 02 สีของ OCT. 26</figcaption></figure>
+<figcaption class="cap">โปสเตอร์ SOI. 02 ขอบ 89 ช่องไฟฟีโบนัชชี</figcaption></figure>
 <figure class="card" style="margin:0;display:flex;flex-direction:column;gap:8px"><img src="posters/21-post.png" alt="ตัวอย่างโปสเตอร์ห้าหมี Love ราวหมีห้าตัว" style="border-radius:10px">
-<figcaption class="cap">โปสเตอร์ห้าหมี Love สีของหมีห้าตัว · ดูทั้ง 30 ตัวใน {link("launch", "ชุดเปิดตัว")}</figcaption></figure></div></section>
+<figcaption class="cap">โปสเตอร์ห้าหมี Love · ดูทั้ง 30 ตัวใน {link("launch", "ชุดเปิดตัว")}</figcaption></figure></div></section>
 </div>{COPY_JS}"""
 
 # ---------------------------------------------------------------- launch kit
@@ -237,7 +266,7 @@ def launch():
         shots, tcap = B.script_tiktok(p); ytt, ytd = B.youtube(p); spt, spd = B.shopee(p)
         shot_txt = "\n".join(f"{t}  {a}  ({b_})" for t, a, b_ in shots)
         hero = ' <span class="chip" style="background:var(--heart);color:var(--on-accent)">สินค้าหลัก</span>' if n in B.HEROES else ""
-        coll = (f'<span class="chip" style="background:{"#F8DAD7" if p["coll"] == "love" else "#F3E3CF"};color:{"#8A2A23" if p["coll"] == "love" else "#3A2318"}">'
+        coll = (f'<span class="chip" style="background:{"#FFE3F1" if p["coll"] == "love" else "#E3E8FB"};color:{"#A3215F" if p["coll"] == "love" else "#1A35A3"}">'
                 f'{E(p["line"])}</span>')
         cards += f"""<article class="card" id="p{n}" style="display:grid;gap:14px;grid-template-columns:minmax(0,min(180px,36%)) minmax(0,1fr)">
 <a href="posters/{n:02d}-post.png" target="_blank" rel="noopener"><img src="posters/thumb/{n:02d}.jpg" alt="โปสเตอร์ {E(p['name'])}" loading="lazy" style="border-radius:10px;border:1px solid var(--line)"></a>
@@ -319,13 +348,13 @@ def launch():
 # ---------------------------------------------------------------- brand bible
 BIBLE_CSS = """
 .ch-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.ch-no{font-family:var(--logo);font-weight:700;font-size:15px;color:var(--brick);letter-spacing:.06em}
+.ch-no{font-family:var(--logo);font-weight:500;font-size:15px;color:var(--brick);letter-spacing:.06em}
 .big{font-family:var(--display);font-weight:600;font-size:clamp(24px,5.6vw,34px);line-height:1.35;text-wrap:balance}
 .quote{border-left:4px solid var(--brick);padding:4px 0 4px 16px;font-size:18px}
 .duo{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 .duo>*{min-width:0}
 .tile{display:flex;flex-direction:column;gap:4px}
-.tile b{font-family:var(--logo);font-weight:700;font-size:26px;color:var(--brick);font-variant-numeric:tabular-nums}
+.tile b{font-family:var(--logo);font-weight:500;font-size:26px;color:var(--brick);font-variant-numeric:tabular-nums}
 .slider{display:grid;grid-template-columns:5.5em 1fr 5.5em;align-items:center;gap:10px;font-size:14px}
 .slider .r{text-align:right}
 .track{position:relative;height:6px;border-radius:3px;background:var(--line)}
@@ -340,9 +369,9 @@ BIBLE_CSS = """
 .thumbs figcaption{font-size:11px;color:var(--muted);line-height:1.3}
 .tl{display:grid;grid-template-columns:7.5em 1fr;gap:0 14px}
 .tl>div{padding:10px 0;border-bottom:1px solid var(--line);min-width:0}
-.tl .d{font-family:var(--logo);font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums}
+.tl .d{font-family:var(--logo);font-weight:500;font-size:13.5px;font-variant-numeric:tabular-nums}
 .tag{display:inline-block;font-size:12px;border-radius:99px;padding:1px 9px;margin-left:6px}
-.tag.oct{background:#F3E3CF;color:#3A2318}.tag.bear{background:#F8DAD7;color:#8A2A23}
+.tag.oct{background:#E3E8FB;color:#1A35A3}.tag.bear{background:#FFE3F1;color:#A3215F}
 .check{list-style:none;padding:0;display:grid;gap:6px}
 .check li{display:flex;gap:10px;align-items:flex-start}
 .check li::before{content:"";flex:none;width:16px;height:16px;margin-top:4px;border:2px solid var(--brick);border-radius:4px}
@@ -358,7 +387,7 @@ def bible():
         st = f' style="aspect-ratio:{ratio}"' if ratio else ""
         return f'<div class="{cls}"{st}><img src="bible/{f}.svg" alt="{E(alt)}" style="max-height:100%"></div>'
     values = "".join(
-        f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>{E(v)} <span class="cap" style="font-family:var(--logo);font-weight:700">{E(en)}</span></h3>'
+        f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>{E(v)} <span class="cap" style="font-family:var(--logo);font-weight:500">{E(en)}</span></h3>'
         f'<p><span class="chip ok">เราทำ</span> {E(do)}</p><p><span class="chip ext">เราไม่ทำ</span> {E(dont)}</p></div>' for v, en, do, dont in V.VALUES)
     core = (f'<p class="big">{E(V.ESSENCE[0])} <span style="font-family:var(--logo);color:var(--brick)">{E(V.ESSENCE[1])}</span></p>'
             f'<div class="card"><span class="eyebrow">เหตุผลที่มีแบรนด์นี้</span><p style="margin-top:6px;font-size:17px">{E(V.PURPOSE)}</p>'
@@ -400,7 +429,7 @@ def bible():
         f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><span class="eyebrow">เสาที่ {i}</span><h3>{E(h)}</h3><p class="cap">{E(sub)}</p>'
         f'<ul>{"".join(f"<li>{E(x)}</li>" for x in pr)}</ul><p class="quote" style="font-size:15px">“{E(ex)}”</p></div>'
         for i, (h, sub, pr, ex) in enumerate(V.PILLARS, 1))
-    tags = "".join(f'<tr><td><b>{E(w)}</b></td><td style="font-family:var(--logo);font-weight:700">{E(en)}</td><td>{E(th)}</td><td class="cap">{E(use)}</td></tr>' for w, en, th, use in V.TAGLINES)
+    tags = "".join(f'<tr><td><b>{E(w)}</b></td><td style="font-family:var(--logo);font-weight:500">{E(en)}</td><td>{E(th)}</td><td class="cap">{E(use)}</td></tr>' for w, en, th, use in V.TAGLINES)
     pitch = "".join(f'<div class="card">{copybox(f"pitch{i}", t, f"{d} · {who}")}</div>' for i, (d, who, t) in enumerate(V.PITCH))
     lex = "".join(f'<tr><td><span class="chip ok">ใช้</span> {E(u)}</td><td><span class="chip ext">เลี่ยง</span> {E(a)}</td><td class="cap">{E(w)}</td></tr>' for u, a, w in V.LEXICON)
     msg = (f'<h3>สามเสาของสาร</h3><div class="grid">{pillars}</div><h3>สโลแกน</h3>'
@@ -408,7 +437,7 @@ def bible():
            f'<h3>เล่าแบรนด์ในหนึ่งนาที</h3><div class="grid">{pitch}</div>'
            f'<h3>คำที่ใช้ คำที่เลี่ยง</h3><div class="tbl"><table><tbody>{lex}</tbody></table></div>')
     naming = "".join(f'<div class="card" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">{E(a)}</span><h3>{E(rule)}</h3>'
-                     f'<p style="font-size:14.5px">{E(how)}</p><p class="mono" style="font-family:var(--logo);font-weight:700;color:var(--brick)">{E(ex)}</p></div>' for a, rule, how, ex in V.NAMING)
+                     f'<p style="font-size:14.5px">{E(how)}</p><p class="mono" style="font-family:var(--logo);font-weight:500;color:var(--brick)">{E(ex)}</p></div>' for a, rule, how, ex in V.NAMING)
     codes = " · ".join(f'<span class="mono">{V.product_code(p)}</span> {E(p["name"])}' for p in B.PRODUCTS)
     names = (f'<div class="grid">{naming}</div>'
              f'<details><summary>รหัสสินค้าทั้ง 30 ตัว</summary><p style="font-size:14px;padding-bottom:12px">{codes}</p></details>')
@@ -455,7 +484,7 @@ def bible():
             f'<p class="cap">ทุกอย่างในคู่มือนี้แก้ได้ที่ไฟล์ brand-20261014/bible.py และ brand.py แล้วสร้างหน้าใหม่ ลิงก์เดิมไม่เปลี่ยน</p>')
     def dm(d, big=False):
         mon, day = d.split(". ")
-        return (f'<span style="font-family:var(--logo);font-weight:700;font-size:{30 if big else 22}px;white-space:nowrap">{E(mon)}'
+        return (f'<span style="font-family:var(--logo);font-weight:500;font-size:{30 if big else 22}px;white-space:nowrap">{E(mon)}'
                 f'<span style="color:var(--brick)">.</span> {E(day)}</span>')
     fam = "".join(f'<div class="card" style="display:flex;flex-direction:column;gap:4px{";border:2px solid var(--brick)" if main else ""}">'
                   f'{dm(d, main)}<b style="font-family:var(--display);font-weight:500">{E(who)}</b><span class="cap">{E(st)}</span></div>'
@@ -471,11 +500,11 @@ def bible():
     import importlib.util
     spec = importlib.util.spec_from_file_location("colorlab_build", os.path.join(ROOT, "colorlab", "build.py"))
     CL = importlib.util.module_from_spec(spec); spec.loader.exec_module(CL)
-    colors = (f'<p class="lead">ยังไม่สรุป สีในคู่มือนี้คือชุดตั้งต้น October Warm ส่วนทางเลือกทั้งหมดอยู่ใน {link("colorlab", "Color Lab")} ให้คุยกันที่บ้านก่อนเลือก</p>'
+    colors = (f'<p class="lead">เลือกแล้ว ชุดที่ 2 Soi Candy กระดาษครีม หมึกเกือบดำ น้ำเงินโคบอลต์ และแดงมะเขือเทศ ทุกไฟล์ใช้ชุดนี้แล้ว ส่วนทางเลือกอื่นยังเก็บไว้ใน {link("colorlab", "Color Lab")}</p>'
               f'<div class="grid s">' + "".join(
                   f'<figure class="card" style="margin:0;padding:8px;display:flex;flex-direction:column;gap:6px"><img src="colorlab/{k}.svg" alt="แผงสี {E(n)}" style="border-radius:8px">'
                   f'<figcaption class="cap"><b>{E(n)}</b> · {E(fam_)}</figcaption></figure>' for k, fam_, n, *_ in CL.OPTIONS) + '</div>'
-              f'<p class="cap">เมื่อเลือกได้แล้ว แก้สีใน brand.py ที่เดียว โลโก้ โปสเตอร์ ป้ายห้อย และทุกหน้าจะเปลี่ยนตาม</p>')
+              f'<p class="cap">สัดส่วนสีบนงานหนึ่งชิ้น กระดาษ 61.8 หมึก 23.6 สีเด่น 14.6 สีหนัง B8743A เป็นสีวัสดุ ไม่ใช่สีพิมพ์ แก้สีใน brand.py ที่เดียว ทุกไฟล์เปลี่ยนตาม</p>')
     chapters = [("core", "หัวใจแบรนด์", "ทำไมต้องมี OCT. 26", core),
                 ("family", "ครอบครัวแบรนด์", "แบรนด์วันเกิดของทุกคน และทางเติบโต", family),
                 ("position", "ตำแหน่งแบรนด์", "เราต่างจากทางเลือกอื่นอย่างไร", pos),
@@ -483,7 +512,7 @@ def bible():
                 ("personality", "บุคลิก", "ถ้า OCT. 26 เป็นคน", person),
                 ("message", "สาร", "พูดอะไร และพูดอย่างไร", msg),
                 ("naming", "ระบบชื่อ", "ตั้งชื่อคอลเลกชันและสินค้า", names),
-                ("color", "สีแบรนด์", "ยังไม่สรุป มีเจ็ดทางเลือก", colors),
+                ("color", "สีแบรนด์", "เลือกแล้ว ชุดที่ 2 Soi Candy", colors),
                 ("visual", "ภาษาภาพ", "สิ่งที่ลูกค้าจะจำได้", visual),
                 ("pack", "บรรจุภัณฑ์", "ป้ายห้อย การ์ด และถุง", pack),
                 ("booth", "บูธ", "ห้าขั้นจากทางเดินถึงลูกค้า", booth),
@@ -496,9 +525,9 @@ def bible():
 <div class="wrap">
 <nav class="top" aria-label="บท">{nav}</nav>
 <header style="padding-top:28px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center">
- <div class="paper dark" style="aspect-ratio:1"><img src="logo/oct-stacked-reverse.svg" alt="โลโก้ OCT. 26 บนพื้นเกาลัด" style="max-height:100%"></div>
+ <div class="paper dark" style="aspect-ratio:1"><img src="logo/oct-stacked-reverse.svg" alt="โลโก้ OCT. 26 บนพื้นน้ำเงินโคบอลต์" style="max-height:100%"></div>
  <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BIBLE · ฉบับที่ 2 · 15 ต.ค. 2569</span>
- <h1 style="font-family:var(--logo);font-weight:700">OCT. 26</h1>
+ <h1 style="font-family:var(--logo);font-weight:500">OCT. 26</h1>
  <p class="lead">คู่มือว่าแบรนด์นี้คิด พูด และทำอย่างไร ใช้คู่กับ {link("brandbook", "Brand Book")} ที่เก็บโลโก้ สี และไฟล์ ส่วนข้อความโพสต์และสินค้าอยู่ใน {link("launch", "Launch Kit")}</p>
  <p class="cap">{len(chapters)} บท อ่านจบประมาณ 20 นาที ฉบับนี้ปรับตามความเห็นของเจ้าของแบรนด์ 19 ข้อ</p></div>
 </header>
@@ -515,14 +544,15 @@ def colorlab():
              "oxblood": (1, 3, 1, 2), "grandjoke": (3, 3, 2, 2), "pistachio": (3, 2, 3, 2)}
     dots = lambda n: "".join(f'<i style="display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:3px;background:{"var(--brick)" if i < n else "var(--line)"}"></i>' for i in range(3))
     cards, rows, nav = "", "", ""
-    for key, fam, name, idea, c, note in CL.OPTIONS:
+    for key, fam, name, idea, c, note in sorted(CL.OPTIONS, key=lambda o: o[0] != "candy"):
+        won = key == "candy"
         sw = [("พื้น", c["paper"]), ("ตัวหนังสือ", c["ink"]), ("จุด", c["dot"]), ("สีหลัก", c["deep"])]
         sw += [(d, col) for d, col in zip(CL.BIRTHDAYS, c["fam"])]
         swh = "".join(f'<div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="height:34px;border-radius:6px;border:1px solid var(--line);background:{h}"></span>'
                       f'<span class="cap mono" style="font-size:11px">{E(l)}<br>{h}</span></div>' for l, h in sw)
-        cards += (f'<article class="card" id="{key}" style="display:flex;flex-direction:column;gap:10px;scroll-margin-top:60px">'
+        cards += (f'<article class="card" id="{key}" style="display:flex;flex-direction:column;gap:10px;scroll-margin-top:60px{";border:3px solid var(--cobalt)" if won else ""}">'
                   f'<img src="colorlab/{key}.svg" alt="แผงสี {E(name)} บนโลโก้ ป้ายห้อย ห้าแบรนด์วันเกิด และห้าหมี" style="border-radius:10px">'
-                  f'<div><span class="chip">{E(fam)}</span></div><h3 style="font-family:var(--logo);font-weight:700;font-size:22px">{E(name)}</h3>'
+                  f'<div><span class="chip">{E(fam)}</span>{' <span class="chip" style="background:var(--cobalt);color:#fff">เลือกแล้ว ชุดที่ 2</span>' if won else ""}</div><h3 style="font-family:var(--logo);font-weight:500;font-size:22px">{E(name)}</h3>'
                   f'<p>{E(idea)}</p><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px">{swh}</div>'
                   f'<p class="cap" style="font-size:14px">{E(note)}</p></article>')
         e, p, f, l = SCORE[key]
@@ -535,10 +565,11 @@ def colorlab():
     return f"""{head("OCT. 26 Color Lab")}
 <div class="wrap">
 <nav class="top" aria-label="ทางเลือกสี">{nav}<a href="#compare">เทียบ</a><a href="#ask">คำถาม</a></nav>
-<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">COLOR LAB · 15 ต.ค. 2569 · ยังไม่สรุป</span>
-<h1>สีของ OCT. 26 เจ็ดทางเลือก</h1>
-<p class="lead">ทุกแผงใช้ของชุดเดียวกัน โลโก้ รูปโปรไฟล์ ป้ายห้อย ห้าแบรนด์วันเกิด ห้าหมี และถุง เปลี่ยนแค่สี จะได้เทียบกันได้ตรง ๆ</p>
-<p class="cap">สามแนวที่ขอ สีสดสะดุดตา หรูแบบเงียบ และหรูแบบตลก แนวละสองแบบ บวกสีที่ใช้อยู่ตอนนี้เป็นตัวตั้งต้น แต่ละแบบให้สีห้าสีกับห้าแบรนด์วันเกิดไว้ด้วย</p></header>
+<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">COLOR LAB · 15 ต.ค. 2569 · เลือกแล้ว ชุดที่ 2</span>
+<h1>สีของ OCT. 26 เลือกแล้ว Soi Candy</h1>
+<p class="lead">บ้านเราเลือกชุดที่ 2 Soi Candy แล้ว เมื่อ 15 ต.ค. 2569 ทุกไฟล์ของแบรนด์ใช้ชุดนี้ ทางเลือกอื่นเก็บไว้ด้านล่างเพื่อเทียบ</p>
+<p class="cap">ทุกแผงใช้ของชุดเดียวกัน โลโก้ รูปโปรไฟล์ ป้ายห้อย ห้าแบรนด์วันเกิด ห้าหมี และถุง เปลี่ยนแค่สี จะได้เทียบกันได้ตรง ๆ</p>
+<p class="cap">สามแนวที่ขอ สีสดสะดุดตา หรูแบบเงียบ และหรูแบบตลก แนวละสองแบบ บวกสีตั้งต้นเดิม แต่ละแบบให้สีห้าสีกับห้าแบรนด์วันเกิดไว้ด้วย</p></header>
 <section id="options" style="padding-top:28px"><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr))">{cards}</div></section>
 <section id="compare"><span class="eyebrow">เทียบ</span><h2>แต่ละแบบเด่นเรื่องไหน</h2>
 <div class="tbl"><table><thead><tr><th>แบบ</th><th>สะดุดตา</th><th>ดูหรู</th><th>ห้าหมี</th><th>หนังจริง</th></tr></thead><tbody>{rows}</tbody></table></div>
@@ -612,7 +643,7 @@ AUDIT = [
     ("Brand Book บอกว่าโลโก้หมีและโปสเตอร์ใช้ต่อได้ทั้งหมด แต่ Brand Bible บอกว่าแพตเทิร์นมาจากอินเทอร์เน็ต",
      "ทั้งสองที่บอกตรงกันแล้ว ใช้ช่วงเปิดตัวได้ วาดหมีใหม่จากแพตเทิร์นของเราก่อนจดเครื่องหมายการค้า"),
     ("Brand Book นำเสนอสีตุลาคมเหมือนสรุปแล้ว และกำหนดว่าจุดต้องเป็นส้มอิฐเสมอ",
-     "ติดป้ายว่าเป็นชุดตั้งต้น ยังไม่สรุป และให้จุดใช้สีของแบรนด์ ซึ่งแบรนด์วันเกิดแต่ละแบรนด์เลือกเองได้"),
+     "ติดป้ายว่าเป็นชุดตั้งต้น และให้จุดใช้สีของแบรนด์ ซึ่งแบรนด์วันเกิดแต่ละแบรนด์เลือกเองได้ ต่อมา 15 ต.ค. เลือกชุดที่ 2 แล้ว"),
     ("ภาพในอีก 5 ปีบอกว่าทุกคนต้องมีแบรนด์วันเกิด แต่กติกาบอกว่าเปิดเมื่อเจ้าของพร้อม",
      "เขียนใหม่เป็น ใครพร้อมเมื่อไร ก็มีแบรนด์ของตัวเอง"),
     ("น้ำเสียงใน Brand Book บอกว่าห้าหมีพูดน่ารักได้มากกว่า แต่ Brand Bible บอกว่าห้าหมีช่างพูดและขี้เล่นสุด ๆ",
@@ -627,12 +658,12 @@ AUDIT = [
 
 def summary():
     tot = B.event_totals()
-    rows = [("Logo Lab", "logolab", "โลโก้สามทางจากสัดส่วนทองคำ พร้อมเส้นโครงและการทดสอบ รอเลือกทางก่อนทำไฟล์จริง"),
-            ("Color Lab", "colorlab", "สีแบรนด์เจ็ดทางเลือก ยังไม่สรุป ให้คุยกันที่บ้าน"),
+    rows = [("Logo Lab", "logolab", "เลือกแล้ว ป้ายห้อย 1:φ ตัวอักษรเรขาคณิต และตราปั๊มหนัง ทำเป็นไฟล์จริงครบชุดแล้ว"),
+            ("Color Lab", "colorlab", "เลือกแล้ว ชุดที่ 2 Soi Candy ทางเลือกอื่นเก็บไว้เทียบ"),
             ("สุ่มสีแบบไม่มีชื่อแบรนด์", "palettes", "สุ่มสีสามแนวบนตัวอย่างที่ไม่มีโลโก้ ล็อกสี เก็บชุดที่ชอบ คัดลอกรหัสสี"),
             ("Product Lab", "productlab", "สินค้าหนังที่ขายดี ราคากระเป๋าเทียบตลาด กระเป๋าสะพายข้างสามแบบจากแพตเทิร์น และสินค้าที่เล่าเรื่อง"),
             ("Brand Bible", "bible", "14 บท ตั้งแต่เหตุผลที่มีแบรนด์ ครอบครัวแบรนด์วันเกิด สี บุคลิก สาร ระบบชื่อ บรรจุภัณฑ์ บูธ คอนเทนต์ จนถึงปีแรก"),
-            ("Brand Book", "brandbook", "ชื่อ เรื่องเล่า โลโก้ สี ฟอนต์ น้ำเสียง"),
+            ("Brand Book", "brandbook", "ชื่อ เรื่องเล่า โลโก้ชุดใหม่ ระบบสัดส่วนทองคำ สีชุดที่ 2 ฟอนต์ น้ำเสียง"),
             ("Launch Kit", "launch", "แผนถึงวันงาน โซเชียล Shopee สินค้า 30 ตัวแบ่งตามคอลเลกชัน พร้อมโพสต์ 5 ช่องทาง คู่มือลูก ๆ ขายของ"),
             ("สไลด์ของขวัญวันเกิด", "deck", "พรีเซนต์ OCT. 26 ให้เธอในวันเกิด 26.10"),
             ("Google Sheet ต้นทุน", "sheet", "ต้นทุน ราคาขาย กำไร 3 แท็บ"),
@@ -678,8 +709,7 @@ def summary():
 <li>ใส่ชื่องานและเลขบูธแทน [ชื่องาน] ในข้อความโพสต์</li>
 <li>สายหัวใจ 250 มม. ต้องใช้เศษยาว 25.5 ซม. ขึ้นไป ถ้าเศษสั้นกว่า ป้ายชื่อกระเป๋าใช้สาย 200 แทน</li>
 <li>ราคาขายเป็นราคาแนะนำ แก้ได้ในคอลัมน์ราคาขายของ Google Sheet</li>
-<li>เลือกทางของโลโก้ใน Logo Lab (A, B หรือ C) แล้วจะทำไฟล์โลโก้จริงทั้งชุด</li>
-<li>เลือกสีแบรนด์ แล้วบอกรหัสสีมา ทุกไฟล์จะเปลี่ยนตาม</li>
+<li>พิมพ์ป้ายห้อยตัวอย่าง 55 × 89 มม. หนึ่งแผ่น ดูสีโคบอลต์และมะเขือเทศบนกระดาษจริงก่อนสั่งพิมพ์จำนวนมาก</li>
 <li>เช็กว่าแพตเทิร์น 01–06 ที่หามา เจ้าของอนุญาตให้ขายได้ และเริ่มออกแบบแพตเทิร์นของเราเอง</li>
 <li>ขอใบเสนอราคาป้ายห้อย ถุงกระดาษด้าน และถุงผ้า แล้วตั้งยอดขั้นต่ำต่อออเดอร์ใน Shopee</li></ol></div></section>
 </div>"""
