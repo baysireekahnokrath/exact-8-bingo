@@ -118,12 +118,13 @@ def sticker():
 # ---------------------------------------------------------------- OCT. 26
 SYNE, TH = "alt/Syne-Bold.ttf", "alt/Anuphan-Medium.ttf"
 
-def wordmark(x, base, size, fg, dot, two_lines=False, anchor="start"):
-    """OCT + dot + 26 on one line, or OCT. over a larger 26. Returns (svg, width, height)."""
-    d1, w1, b1 = text_path("OCT", size, SYNE)
+def wordmark(x, base, size, fg, dot, two_lines=False, anchor="start", left="OCT", right="26"):
+    """OCT + dot + 26 on one line, or OCT. over a larger 26. Returns (svg, width, height).
+    The same grammar names the collections (SOI. 02) and the birthday brands (MAR. 23)."""
+    d1, w1, b1 = text_path(left, size, SYNE)
     r = size * .085
     if not two_lines:
-        d2, w2, b2 = text_path("26", size, SYNE)
+        d2, w2, b2 = text_path(right, size, SYNE)
         dx = b1[2] + size * .06 + 2 * r + size * .3 - b2[0]
         total = dx + b2[2] - b1[0]
         x0 = x - (total / 2 if anchor == "middle" else 0) - b1[0]
@@ -132,7 +133,7 @@ def wordmark(x, base, size, fg, dot, two_lines=False, anchor="start"):
                  f'<path transform="translate({x0 + dx:.2f},{base:.2f})" d="{d2}" fill="{fg}"/>')
         return parts, total, size * .66
     big = size * 1.62
-    d2, w2, b2 = text_path("26", big, SYNE)
+    d2, w2, b2 = text_path(right, big, SYNE)
     w_top = b1[2] - b1[0] + size * .06 + 2 * r
     cx = x if anchor == "middle" else x + max(w_top, b2[2] - b2[0]) / 2
     x1 = cx - w_top / 2 - b1[0]
@@ -167,14 +168,15 @@ def oct_avatar():
     return svg(W, W, f'<circle cx="540" cy="540" r="540" fill="{C["oct_cream"]}"/>' + wm + t)
 
 def soi_sign(W=600, H=360):
-    """Collection badge for Soi 2, drawn like a Bangkok street sign in the OCT. 26 colours."""
-    th, _, _ = text("ซอย ๒", 104, W / 2, 158, C["oct_cream"], TH, anchor="middle")
-    en, _, _ = text("SOI 2", 96, W / 2, 268, C["oct_cream"], SYNE, tracking=.04, anchor="middle")
-    by, _, _ = text("OCT. 26", 26, W / 2, 322, C["brick"], SYNE, tracking=.08, anchor="middle")
-    body = (f'<rect width="{W}" height="{H}" rx="34" fill="{C["chestnut"]}"/>'
-            f'<rect x="14" y="14" width="{W-28}" height="{H-28}" rx="24" fill="none" stroke="{C["oct_cream"]}" stroke-width="5"/>'
-            f'<line x1="60" y1="188" x2="{W-60}" y2="188" stroke="{C["brick"]}" stroke-width="5" stroke-linecap="round"/>')
-    return svg(W, H, body + th + en + by, title="Soi 2 · OCT. 26")
+    """Collection mark for SOI. 02: the OCT. 26 wordmark grammar, so the collection reads as part of the
+    brand instead of a street sign. The home-soi meaning lives in the story, not in the mark."""
+    ink, lt = C["chestnut"], C["oct_cream"]
+    wm, _, _ = wordmark(W / 2, 196, 118, lt, C["brick"], anchor="middle", left="SOI", right="02")
+    line, _, _ = text("FROM OUR ROOT", 24, W / 2, 268, lt, SYNE, tracking=.32, anchor="middle")
+    by, _, _ = text("A COLLECTION BY OCT. 26", 16, W / 2, 318, C["brick"], SYNE, tracking=.22, anchor="middle")
+    body = (f'<rect width="{W}" height="{H}" rx="20" fill="{ink}"/>'
+            f'<line x1="{W/2-60}" y1="228" x2="{W/2+60}" y2="228" stroke="{C["brick"]}" stroke-width="3"/>')
+    return svg(W, H, body + wm + line + by, title="SOI. 02 by OCT. 26")
 
 def love_badge(W=600, H=360):
     """Collection badge for Love, the first FIVE BEARS collection."""
@@ -192,12 +194,12 @@ def oct_sticker():
     return svg(W, W, f'<circle cx="200" cy="200" r="200" fill="{C["chestnut"]}"/>' + wm)
 
 def oct_banner(W, H, safe_w, safe_h):
-    """Cover: OCT. 26 and its line on the left of the safe area; the bear family and Soi 2 sign on the right."""
+    """Cover: OCT. 26 and its line on the left of the safe area; the bear family and SOI. 02 sign on the right."""
     cx, cy = (W - safe_w) / 2, (H - safe_h) / 2
     size = min(safe_h * .46, safe_w * .145)
     wm, ww, _ = wordmark(cx + safe_w * .04, cy + safe_h * .5, size, C["chestnut"], C["brick"])
     t1, _, _ = text(BRAND["tag_en"], size * .27, cx + safe_w * .04 + size * .05, cy + safe_h * .5 + size * .5, C["leaf"], SYNE, tracking=.02)
-    t2, _, _ = text("Soi 2  ·  ห้าหมี FIVE BEARS", size * .23, cx + safe_w * .04 + size * .05, cy + safe_h * .5 + size * .86, C["chestnut"], TH)
+    t2, _, _ = text("SOI. 02  ·  ห้าหมี FIVE BEARS", size * .23, cx + safe_w * .04 + size * .05, cy + safe_h * .5 + size * .86, C["chestnut"], TH)
     sizes = [("cocoa", 1.0), ("heart", .9), ("honey", .7), ("peach", .64), ("sage", .58)]
     unit = sum(f * BW / BH for _, f in sizes) + .06 * 4
     room = safe_w - (ww + safe_w * .12)

@@ -30,7 +30,7 @@ OPTIONS = [
     ("saddle", "หรูแบบเงียบ", "Saddle & Bone", "สีกระดูกกับหนังอานม้า แบบแบรนด์หนังยุโรป",
      dict(paper="#EFE9DF", ink="#2B1D16", dot="#8B5A2B", deep="#2B1D16",
           fam=["#8B5A2B", "#B08D57", "#6B6155", "#A0522D", "#4E5B4A"]),
-     "ดูแพงทันที ราคาขยับขึ้นได้ แต่ใกล้กับแบรนด์หนังทั่วไป ต้องใช้ป้ายซอยและเรื่องเล่าช่วยให้จำได้"),
+     "ดูแพงทันที ราคาขยับขึ้นได้ แต่ใกล้กับแบรนด์หนังทั่วไป ต้องใช้ป้าย SOI. และเรื่องเล่าช่วยให้จำได้"),
     ("oxblood", "หรูแบบเงียบ", "Ink & Oxblood", "น้ำเงินหมึก แดงเลือดนก ทองเหลือง แบบร้านเครื่องเขียนเก่า",
      dict(paper="#F5F2EC", ink="#1E2430", dot="#7A1F24", deep="#1E2430",
           fam=["#7A1F24", "#A88B55", "#3D5A80", "#5E6B4E", "#8C6F8C"]),
@@ -82,7 +82,7 @@ def board(c):
     g.append(f'<path d="M{tx+22},{ty} H{tx+tw-22} L{tx+tw},{ty+22} V{ty+th} H{tx} V{ty+22} Z" fill="{ink}"/>'
              f'<circle cx="{tx+tw/2}" cy="{ty+34}" r="9" fill="{p}"/>')
     g.append(datemark(tx + tw / 2, ty + 150, 30, "OCT. 26", on(ink), dot, anchor="middle"))
-    g.append(L.text("Soi 2", 24, tx + tw / 2, ty + 200, on(ink), SYNE, anchor="middle")[0])
+    g.append(L.text("SOI. 02", 24, tx + tw / 2, ty + 200, on(ink), SYNE, anchor="middle")[0])
     g.append(L.text("159 บาท", 22, tx + tw / 2, ty + 240, on(ink), TH, anchor="middle")[0])
     # five birthday brands
     for i, (d, col) in enumerate(zip(BIRTHDAYS, fam)):

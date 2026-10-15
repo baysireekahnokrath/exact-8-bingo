@@ -87,12 +87,12 @@ def page(p, W, H, vertical):
         fill = C["caramel"] if acc_k != "caramel" else C["cocoa"]
         brand = f'{MARK}<span>{SUB["th"]} · {SUB["en"]}<small>{SUB["by"]}</small></span>'
         coll, shop = "LOVE", "Shopee OCT. 26 · หมวดห้าหมี"
-    else:         # OCT. 26 · Soi 2: the master brand colours and Anuphan
+    else:         # OCT. 26 · SOI. 02: the master brand colours and Anuphan
         T = dict(BG=C["oct_cream"], INK=C["chestnut"], ACC=C["brick"], TAGFG="#fff",
                  CARAMEL=C["leaf"], PRICE=C["chestnut"], HEADF="Anuphan", MUTED="#6E5440", LINE="#DCC4A6")
         fill = C["caramel"]
         brand = WORD.replace("<svg ", '<svg class="word" ', 1)
-        coll, shop = "SOI 2", "Shopee OCT. 26"
+        coll, shop = "SOI. 02", "Shopee OCT. 26"
     sub = dict(WPX=f"{W}px", HPX=f"{H}px", CREAM=T["BG"], COCOA=T["INK"], ACC=T["ACC"], TAGFG=T["TAGFG"],
                CARAMEL=T["CARAMEL"], HEART=T["PRICE"], HEADF=T["HEADF"], MUTED=T["MUTED"], LINE=T["LINE"],
                FONTS="file://" + FONTS,

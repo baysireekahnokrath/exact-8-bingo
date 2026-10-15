@@ -36,7 +36,7 @@ def place(code, x, y, size, fill, slit, rot=0):
             f'<g fill="none" stroke="{slit}" stroke-width="{max(vw, vh) * .025:.2f}" stroke-linecap="round">{sl}</g></g>')
 
 def pattern(W=900, H=600, bg=None, fill=None, slit=None, step=150, size=104):
-    """Tissue-paper pattern: the five Soi 2 pieces on a tilted grid."""
+    """Tissue-paper pattern: the five SOI. 02 pieces on a tilted grid."""
     bg, fill, slit = bg or C["oct_cream"], fill or "#E6CDAE", slit or C["oct_cream"]
     codes = list(SRC); out = []
     for j, y in enumerate(range(-step // 2, H + step, step)):
@@ -84,11 +84,9 @@ def tag_soi2(p):
     paper, ink = "#F6EEE3", C["chestnut"]          # cream cotton paper, no kraft
     g = [tag_shape(40, 30, w, h, paper), hole(190, 80, "#FFFFFF"), tag_shape(420, 30, w, h, ink), hole(570, 80, "#FFFFFF")]
     # front: mini soi sign, product name, code
-    g.append(f'<rect x="75" y="140" width="230" height="138" rx="14" fill="{ink}"/>'
-             f'<rect x="83" y="148" width="214" height="122" rx="9" fill="none" stroke="{C["oct_cream"]}" stroke-width="2.5"/>')
-    g.append(text("ซอย ๒", 46, 190, 205, C["oct_cream"], TH, anchor="middle")[0])
-    g.append(f'<line x1="100" y1="217" x2="280" y2="217" stroke="{C["brick"]}" stroke-width="3"/>')
-    g.append(text("SOI 2", 40, 190, 262, C["oct_cream"], SYNE, tracking=.04, anchor="middle")[0])
+    g.append(f'<rect x="75" y="140" width="230" height="138" rx="12" fill="{ink}"/>')
+    wm, _, _ = wordmark(190, 214, 50, C["oct_cream"], C["brick"], anchor="middle", left="SOI", right="02"); g.append(wm)
+    g.append(text("FROM OUR ROOT", 13, 190, 250, C["oct_cream"], SYNE, tracking=.3, anchor="middle")[0])
     size = 30
     while L.text_path(p["name"], size, TH)[1] > 250: size -= 1
     g.append(text(p["name"], size, 190, 352, ink, TH, anchor="middle")[0])
@@ -102,7 +100,7 @@ def tag_soi2(p):
         g.append(text(t, 22, 570, 240 + i * 40, lt, PLEX, anchor="middle")[0])
     g.append(text("ทำกันเองทั้งบ้าน ในซอย 2", 22, 570, 430, C["brick"], TH, anchor="middle")[0])
     g.append(text("@oct26.crafted", 22, 570, 510, lt, SYNE, anchor="middle")[0])
-    return svg(W, H, "".join(g), None, "ป้ายห้อย Soi 2 หน้าและหลัง")
+    return svg(W, H, "".join(g), None, "ป้ายห้อย SOI. 02 หน้าและหลัง")
 
 def tag_love(p):
     W, H, w, h = 760, 600, 300, 540
@@ -175,10 +173,10 @@ def booth():
     ink, mute = C["chestnut"], "#8C735E"
     g = [f'<rect x="60" y="40" width="640" height="560" fill="#FFFBF5" stroke="#D8C2A6" stroke-width="3"/>',
          f'<rect x="60" y="40" width="640" height="40" fill="{C["chestnut"]}"/>']
-    g.append(text("แบ็คดรอป OCT. 26 + ป้ายซอย", 22, 380, 68, C["oct_cream"], TH, anchor="middle")[0])
+    g.append(text("แบ็คดรอป OCT. 26 + ป้าย SOI. 02", 22, 380, 68, C["oct_cream"], TH, anchor="middle")[0])
     g.append(f'<rect x="90" y="380" width="285" height="120" rx="8" fill="{C["oct_cream"]}" stroke="{ink}" stroke-width="3"/>'
              f'<rect x="385" y="380" width="285" height="120" rx="8" fill="{C["cream"]}" stroke="{C["heart"]}" stroke-width="3"/>')
-    g.append(text("โต๊ะ Soi 2", 28, 232, 435, ink, TH, anchor="middle")[0])
+    g.append(text("โต๊ะ SOI. 02", 28, 232, 435, ink, SYNE, anchor="middle")[0])
     g.append(text("ของใช้ทุกวัน 23 แบบ", 20, 232, 470, mute, PLEX, anchor="middle")[0])
     g.append(text("โต๊ะห้าหมี Love", 28, 527, 435, C["heart"], "Mitr-Medium.ttf", anchor="middle")[0])
     g.append(text("ราวหมีห้าตัวแขวนหน้าโต๊ะ", 20, 527, 470, mute, PLEX, anchor="middle")[0])
