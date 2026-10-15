@@ -18,6 +18,7 @@ from textpath import text_path
 import geometry as G
 PHI = G.PHI
 JOST, JOSTR, TH = "alt/Jost-Medium.ttf", "alt/Jost-Regular.ttf", "alt/Anuphan-Medium.ttf"
+MITR, MITRB = "Mitr-Medium.ttf", "Mitr-SemiBold.ttf"
 SYNE = JOST            # old name kept for drawings in other folders
 
 OUT = os.path.join(HERE, "svg"); os.makedirs(OUT, exist_ok=True)
@@ -78,9 +79,33 @@ def bear(x, y, h, body, heart_c, face=None, detail=True):
 
 def text(t, size, x, y, fill, font="Mitr-SemiBold.ttf", tracking=0.0, anchor="start"):
     d, w, (x0, y0, x1, y1) = text_path(t, size, font, tracking)
-    if anchor == "middle":
-        x -= (x0 + x1) / 2
+    x -= (x0 + x1) / 2 if anchor == "middle" else x0     # align the ink, not the pen origin (no side bearing)
     return f'<path transform="translate({x:.2f},{y:.2f})" d="{d}" fill="{fill}"/>', (x1 - x0), (y1 - y0)
+
+def ink(t, size, font, tracking=0.0):
+    """Outline and ink box (x0, y0, x1, y1) of a line of text; y is relative to the baseline."""
+    d, _, box = text_path(t, size, font, tracking)
+    return d, box
+
+def put(d, box, x, y, fill):
+    """Place a line so its ink box's top-left corner is at (x, y)."""
+    return f'<path transform="translate({x - box[0]:.2f},{y - box[1]:.2f})" d="{d}" fill="{fill}"/>'
+
+def justify(t, size, font, target):
+    """Letter-space a line so its ink is exactly `target` wide (tracking is linear in width)."""
+    _, b0 = ink(t, size, font, 0); _, b1 = ink(t, size, font, 1)
+    w0, w1 = b0[2] - b0[0], b1[2] - b1[0]
+    return ink(t, size, font, (target - w0) / (w1 - w0))
+
+def size_for(t, font, target, dim=0):
+    """Font size at which the ink is `target` wide (dim=0) or tall (dim=1)."""
+    _, b = ink(t, 100, font)
+    return 100 * target / ((b[2] - b[0]) if dim == 0 else (b[3] - b[1]))
+
+def tagline(name_w):
+    """our crafted things. sits under the name, its ink exactly name width / phi^(1/2), cap / phi below the baseline."""
+    t = "our crafted things."
+    return ink(t, size_for(t, JOST, name_w / PHI ** 0.5), JOST)
 
 def svg(w, h, body, bg=None, title="OCT. 26"):
     rect = f'<rect width="{w}" height="{h}" fill="{bg}"/>' if bg else ""
@@ -164,44 +189,56 @@ def _fit(t, cap, font, tracking, max_w, fill):
         cap /= PHI ** .25
 
 def soi_sign():
-    """Collection plate, phi : 1. SOI. 02 cap = plate height / phi^3, its baseline on the golden line."""
-    H_ = 360.0; W_ = H_ * PHI; m = H_ / PHI ** 4
-    cap = H_ / PHI ** 3
+    """Collection plate, phi : 1. One justified block: SOI. 02 (cap = height / phi^3), then two lines letter-spaced
+    to exactly its width, caps stepping down by phi. Gaps = cap / phi^3. The block sits in the plate's centre."""
+    H_ = 360.0; W_ = H_ * PHI
+    cap = H_ / PHI ** 3; gap = cap / PHI ** 3
     g, w = word("SOI. 02", cap, PAPER, TOM, _u("ss"))
-    t1, t1w = _fit("FROM OUR ROOT", cap / PHI ** 2, JOST, .3, W_ - 2 * m, PAPER)
-    t2, t2w = _fit("A COLLECTION BY OCT. 26", cap / PHI ** 3, JOST, .22, W_ - 2 * m, TOM)
-    base = H_ / PHI
+    d1, b1 = justify("FROM OUR ROOT", size_for("FROM OUR ROOT", JOST, cap / PHI ** 2, 1), JOST, w)
+    d2, b2 = justify("A COLLECTION BY OCT. 26", size_for("A COLLECTION BY OCT", JOST, cap / PHI ** 3, 1), JOST, w)
+    h1, h2 = b1[3] - b1[1], b2[3] - b2[1]
+    top = (H_ - (cap + gap + h1 + gap + h2)) / 2; x = (W_ - w) / 2
     body = (f'<rect width="{W_:.1f}" height="{H_:.0f}" rx="{H_/PHI**5:.1f}" fill="{INK}"/>'
-            f'<g transform="translate({(W_ - w)/2:.2f},{base:.2f})">{g}</g>'
-            f'<g transform="translate({(W_ - t1w)/2:.2f},{base + cap/PHI:.2f})">{t1}</g>'
-            f'<g transform="translate({(W_ - t2w)/2:.2f},{H_ - m:.2f})">{t2}</g>')
+            f'<g transform="translate({x:.2f},{top + cap:.2f})">{g}</g>'
+            + put(d1, b1, x, top + cap + gap, PAPER) + put(d2, b2, x, top + cap + gap + h1 + gap, TOM))
     return svg(round(W_), round(H_), body, None, "SOI. 02 by OCT. 26")
 
 def love_badge():
-    """phi^2 : 1 plate. Bear = height / phi, Love cap = height / phi^2 on the golden line."""
-    H_ = 360.0; W_ = H_ * PHI ** 2; m = H_ / PHI ** 4
-    bh = H_ / PHI; bw = bh * BW / BH
-    b = bear(m, (H_ - bh) / 2, bh, C["sun"], TOM, INK)
-    x = m + bw + m
-    base = H_ / PHI
-    t1, _, _ = text("Love", H_ / PHI ** 2 / .72, x, base, INK, "Mitr-SemiBold.ttf")
-    t2, t2w, _ = text("ห้าหมี FIVE BEARS", H_ / PHI ** 5 / .72, x + 6, base + H_ / PHI ** 4, INK, "Mitr-Medium.ttf")
-    bl, blw = by_line(0, 0, H_ / PHI ** 6, INK, TOM)
-    body = (f'<rect width="{W_:.1f}" height="{H_:.0f}" rx="{H_/PHI**5:.1f}" fill="{C["pink"]}"/>' + b + t1 + t2
-            + f'<g transform="translate({x + 6:.2f},{base + H_/PHI**4 + H_/PHI**5:.2f})">{bl}</g>')
+    """phi^2 : 1 plate. Bear = height / phi. The text block is exactly as tall as the bear: Love's top on the bear's
+    top, by OCT. 26 on the bear's bottom. ห้าหมี FIVE BEARS is as wide as Love. The whole group is centred."""
+    H_ = 360.0; W_ = H_ * PHI ** 2
+    bh = H_ / PHI; bw = bh * BW / BH; top = (H_ - bh) / 2; bot = top + bh
+    d1, b1 = ink("Love", size_for("Love", MITRB, bh / PHI, 1), MITRB)
+    lw = b1[2] - b1[0]
+    d2, b2 = ink("ห้าหมี FIVE BEARS", size_for("ห้าหมี FIVE BEARS", MITR, lw), MITR)
+    h2 = b2[3] - b2[1]
+    bcap = h2 / PHI ** 2
+    bl, blw = by_line(0, 0, bcap, INK, TOM)
+    _, bb = ink("by", bcap / .7, JOSTR)
+    by_top = bot + bb[1]                                   # ascender of "b" above the baseline
+    free = by_top - (top + bh / PHI) - h2                  # room left between Love and the by line
+    gap = bh / PHI ** 3
+    group = bw + gap + lw; x0 = (W_ - group) / 2; xt = x0 + bw + gap
+    body = (f'<rect width="{W_:.1f}" height="{H_:.0f}" rx="{H_/PHI**5:.1f}" fill="{C["pink"]}"/>'
+            + bear(x0, top, bh, C["sun"], TOM, INK) + put(d1, b1, xt, top, INK)
+            + put(d2, b2, xt, top + bh / PHI + free / 2, INK)
+            + f'<g transform="translate({xt:.2f},{bot:.2f})">{bl}</g>')
     return svg(round(W_), round(H_), body, None, "Love · ห้าหมี FIVE BEARS")
 
 def banner(W, H, safe_w, safe_h):
-    """Cover: the name takes the left 1/phi of the safe area, the family of bears the rest. No tag: the name says 26."""
+    """Cover. Name on the left edge of the safe area, the five bears on the right edge. The tallest bear is exactly
+    as tall as the letters (cap line to baseline) and every bear stands on the name's baseline: one line of type."""
     cx, cy = (W - safe_w) / 2, (H - safe_h) / 2
-    left_w = safe_w / PHI
-    cap = min(safe_h / PHI ** 3, (left_w - safe_w / PHI ** 4) / 5)
+    cap = min(safe_h / PHI ** 3, safe_w / PHI / 5)
     g, w = word("OCT. 26", cap, INK, TOM, _u("bn"))
-    tl, _, _ = text("our crafted things.", cap / PHI ** 2 / .7, 0, 0, COB, JOST, tracking=.04)
-    y0 = cy + (safe_h - cap - cap / PHI - cap / PHI ** 2) / 2
-    parts = (f'<g transform="translate({cx:.2f},{y0 + cap:.2f})">{g}</g>'
-             f'<g transform="translate({cx:.2f},{y0 + cap + cap / PHI + cap / PHI ** 2:.2f})">{tl}</g>')
-    parts += family_row(cx + left_w + safe_w / PHI ** 6, cy + safe_h / 2, safe_w / PHI ** 2 - safe_w / PHI ** 6, safe_h / PHI)
+    td, tb = tagline(w)
+    gap = cap / PHI
+    block = cap + gap + (tb[3] - tb[1])
+    base = cy + (safe_h - block) / 2 + cap
+    parts = f'<g transform="translate({cx:.2f},{base:.2f})">{g}</g>' + put(td, tb, cx, base + gap, COB)
+    unit = sum(f * BW / BH for _, f in FAM) + (len(FAM) - 1) / PHI ** 4
+    h0 = min(cap, (safe_w - w - safe_w / PHI ** 4) / unit)
+    parts += family_row(cx + safe_w - h0 * unit, base - h0 / 2, safe_w, h0)
     return svg(W, H, parts, PAPER)
 
 # ---------------------------------------------------------------- FIVE BEARS (sub-brand)
@@ -224,16 +261,23 @@ def by_line(x, y, cap, fg, dot):
     return t + f'<g transform="translate({x + tw + cap/PHI:.2f},{y:.2f})">{g}</g>', tw + cap / PHI + w
 
 def stacked(fg, bear_c, heart_c, face, bg=None):
-    W = 600.0
+    """Bear, ห้าหมี, FIVE BEARS, by OCT. 26. Centred on one axis; FIVE BEARS is letter-spaced to the width of ห้าหมี;
+    every gap between rows (ink to ink) is the same, W / phi^5."""
+    W = 600.0; m = W / PHI ** 4; gap = W / PHI ** 5
     bh = W / PHI ** 2; bw = bh * BW / BH
-    y = W / PHI ** 4
-    b = bear((W - bw) / 2, y, bh, bear_c, heart_c, face); y += bh + W / PHI ** 5
-    t1, _, h1 = text(SUB["th"], W / PHI ** 3 / .62, W / 2, y + W / PHI ** 3, fg, anchor="middle"); y += W / PHI ** 3 + W / PHI ** 5
-    t2, _, _ = text(SUB["en"], W / PHI ** 6 / .7, W / 2, y + W / PHI ** 6, fg, JOST, tracking=.3, anchor="middle"); y += W / PHI ** 6 + W / PHI ** 5
+    d1, b1 = ink(SUB["th"], W / PHI ** 3 / .62, MITRB)
+    tw = b1[2] - b1[0]
+    d2, b2 = justify(SUB["en"], size_for("FIVE BEARS", JOST, tw / PHI ** 5, 1), JOST, tw)
     byc = TOM if fg != "#000000" else fg
-    bl, blw = by_line(0, 0, W / PHI ** 7, fg, byc)
-    t3 = f'<g transform="translate({(W - blw)/2:.2f},{y + W/PHI**7:.2f})">{bl}</g>'; y += W / PHI ** 7 + W / PHI ** 4
-    return svg(round(W), round(y), b + t1 + t2 + t3, bg, "ห้าหมี FIVE BEARS by OCT. 26")
+    bcap = (b2[3] - b2[1]) / PHI
+    bl, blw = by_line(0, 0, bcap, fg, byc)
+    _, bb = ink("by", bcap / .7, JOSTR)
+    y = m
+    parts = bear((W - bw) / 2, y, bh, bear_c, heart_c, face); y += bh + gap
+    parts += put(d1, b1, (W - tw) / 2, y, fg); y += b1[3] - b1[1] + gap
+    parts += put(d2, b2, (W - tw) / 2, y, fg); y += b2[3] - b2[1] + gap
+    parts += f'<g transform="translate({(W - blw)/2:.2f},{y - bb[1]:.2f})">{bl}</g>'; y += -bb[1] + m
+    return svg(round(W), round(y), parts, bg, "ห้าหมี FIVE BEARS by OCT. 26")
 
 def mark(bear_c, heart_c, face, bg=None, pad=None):
     side = 400.0; h = side / PHI; w = h * BW / BH

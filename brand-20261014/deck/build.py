@@ -18,12 +18,12 @@ MITR = "'Mitr', Tahoma, sans-serif"
 JOST = "'Jost', 'Anuphan', sans-serif"
 
 BLOB = {  # uploaded 15 Oct 2026
-    "date": "915f7f9845c947c7d9f3ba8819d6b27a", "name": "995bc673267cb5543526f5828152538d",
-    "soi": "7bf0e920f1b67996d0c2fa2dd388b6fe",
-    "love": "e81474629390fb34de262d79d12a734a", "avatar": "594eacad64d97f0774f9b83ceab0102d",
+    "date": "1f82405442426f9927af7dfb7bc849c4", "name": "fdf5d2361b3a46ec4ddabce53499b180",
+    "soi": "190ad702c168d58d8f2695b83e111751",
+    "love": "8d6ea5ffa0ea089e935345ab55fc75d3", "avatar": "111977978748bb8cf4e65e72dab76bb0",
     "bear": "15387348361d35674b43a64672dbf652", "family": "e9dcaab887265b826410a402138bf25b",
-    "p18": "1790a12e181ae5bbddf33b8a4d956022", "p21": "00d8262ff381a9c65cbd821e4eb57efd",
-    "p23": "f08f3e10b56e0f2228853c323bf59638", "p29": "0a49758148dfe528ac70e7e13fc5e29d",
+    "p18": "aa023269fbd878a694959a19ac01641d", "p21": "1f12aebd87f38eae6aab682b603d3e18",
+    "p23": "7d07d2acfe2ddf2a6b8e9f2c0091611d", "p29": "c88467c3013f59793b12a6a52e8c7cd7",
 }
 img = lambda k, alt, style: f'<img src="/_blob/{BLOB[k]}" alt="{alt}" style="{style}">'
 

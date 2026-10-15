@@ -7,6 +7,7 @@ Every measure comes from one unit: cap height H = 100 and phi = 1.618.
   T width       = H * phi/2  = 80.90
   C opening     = 360 / phi^3 = 84.98 degrees
   letter gap    = w,  word gap = H / phi^2 = 38.20
+  overshoot     = H / phi^8 = 2.13 (round shapes pass the cap line and baseline by this much)
   OCT. 26       "OCT. " : "26" = phi^2 : 1 (its word gap becomes 32.2)
 Glyphs are drawn as strokes on centre lines (butt caps), so they stay clean at any size.
 """
@@ -21,19 +22,21 @@ TW = H * PHI / 2
 C_OPEN = 360 / PHI ** 3
 GAP = W
 WORD = H / PHI ** 2
+OV = H / PHI ** 8                 # overshoot: round shapes reach 2.1 above the cap line and below the baseline,
+                                  # otherwise O, C, 2, 6 look smaller than T next to them
 
 def _pt(cx, cy, r, deg):
     a = math.radians(deg)
     return cx + r * math.cos(a), cy + r * math.sin(a)
 
 def glyph_O(x, col, uid=""):
-    r = H / 2 - W / 2
-    return f'<circle cx="{x + H/2:.2f}" cy="{-H/2:.2f}" r="{r:.2f}" fill="none" stroke="{col}" stroke-width="{W:.2f}"/>', H
+    R = H / 2 + OV; r = R - W / 2
+    return f'<circle cx="{x + R:.2f}" cy="{-H/2:.2f}" r="{r:.2f}" fill="none" stroke="{col}" stroke-width="{W:.2f}"/>', 2 * R
 
 def glyph_C(x, col, uid=""):
-    r = H / 2 - W / 2; cx, cy = x + H / 2, -H / 2; half = C_OPEN / 2
+    R = H / 2 + OV; r = R - W / 2; cx, cy = x + R, -H / 2; half = C_OPEN / 2
     x1, y1 = _pt(cx, cy, r, half); x2, y2 = _pt(cx, cy, r, 360 - half)
-    adv = cx + (H / 2) * math.cos(math.radians(half)) - x
+    adv = cx + R * math.cos(math.radians(half)) - x
     return (f'<path d="M{x1:.2f},{y1:.2f} A{r:.2f},{r:.2f} 0 1 1 {x2:.2f},{y2:.2f}" fill="none" stroke="{col}" stroke-width="{W:.2f}"/>', adv)
 
 def glyph_T(x, col, uid=""):
@@ -44,16 +47,16 @@ def glyph_dot(x, col):
     return f'<circle cx="{x + DOT/2:.2f}" cy="{-DOT/2:.2f}" r="{DOT/2:.2f}" fill="{col}"/>', DOT
 
 def glyph_2(x, col, uid="g2"):
-    rr = D / 2 - W / 2; cx, cy = x + D / 2, -H + D / 2
+    rr = D / 2 - W / 2; cx, cy = x + D / 2, -H + D / 2 - OV
     sx, sy = _pt(cx, cy, rr, 155)
     ex, ey = _pt(cx, cy, rr, 38)
-    return (f'<clipPath id="{uid}"><rect x="{x:.2f}" y="{-H:.2f}" width="{D:.2f}" height="{H:.2f}"/></clipPath>'
+    return (f'<clipPath id="{uid}"><rect x="{x:.2f}" y="{-H - OV:.2f}" width="{D:.2f}" height="{H + OV:.2f}"/></clipPath>'
             f'<g clip-path="url(#{uid})"><path d="M{sx:.2f},{sy:.2f} A{rr:.2f},{rr:.2f} 0 1 1 {ex:.2f},{ey:.2f} L{x + W*.3:.2f},{-W*.7:.2f}" fill="none" '
             f'stroke="{col}" stroke-width="{W:.2f}"/>'
             f'<rect x="{x:.2f}" y="{-W:.2f}" width="{D:.2f}" height="{W:.2f}" fill="{col}"/></g>', D)
 
 def glyph_6(x, col, uid="g6"):
-    rr = D / 2 - W / 2; cx, cy = x + D / 2, -D / 2
+    rr = D / 2 - W / 2; cx, cy = x + D / 2, -D / 2 + OV
     ex, ey = x + D * .64, -H - W                     # start above the cap line, clipped flat
     dx, dy = ex - cx, ey - cy; dist = math.hypot(dx, dy)
     base = math.degrees(math.atan2(dy, dx)); off = math.degrees(math.acos(rr / dist))
@@ -126,23 +129,23 @@ def glyph_A(x, col, uid="gA"):
             + f'<rect x="{x + wid/2 - half:.2f}" y="{ybar - W/2:.2f}" width="{2*half:.2f}" height="{W:.2f}" fill="{col}"/>', wid)
 
 def glyph_S(x, col, uid=""):
-    ra = SA / 2 - W / 2; rb = SB / 2 - W / 2; wid = SB
-    cx = x + wid / 2; ca = -H + SA / 2; cb = -SB / 2
+    ra = SA / 2 - W / 2 + OV / 2; rb = SB / 2 - W / 2 + OV / 2; wid = SB + OV
+    cx = x + wid / 2; ca = -H + SA / 2 - OV / 2; cb = -SB / 2 + OV / 2
     p1 = _pt(cx, ca, ra, -25); p2 = (cx, ca + ra); p3 = _pt(cx, cb, rb, 155)
     d = (f"M{p1[0]:.2f},{p1[1]:.2f} A{ra:.2f},{ra:.2f} 0 1 0 {p2[0]:.2f},{p2[1]:.2f} "
          f"A{rb:.2f},{rb:.2f} 0 1 1 {p3[0]:.2f},{p3[1]:.2f}")
     return _stroke(d, col, join="round"), wid
 
 def glyph_3(x, col, uid=""):
-    ra = SA / 2 - W / 2; rb = SB / 2 - W / 2; wid = SB
-    cx = x + wid / 2; ca = -H + SA / 2; cb = -SB / 2
+    ra = SA / 2 - W / 2 + OV / 2; rb = SB / 2 - W / 2 + OV / 2; wid = SB + OV
+    cx = x + wid / 2; ca = -H + SA / 2 - OV / 2; cb = -SB / 2 + OV / 2
     p1 = _pt(cx, ca, ra, 205); p2 = (cx - W * .3, ca + ra); p3 = _pt(cx, cb, rb, 155)
     d = (f"M{p1[0]:.2f},{p1[1]:.2f} A{ra:.2f},{ra:.2f} 0 1 1 {cx:.2f},{ca + ra:.2f} L{p2[0]:.2f},{p2[1]:.2f} M{cx:.2f},{cb - rb:.2f} "
          f"A{rb:.2f},{rb:.2f} 0 1 1 {p3[0]:.2f},{p3[1]:.2f}")
     return _stroke(d, col), wid
 
 def glyph_0(x, col, uid=""):
-    r = D / 2 - W / 2; cx = x + D / 2; top = -H + D / 2; bot = -D / 2
+    r = D / 2 - W / 2; cx = x + D / 2; top = -H + D / 2 - OV; bot = -D / 2 + OV
     d = (f"M{cx - r:.2f},{bot:.2f} L{cx - r:.2f},{top:.2f} A{r:.2f},{r:.2f} 0 0 1 {cx + r:.2f},{top:.2f} "
          f"L{cx + r:.2f},{bot:.2f} A{r:.2f},{r:.2f} 0 0 1 {cx - r:.2f},{bot:.2f} Z")
     return _stroke(d, col), D

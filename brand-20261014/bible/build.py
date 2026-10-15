@@ -128,9 +128,9 @@ def tag_soi2(p):
     W, H = 3 * 34 + 2 * TW, 2 * 34 + TH_
     x, y = 34, 34
     wm, cap = word_w("SOI. 02", TW - 2 * M, PAPER, TOM)
-    t1, t1w = fit("FROM OUR ROOT", cap / PHI ** 2, JOST, .3, TW - 2 * M, PAPER)
+    d1, b1 = L.justify("FROM OUR ROOT", L.size_for("FROM OUR ROOT", JOST, cap / PHI ** 2, 1), JOST, TW - 2 * M)
     bl, blw = by_line(0, 0, TW / PHI ** 7, PAPER, TOM)
-    g = [tag_shape(x, y, INK), at(x + M, y + GL, wm), at(x + (TW - t1w) / 2, y + GL + cap / PHI, t1),
+    g = [tag_shape(x, y, INK), at(x + M, y + GL, wm), L.put(d1, b1, x + M, y + GL + cap / PHI ** 3, PAPER),
          at(x + (TW - blw) / 2, y + TH_ - M, bl)]
     g.append(tag_back(x + TW + 34, y, p["name"], TH, p["price"], BB.product_code(p),
                       ["เศษหนังวัวแท้ ทุกชิ้นสีไม่ซ้ำ", "ชิ้นนี้ต่อด้วยปีกและร่อง", "ไม่ใช้กาว", "เช็ดด้วยผ้าแห้ง เลี่ยงน้ำ"]))
@@ -160,9 +160,9 @@ def card():
     W, H = w + 68, 2 * h + 3 * 34
     x, y1, y2 = 34, 34, 34 + h + 34
     wm, cap = word_w("OCT. 26", w / PHI, INK, TOM)
-    t1, t1w = fit("our crafted things.", cap / PHI, JOST, 0, w / PHI, COB)
+    td, tb = L.tagline(w / PHI)
     g = [f'<rect x="{x}" y="{y1}" width="{w}" height="{h}" fill="{PAPER}" stroke="{LINE}" stroke-width="2"/>',
-         at(x + (w - w / PHI) / 2, y1 + h / PHI, wm), at(x + (w - t1w) / 2, y1 + h / PHI + cap / PHI + cap / PHI, t1)]
+         at(x + (w - w / PHI) / 2, y1 + h / PHI, wm), L.put(td, tb, x + (w - (tb[2] - tb[0])) / 2, y1 + h / PHI + cap / PHI, COB)]
     # back
     g.append(f'<rect x="{x}" y="{y2}" width="{w}" height="{h}" fill="{PAPER}" stroke="{LINE}" stroke-width="2"/>')
     g.append(text("ทำไมชื่อ OCT. 26", 34, x + m, y2 + m + 26, INK, TH)[0])
@@ -192,9 +192,9 @@ def bag():
          f'<rect x="{x0}" y="{y0}" width="{pw}" height="34" fill="#00000026"/>',
          "".join(f'<circle cx="{x:.1f}" cy="{y0+24}" r="6" fill="{PAPER}"/>' for x in hx)]
     wm, cap = word_w("OCT. 26", pw / PHI, PAPER, TOM)
-    t1, t1w = fit("our crafted things.", cap / PHI, JOST, 0, pw, PAPER)
+    td, tb = L.tagline(pw / PHI)
     base = y0 + ph / PHI ** 2
-    g += [at(x0 + (pw - pw / PHI) / 2, base, wm), at(x0 + (pw - t1w) / 2, base + cap / PHI + cap / PHI, t1)]
+    g += [at(x0 + (pw - pw / PHI) / 2, base, wm), L.put(td, tb, x0 + (pw - (tb[2] - tb[0])) / 2, base + cap / PHI, PAPER)]
     return svg(W, H, "".join(g), None, "ถุงกระดาษด้านสีน้ำเงินโคบอลต์ 130 × 210 × 80 มม.")
 
 # ---------------------------------------------------------------- birthday-edition card, 89 x 89 mm
