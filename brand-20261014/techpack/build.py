@@ -414,12 +414,15 @@ def sheet(p):
                   f"<td>{'เศษใหญ่' if c.startswith('01') else 'เศษเล็ก'}</td></tr>" for c, q in p["parts"])
     if p["extra"]:
         bom += f"<tr><td>{E(p['extra'][0])}</td><td class='n'>1</td><td>-</td><td>{money(p['extra'][1])} บาท</td></tr>"
-    bom += f"<tr><td>ป้ายห้อย {tag} 55 × 89 มม. และซองหรือถุง</td><td class='n'>1</td><td>-</td><td>{money(B.PACKAGING)} บาท</td></tr>"
+    for k in B.pack_items(p["n"]):
+        nm, size, price, _ = B.PACK_ITEMS[k]
+        nm = f"ป้ายห้อย {tag}" if k == "tag" else nm
+        bom += f"<tr class='pk'><td>{E(nm)}</td><td class='n'>1</td><td>{E(size.split(' ')[0] if '×' in size else '-')}</td><td>{money(price)} บาท</td></tr>"
     asm_s = p["joints"] * 20
     total_min = p["stock"] * (asm_s + 60) / 60
     specs = [("ขนาดเสร็จ", p["size"]), ("ชิ้นหนัง", f"{p['npieces']} ชิ้น"), ("รอยต่อที่บ้าน", f"{p['joints']} จุด"),
              ("เวลาประกอบ", f"{asm_s} วินาที + แพ็ค 60 วินาที"), ("ใครทำ", who(p, steps)),
-             ("ต้นทุน", f"{money(p['cost'])} บาท"), ("ราคาขาย", f"{p['price']} บาท"), ("กำไรต่อชิ้น", f"{money(p['profit'])} บาท ({p['margin']:.0%})"),
+             ("ต้นทุน", f"{money(p['cost'])} บาท (บรรจุภัณฑ์ {money(p['packaging'])})"), ("ราคาขาย", f"{p['price']} บาท"), ("กำไรต่อชิ้น", f"{money(p['profit'])} บาท ({p['margin']:.0%})"),
              ("ผลิตไปบูธ", f"{p['stock']} ชิ้น · ประมาณ {total_min:.0f} นาที")]
     spec_rows = "".join(f"<tr><th>{E(a)}</th><td>{E(b)}</td></tr>" for a, b in specs)
     qc = QC_ALL + (QC_JOINT if p["joints"] else []) + qc_extra
@@ -463,6 +466,32 @@ def gallery():
         x += w + 12
     return svg(-4, -4, x - 4, 128, "".join(body), "บล็อกทั้ง 6 แบบ ขนาดเท่าจริงเทียบกัน")
 
+def pack_section():
+    t = B.event_totals(); need = B.pack_need()
+    per_piece = sum(p["stock"] * p["packaging"] for p in B.PRODUCTS)
+    leather = sum(p["stock"] * sum(B.PIECE_COST[c] * q for c, q in p["parts"]) for p in B.PRODUCTS)
+    total_pack = per_piece + t["order_pack"]
+    items = "".join(f"<tr><td>{E(nm)}</td><td>{E(size)}</td><td class='n'>{money(pr)}</td><td style='white-space:nowrap'>ต่อ{E(per)}</td>"
+                    f"<td class='n'>{need.get(k, B.ORDER_PACK_PLAN.get(k, '-'))}</td></tr>" for k, (nm, size, pr, per) in B.PACK_ITEMS.items())
+    prof = "".join(f"<tr><td>{E(lab)}</td><td>{E(' + '.join(B.PACK_ITEMS[k][0] for k in ks))}</td>"
+                   f"<td class='n'>{money(sum(B.PACK_ITEMS[k][2] for k in ks))}</td>"
+                   f"<td>{E(', '.join(BB.product_code(p) for p in B.PRODUCTS if B.PACK_OF.get(p['n'], 'flat') == key))}</td></tr>"
+                   for key, (lab, ks) in B.PACK_PROFILE.items())
+    order = sum(B.PACK_ITEMS[k][2] for k in B.ORDER_PACK); shopee = sum(B.PACK_ITEMS[k][2] for k in B.SHOPEE_PACK)
+    return f"""<section id="pack"><span class="eyebrow">บรรจุภัณฑ์</span><h2>ค่าบรรจุภัณฑ์ {total_pack:,.0f} บาท มากกว่าค่าหนัง</h2>
+<p class="lead">บรรจุภัณฑ์ของบูธรวม {total_pack:,.0f} บาท คิดเป็น {total_pack / t['cost']:.0%} ของต้นทุนทั้งหมด ส่วนชิ้นหนังทั้งหมดรวมค่าตัดและค่าบล็อก {leather:,.0f} บาท เพราะชิ้นหนังจากเศษราคาถูกมาก ส่วนที่ต้องคุมจึงเป็นบรรจุภัณฑ์</p>
+<div class="grid s">
+<div class="card"><p class="cap">ต่อชิ้น รวมในต้นทุนสินค้าแล้ว</p><p style="font-size:28px;font-weight:600">{per_piece:,.0f} บาท</p><p class="cap">ป้ายห้อย เชือก ซองหรือกระดาษห่อ ถุงผ้าสำหรับชุด</p></div>
+<div class="card"><p class="cap">ต่อออเดอร์ ซื้อไว้สำหรับบูธ</p><p style="font-size:28px;font-weight:600">{t['order_pack']:,.0f} บาท</p><p class="cap">ถุง {B.ORDER_PACK_PLAN['bag']} ใบ การ์ด {B.ORDER_PACK_PLAN['card']} ใบ สติกเกอร์ {B.ORDER_PACK_PLAN['sticker']} ดวง</p></div>
+<div class="card"><p class="cap">หนึ่งออเดอร์ที่บูธ</p><p style="font-size:28px;font-weight:600">{order:.0f} บาท</p><p class="cap">ถุง การ์ด และสติกเกอร์ · Shopee {shopee:.0f} บาท (ซองกันกระแทกแทนถุง)</p></div></div>
+<div class="tbl"><table><thead><tr><th>รายการ</th><th>ขนาดและวัสดุ</th><th>บาท</th><th>คิด</th><th>ต้องใช้ไปบูธ</th></tr></thead><tbody>{items}</tbody></table></div>
+<div class="tbl"><table><thead><tr><th>ห่อแบบไหน</th><th>มีอะไรบ้าง</th><th>บาทต่อชิ้น</th><th>สินค้า</th></tr></thead><tbody>{prof}</tbody></table></div>
+<div class="card"><h3>กติกาที่บูธ</h3><ul>
+<li>ออเดอร์ต่ำกว่า {B.BAG_FROM} บาท ส่งของในซองหรือกระดาษห่อของสินค้า ปิดสติกเกอร์ ใส่การ์ดเล่าเรื่อง ไม่ให้ถุง</li>
+<li>ออเดอร์ {B.BAG_FROM} บาทขึ้นไป ได้ถุงกระดาษ เพราะถุง 15 บาทกินกำไรของที่รองแก้ว 49 บาทไปกว่าหนึ่งในสาม</li>
+<li>ถุงกระดาษสั่ง {B.ORDER_PACK_PLAN['bag']} ใบพอ ถ้าหมดระหว่างงาน ใช้ซองแทน</li></ul>
+<p class="cap">ทุกราคาในตารางนี้เป็นค่าประมาณสำหรับการสั่งไม่กี่ร้อยชิ้น ยังไม่ใช่ใบเสนอราคา ได้ราคาจริงแล้วแก้ใน brand.py ที่ PACK_ITEMS ต้นทุนทุกหน้าจะเปลี่ยนตาม</p></div></section>"""
+
 CSS = """
 .tp{border-top:2px solid var(--ink);padding-top:var(--s4);margin-top:var(--s6);display:flex;flex-direction:column;gap:var(--s4)}
 .tph{display:flex;gap:var(--s4);align-items:flex-start}.tph h2{margin:0}
@@ -477,6 +506,7 @@ CSS = """
 h4{margin:var(--s3) 0 var(--s2);font-family:var(--display);font-size:17px}
 ol,ul{padding-left:1.3em;margin:0}li{margin:4px 0}
 .qc li::marker{content:"☐  "}
+tr.pk td{color:var(--muted)}
 .card.warn{border:2px solid #E9B44C;background:#FFF8E5;margin-top:var(--s3)}
 .toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
 .toc a{display:flex;gap:8px;text-decoration:none;color:var(--ink);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
@@ -488,7 +518,7 @@ ol,ul{padding-left:1.3em;margin:0}li{margin:4px 0}
   nav.top,.noprint{display:none}
   .tp{break-before:page;margin-top:0;border-top:none}
   .tpgrid{grid-template-columns:1.4fr 1fr}.tpgrid2{grid-template-columns:1fr 1fr}
-  .dia svg{max-height:100mm}
+  .dia svg{max-height:90mm}
   body{font-size:11px}.spec{font-size:10.5px}h2{font-size:19px}h4{font-size:12.5px;margin:5px 0 3px}li{margin:0}
   .tbl{overflow:visible}.tbl table{width:100%;font-size:9.5px}.tbl th,.tbl td{padding:3px 5px}
   .front section{break-inside:avoid}
@@ -505,7 +535,7 @@ def build():
     old = 950 * 6
     return f"""{S.head("OCT. 26 Tech Pack")}<style>{CSS}</style>
 <div class="wrap">
-<nav class="top noprint" aria-label="หัวข้อ"><a href="#dies">บล็อก</a><a href="#rule">วิธีอ่านแบบ</a><a href="#plan">แผนผลิต</a><a href="#list">สินค้า 30 แบบ</a></nav>
+<nav class="top noprint" aria-label="หัวข้อ"><a href="#dies">บล็อก</a><a href="#pack">บรรจุภัณฑ์</a><a href="#rule">วิธีอ่านแบบ</a><a href="#plan">แผนผลิต</a><a href="#list">สินค้า 30 แบบ</a></nav>
 <div class="front">
 <header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">TECH PACK · 15 ต.ค. 2569 · บูธ 23–25 ต.ค.</span>
 <h1>สินค้า 30 แบบ จากบล็อก 6 แบบ</h1>
@@ -516,6 +546,8 @@ def build():
 <div class="dia">{gallery()}</div>
 <div class="tbl"><table><thead><tr><th>บล็อก</th><th>ขนาด มม.</th><th>สี่เหลี่ยมพับ มม.</th><th>ร่อง / คอปีก มม.</th><th>ราคาบล็อก บาท</th><th>ต้นทุนต่อชิ้น บาท</th><th>ต้องตัดไปบูธ ชิ้น</th><th>ใช้ใน</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="cap">ราคาบล็อกได้มา 15 ต.ค. 2569 ถูกกว่าที่ประมาณไว้ ({old:,} บาท) อยู่ {old - sum(B.DIE_PRICE.values()):,} บาท ต้นทุนต่อชิ้น = ค่าหนัง + ค่าตัด 1.5 บาท + ราคาบล็อกเฉลี่ย {B.DIE_QTY:,} ชิ้น บล็อกสายหัวใจยังไม่มีราคา ตอนนี้ยังใช้ตัวเลขประมาณเดิม 950 บาท ต้องตัดไปบูธ: เศษใหญ่ {big} ชิ้น จากที่ตัดได้ {B.LOT_CAPACITY['ใหญ่']} · เศษเล็ก {small} ชิ้น จากที่ตัดได้ {B.LOT_CAPACITY['เล็ก']}</p></section>
+
+{pack_section()}
 
 <section id="rule"><span class="eyebrow">วิธีอ่านแบบ</span><h2>รอยต่อแบบเดียว ใช้กับทุกกล่อง</h2>
 <div class="grid">
@@ -528,7 +560,7 @@ def build():
 <div class="grid s">
 <div class="card"><p class="cap">ประกอบ</p><p style="font-size:28px;font-weight:600">{t['assembly_h']:.1f} ชม.</p><p class="cap">รอยต่อละ 20 วินาที</p></div>
 <div class="card"><p class="cap">ตรวจและแพ็ค</p><p style="font-size:28px;font-weight:600">{t['pack_h']:.1f} ชม.</p><p class="cap">ชิ้นละ 60 วินาที</p></div>
-<div class="card"><p class="cap">ต้นทุนรวม</p><p style="font-size:28px;font-weight:600">{t['cost']:,.0f} บาท</p><p class="cap">ขายหมดได้ {t['sales']:,.0f} บาท</p></div></div>
+<div class="card"><p class="cap">ต้นทุนรวม</p><p style="font-size:28px;font-weight:600">{t['cost']:,.0f} บาท</p><p class="cap">สินค้า {t['goods']:,.0f} + ถุงและการ์ดต่อออเดอร์ {t['order_pack']:,.0f} · ขายหมดได้ {t['sales']:,.0f} บาท</p></div></div>
 <div class="card"><h3>ลำดับงาน</h3><ol>
 <li>วัดความหนาเศษหนังแต่ละล็อตก่อนตัด ลองสอดปีกกับร่องของชิ้นแรก ถ้าฝืดจนหนังยับ ให้แยกเศษหนาไปทำที่รองแก้ว</li>
 <li>ตัดชิ้นตามตารางบล็อก แยกกองตามแบบ และตามโทนสี</li>

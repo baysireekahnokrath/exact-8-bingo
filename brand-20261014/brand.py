@@ -157,7 +157,37 @@ PIECE_COST = {c: round(v + DIE_PRICE.get(c[:2] if "-S" not in c else "", DIE_PRI
               for c, v in LEATHER_CUT.items()}
 JOINT_COST = 20 / 3600 * 50      # 20 s per joint at 50 THB/h, same as the cost sheet
 PACK_COST = 60 / 3600 * 50
-PACKAGING = 5.0
+# ---------------------------------------------------------------- packaging
+# Unit prices are estimates for small runs (a few hundred), not quotes yet: replace each one when the printer quotes.
+PACK_ITEMS = {   # key: name, size, THB each, counted per
+    "tag":     ("ป้ายห้อย SOI. 02 หรือ Love", "55 × 89 มม. กระดาษ 350 แกรม พิมพ์สีเดียว ตัดมุม เจาะรู", 3.0, "ชิ้น"),
+    "string":  ("เชือกผ้าผูกป้าย", "ยาว 20 ซม.", 0.5, "ชิ้น"),
+    "sleeve":  ("ซองกระดาษสีครีม", "พอดีของแบน 11 × 11 ซม.", 2.0, "ชิ้น"),
+    "tissue":  ("กระดาษบางห่อสินค้า", "ครึ่งแผ่น พิมพ์ลายของแบรนด์", 1.5, "ชิ้น"),
+    "pouch":   ("ถุงผ้าหูรูด", "210 × 340 มม. ผ้าคอตตอนสีครีม พิมพ์สีเดียว", 25.0, "ชิ้น"),
+    "howto":   ("การ์ดวิธีต่อ", "89 × 89 มม. พิมพ์สองหน้า", 2.0, "ชิ้น"),
+    "bag":     ("ถุงกระดาษด้าน", "130 × 210 × 80 มม. สีโคบอลต์ หูเชือกผ้า", 15.0, "ออเดอร์"),
+    "card":    ("การ์ดเล่าเรื่อง", "89 × 55 มม. พิมพ์สองหน้า", 2.0, "ออเดอร์"),
+    "sticker": ("สติกเกอร์ปิดถุงหรือซอง", "วงกลม 34 มม.", 1.0, "ออเดอร์"),
+    "mailer":  ("ซองกันกระแทกและเทป (Shopee)", "ซองไปรษณีย์ขนาด C", 9.0, "ออเดอร์"),
+}
+# what goes around one product, by kind of product
+PACK_PROFILE = {
+    "flat":  ("ของแบน ใส่ซอง", ["tag", "string", "sleeve"]),
+    "wrap":  ("กล่องและของชิ้นใหญ่ ห่อกระดาษบาง", ["tag", "string", "tissue"]),
+    "kit":   ("ชุดทำเองและชุดหลายชิ้น ใส่ถุงผ้า", ["tag", "string", "pouch", "howto"]),
+}
+PACK_OF = {n: "wrap" for n in (8, 9, 12, 13, 17, 18, 19, 20, 21)}
+PACK_OF.update({11: "kit", 29: "kit", 30: "kit"})
+def pack_items(n):
+    return PACK_PROFILE[PACK_OF.get(n, "flat")][1]
+def pack_cost(n):
+    return sum(PACK_ITEMS[k][2] for k in pack_items(n))
+# per order: the bag only for orders of BAG_FROM THB and up, smaller orders go out in the product's own sleeve or wrap
+ORDER_PACK = ["bag", "card", "sticker"]
+BAG_FROM = 150
+ORDER_PACK_PLAN = {"bag": 100, "card": 300, "sticker": 300}     # what to buy for the booth
+SHOPEE_PACK = ["mailer", "card", "sticker"]
 PIECE_NAME = {"01": "หัวหมี 01", "01-S200": "สายหัวใจ 200", "01-S250": "สายหัวใจ 250",
               "02": "กังหัน 02", "03": "กากบาทแคปซูล 03", "04": "สี่เหลี่ยมมน 04",
               "05": "วงกลม 05", "06": "กากบาทนุ่ม 06"}
@@ -196,7 +226,7 @@ P = [
  (10, "ซองใส่ AirTag", [("03", 2)], 4, None, "4.5 × 4.5 ซม.",
   ["ประกบสองชิ้นหน้าหลัง", "ใส่ AirTag ตรงกลาง", "สอดปีกล็อกทั้งสี่ขอบ"],
   "AirTag ห้อยกระเป๋าแบบไม่ต้องใช้ไขควง", "คนเดินทาง", PROTO, 129, 5),
- (11, "ชุดตัวต่อหนัง 24 ชิ้น", [("03", 24)], 0, ("ถุงผ้าและการ์ดวิธีเล่น", 10), "ชุด 24 ชิ้น",
+ (11, "ชุดตัวต่อหนัง 24 ชิ้น", [("03", 24)], 0, None, "ชุด 24 ชิ้น",
   ["เทชิ้นหนังออกจากถุง", "สอดปีกเข้าร่องของอีกชิ้น", "ต่อเป็นลูกบาศก์ สายโซ่ หรือแผ่นใหญ่"],
   "ของเล่นที่ไม่มีพลาสติกสักชิ้น", "พ่อแม่ โรงเรียน", PROTO, 390, 2),
  (12, "ที่ใส่ปากกามงกุฎ", [("04", 5)], 8, None, "6.4 ซม. + ยอดมงกุฎ",
@@ -250,10 +280,10 @@ P = [
  (28, "ที่รองแก้ววงกลม", [("05", 1)], 0, None, "9 ซม.",
   ["หยิบออกจากถุง", "วางแก้ว", "เสร็จ"],
   "ที่รองแก้วทรงกลม หนังแท้", "ทุกบ้าน", READY, 49, 15),
- (29, "ชุดที่รองแก้ว 4 ลาย", [("01", 1), ("02", 1), ("04", 1), ("05", 1)], 0, ("ถุงผ้าและเชือกปอ", 7), "9–10.4 ซม.",
+ (29, "ชุดที่รองแก้ว 4 ลาย", [("01", 1), ("02", 1), ("04", 1), ("05", 1)], 0, ("เชือกมัดชุด", 1), "9–10.4 ซม.",
   ["เลือกสี่ลายที่ชอบ", "มัดรวมด้วยเชือกปอ", "ใส่ถุงผ้า"],
   "สี่แก้ว สี่ลาย ไม่ต้องจำว่าแก้วไหนของใคร", "ของขวัญขึ้นบ้านใหม่", READY, 179, 10),
- (30, "ชุดต่อเองกล่องลูกบาศก์", [("06", 6)], 0, ("ถุงและการ์ดวิธีต่อ", 10), "6 ซม. เมื่อต่อเสร็จ",
+ (30, "ชุดต่อเองกล่องลูกบาศก์", [("06", 6)], 0, None, "6 ซม. เมื่อต่อเสร็จ",
   ["เทชิ้นหนังหกชิ้นออกจากถุง", "ทำตามการ์ด ต่อ 4 ชิ้นเป็นวง", "ปิดก้นและฝา เสร็จในห้านาที"],
   "ต่อเองได้ในห้านาที ไม่ต้องใช้กาว ไม่ต้องใช้เข็ม", "เด็ก ครอบครัว เวิร์กช็อป", READY, 129, 10),
 ]
@@ -264,7 +294,8 @@ for row in P:
     d = dict(zip(KEYS, row))
     pieces = sum(PIECE_COST[c] * q for c, q in d["parts"])
     extra = d["extra"][1] if d["extra"] else 0
-    d["cost"] = round(pieces + d["joints"] * JOINT_COST + PACK_COST + PACKAGING + extra, 2)
+    d["packaging"] = pack_cost(d["n"])
+    d["cost"] = round(pieces + d["joints"] * JOINT_COST + PACK_COST + d["packaging"] + extra, 2)
     d["profit"] = round(d["price"] - d["cost"], 2)
     d["margin"] = d["profit"] / d["price"]
     d["pieces_txt"] = " + ".join(f"{PIECE_NAME[c]} × {q}" for c, q in d["parts"])
@@ -276,6 +307,21 @@ for row in P:
 HEROES = [21, 23, 1, 22, 30, 18, 29, 5]          # front of the booth, first posts
 
 LOT_CAPACITY = {"ใหญ่": 505, "เล็ก": 224}          # pieces cut from the scraps bought (cost sheet)
+
+def pack_need():
+    """How many of each per-product packaging item the event stock needs."""
+    need = {}
+    for p in PRODUCTS:
+        for k in pack_items(p["n"]):
+            need[k] = need.get(k, 0) + p["stock"]
+    return need
+
+def _fill_print_list():
+    need = pack_need()
+    for i, (a, q, n) in enumerate(PRINT_LIST):
+        for k, v in need.items():
+            q = q.replace(f"PACK_NEED_{k}", str(v))
+        PRINT_LIST[i] = (a, q, n)
 
 def piece_usage():
     """Pieces needed for the event stock, split by scrap lot."""
@@ -292,7 +338,10 @@ def event_totals():
     sales = sum(p["stock"] * p["price"] for p in PRODUCTS)
     cost = sum(p["stock"] * p["cost"] for p in PRODUCTS)
     joints = sum(p["stock"] * p["joints"] for p in PRODUCTS)
-    return dict(units=units, sales=sales, cost=cost, profit=sales - cost,
+    order_pack = sum(PACK_ITEMS[k][2] * q for k, q in ORDER_PACK_PLAN.items())
+    goods = cost
+    cost = goods + order_pack
+    return dict(units=units, sales=sales, goods=goods, order_pack=order_pack, cost=cost, profit=sales - cost,
                 assembly_h=joints * 20 / 3600, pack_h=units * 60 / 3600)
 
 # ---------------------------------------------------------------- channel copy
@@ -424,6 +473,11 @@ PRINT_LIST = [
     ("ป้ายชื่อลูก ๆ ที่บูธ", "3 อัน", "สีประจำตัวของแต่ละคน (ทานตะวัน มิ้นต์ ชมพู) เบอร์พ่อแม่ด้านหลัง"),
     ("โปสเตอร์ How-to สินค้าหลัก", "8 แผ่น", "A4 จากไฟล์ในชุดนี้"),
     ("ป้ายห้อยสินค้า SOI. 02 และ Love", "350 ใบ", "55 × 89 มม. (1 : φ) เขียนราคาและรหัสสินค้าด้วยมือได้"),
+    ("ถุงกระดาษด้านสีโคบอลต์", "100 ใบ", "130 × 210 × 80 มม. หูเชือกผ้า ให้เฉพาะออเดอร์ 150 บาทขึ้นไป"),
+    ("ซองกระดาษสีครีม", "PACK_NEED_sleeve ซอง", "ของแบนทุกชิ้น"),
+    ("กระดาษบางห่อสินค้า", "PACK_NEED_tissue แผ่น", "กล่องและของชิ้นใหญ่"),
+    ("ถุงผ้าหูรูด", "PACK_NEED_pouch ใบ", "210 × 340 มม. ชุดทำเองและชุดที่รองแก้ว"),
+    ("การ์ดวิธีต่อ", "PACK_NEED_howto ใบ", "89 × 89 มม. ใส่ในถุงผ้า"),
 ]
 
 MORE = [
@@ -443,3 +497,5 @@ if __name__ == "__main__":
     print(event_totals())
     for p in PRODUCTS:
         print(f"{p['n']:2d} {p['name']:<28} cost {p['cost']:6.2f} price {p['price']:4d} margin {p['margin']:.0%} stock {p['stock']}")
+
+_fill_print_list()
