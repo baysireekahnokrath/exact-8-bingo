@@ -8,12 +8,14 @@ Everything reads from `brand.py`. Rebuild in this order:
     python3 logo/build.py                         # logo/svg (outlined, no fonts needed); logo/jobs.json renders logo/png
     python3 posters/build.py                      # posters/html + posters/jobs.json
     node tools/render.mjs <jobs.json>             # PNGs (logo jobs: see logo/png, posters: posters/jobs.json)
-    python3 site/build.py                         # site/brandbook.html, launch.html, index.html
+    python3 bible/build.py                        # bible/svg (hang tags, story card, bag, pattern, map, booth)
+    python3 site/build.py                         # site/brandbook.html, launch.html, bible.html, index.html
 
 Fonts in `fonts/`: Syne (OCT. 26 logo), Anuphan (OCT. 26 Thai headings), Mitr (FIVE BEARS), IBM Plex Sans Thai (body). All SIL Open Font License, Google Fonts.
 The birthday deck source is in `deck/project/` (Slides artifact files).
 
 Pages: summary https://claude.ai/artifact/1bBApc1D6ewCk8bpq3AydB ·
+brand bible https://claude.ai/artifact/4FtQN6WRW3cUF1rATo3jvi (content in bible.py) ·
 brand book https://claude.ai/artifact/3asVqkM4vs6fGM3rihHSYp ·
 launch kit https://claude.ai/artifact/AyvcJTzj5BY6spbPkZYQXS ·
 deck https://claude.ai/artifact/D61pf56uCqYrktNuuFG2c6

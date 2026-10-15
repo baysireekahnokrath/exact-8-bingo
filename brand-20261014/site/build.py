@@ -18,14 +18,14 @@ CSS = """
   /* Layout: one reading column of cards on warm October cream, like a craft-shop catalogue; wide tables scroll inside their box. */
   --bg:#F6EADB;--paper:#FFFBF5;--ink:#3A2318;--muted:#6E5440;--line:#E3CDB1;
   --caramel:#A9541A;--heart:#B8501A;--honey:#F0B43C;--peach:#F2A7A0;--sage:#6F9A8D;--cocoa:#3A2318;--cream:#F3E3CF;
-  --brick:#D9772B;--love:#D6453D;--on-accent:#FFFFFF;--chip:#EFDCC4;
+  --brick:#D9772B;--love:#D6453D;--leaf:#8A6A3A;--chestnut:#3A2318;--on-accent:#FFFFFF;--chip:#EFDCC4;
   --logo:"Syne","Anuphan",system-ui,sans-serif;
   --display:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;
   --body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chip:#3A281C;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chip:#3A281C;color-scheme:dark}
+  --bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chestnut:#6B4A35;--chip:#3A281C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1F140E;--paper:#2A1C14;--ink:#F3E3CF;--muted:#CDB49E;--line:#46311F;--caramel:#E8955A;--heart:#EE9050;--love:#EC6A60;--chestnut:#6B4A35;--chip:#3A281C;color-scheme:dark}
 *{box-sizing:border-box}
 img{max-width:100%;height:auto;display:block}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;margin:0;
@@ -316,10 +316,168 @@ def launch():
 <section id="more"><span class="eyebrow">ข้อ 7 · แนะนำเพิ่ม</span><h2>สิ่งที่ควรทำต่อ</h2><div class="grid">{more}</div></section>
 </div>{COPY_JS}"""
 
+# ---------------------------------------------------------------- brand bible
+BIBLE_CSS = """
+.ch-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ch-no{font-family:var(--logo);font-weight:700;font-size:15px;color:var(--brick);letter-spacing:.06em}
+.big{font-family:var(--display);font-weight:600;font-size:clamp(24px,5.6vw,34px);line-height:1.35;text-wrap:balance}
+.quote{border-left:4px solid var(--brick);padding:4px 0 4px 16px;font-size:18px}
+.duo{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.duo>*{min-width:0}
+.tile{display:flex;flex-direction:column;gap:4px}
+.tile b{font-family:var(--logo);font-weight:700;font-size:26px;color:var(--brick);font-variant-numeric:tabular-nums}
+.slider{display:grid;grid-template-columns:5.5em 1fr 5.5em;align-items:center;gap:10px;font-size:14px}
+.slider .r{text-align:right}
+.track{position:relative;height:6px;border-radius:3px;background:var(--line)}
+.track i{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;border:2px solid var(--paper)}
+.key{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.key i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.bar{display:flex;height:34px;border-radius:10px;overflow:hidden}
+.bar span{display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-variant-numeric:tabular-nums;min-width:0}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.thumbs figure{margin:0;width:72px;display:flex;flex-direction:column;gap:2px}
+.thumbs img{border-radius:6px;border:1px solid var(--line)}
+.thumbs figcaption{font-size:11px;color:var(--muted);line-height:1.3}
+.tl{display:grid;grid-template-columns:7.5em 1fr;gap:0 14px}
+.tl>div{padding:10px 0;border-bottom:1px solid var(--line);min-width:0}
+.tl .d{font-family:var(--logo);font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-size:12px;border-radius:99px;padding:1px 9px;margin-left:6px}
+.tag.oct{background:#F3E3CF;color:#3A2318}.tag.bear{background:#F8DAD7;color:#8A2A23}
+.check{list-style:none;padding:0;display:grid;gap:6px}
+.check li{display:flex;gap:10px;align-items:flex-start}
+.check li::before{content:"";flex:none;width:16px;height:16px;margin-top:4px;border:2px solid var(--brick);border-radius:4px}
+"""
+
+def bible():
+    import bible as V
+    byn = {p["n"]: p for p in B.PRODUCTS}
+    def ch(no, id_, eyebrow, title, body):
+        return (f'<section id="{id_}"><div class="ch-head"><span class="ch-no">{no:02d}</span><span class="eyebrow">{E(eyebrow)}</span></div>'
+                f'<h2>{E(title)}</h2>{body}</section>')
+    def svgimg(f, alt, cls="paper", ratio=None):
+        st = f' style="aspect-ratio:{ratio}"' if ratio else ""
+        return f'<div class="{cls}"{st}><img src="bible/{f}.svg" alt="{E(alt)}" style="max-height:100%"></div>'
+    values = "".join(
+        f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>{E(v)} <span class="cap" style="font-family:var(--logo);font-weight:700">{E(en)}</span></h3>'
+        f'<p><span class="chip ok">เราทำ</span> {E(do)}</p><p><span class="chip ext">เราไม่ทำ</span> {E(dont)}</p></div>' for v, en, do, dont in V.VALUES)
+    core = (f'<p class="big">{E(V.ESSENCE[0])} <span style="font-family:var(--logo);color:var(--brick)">{E(V.ESSENCE[1])}</span></p>'
+            f'<div class="duo"><div class="card"><span class="eyebrow">เหตุผลที่มีแบรนด์นี้</span><p style="margin-top:6px">{E(V.PURPOSE)}</p></div>'
+            f'<div class="card"><span class="eyebrow">ภาพในอีก 5 ปี</span><p style="margin-top:6px">{E(V.VISION)}</p></div></div>'
+            f'<div class="card"><span class="eyebrow">สิ่งที่ทำทุกวัน</span><ol style="margin-top:6px">{"".join(f"<li>{E(m)}</li>" for m in V.MISSION)}</ol></div>'
+            f'<p class="quote"><b>คำสัญญากับลูกค้า</b><br>{E(V.PROMISE)}</p>'
+            f'<h3>คุณค่าสี่ข้อ</h3><div class="duo">{values}</div>')
+    proof = "".join(f'<div class="card tile"><b>{E(n)}</b><span class="cap" style="font-size:14px">{E(t)}</span></div>' for n, t in V.PROOF)
+    alts = "".join(
+        f'<div class="card" style="display:flex;flex-direction:column;gap:6px{";border:2px solid var(--brick)" if o == "OCT. 26" else ""}">'
+        f'<h3>{E(o)}</h3><span class="cap mono">{E(pr)}</span><p><span class="chip ok">ได้</span> {E(get)}</p><p><span class="chip ext">ขาด</span> {E(miss)}</p></div>'
+        for o, pr, get, miss in V.ALTERNATIVES)
+    pos = (f'<p class="quote">{E(V.POSITIONING)}</p><div class="grid s">{proof}</div>'
+           f'<div class="duo">{svgimg("map", "แผนที่ตำแหน่ง OCT. 26 เทียบกับทางเลือกอื่น", ratio="9/7")}'
+           f'<div class="card"><h3>ถ้าไม่ซื้อเรา ลูกค้าซื้ออะไร</h3><p class="cap" style="font-size:14px;margin-top:4px">แผนที่ด้านข้างเทียบสองเรื่อง ต่อเองได้หรือไม่ และมีเรื่องเล่าหรือไม่ OCT. 26 อยู่มุมขวาบนคนเดียว</p></div></div>'
+           f'<div class="grid">{alts}</div>'
+           f'<p class="cap">แถวสุดท้ายบอกจุดอ่อนของเราเองด้วย ใช้ตอบลูกค้าที่ถามตรง ๆ ช่วงราคาของทางเลือกอื่นเป็นค่าประมาณจากที่เห็นทั่วไป ควรเช็กกับร้านจริงก่อนใช้ในการขาย</p>')
+    personas = ""
+    for who, need, ns, chn, line in V.PERSONAS:
+        th = "".join(f'<figure><img src="posters/thumb/{n:02d}.jpg" alt="{E(byn[n]["name"])}" loading="lazy"><figcaption>{E(byn[n]["name"])} · {byn[n]["price"]}</figcaption></figure>' for n in ns)
+        personas += (f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>{E(who)}</h3><p class="cap" style="font-size:14px">{E(need)}</p>'
+                     f'<p class="quote" style="font-size:15.5px">“{E(line)}”</p><p class="cap">เจอได้ที่ {E(chn)}</p><div class="thumbs">{th}</div></div>')
+    arche = "".join(f'<div class="card"><span class="eyebrow">{E(b_)}</span><h3 style="margin-top:4px">{E(a)}</h3><p style="margin-top:6px">{E(t)}</p></div>' for b_, a, t in V.ARCHETYPE)
+    sliders = "".join(
+        f'<div class="slider"><span>{E(l)}</span><div class="track"><i style="left:{(o-1)*25}%;background:var(--brick)" title="OCT. 26"></i>'
+        f'<i style="left:{(f-1)*25}%;background:var(--love)" title="ห้าหมี"></i></div><span class="r">{E(r)}</span></div>' for l, r, o, f in V.SLIDERS)
+    isnot = "".join(f'<tr><td><b>{E(a)}</b></td><td><s>{E(b_)}</s></td></tr>' for a, b_ in V.IS_NOT)
+    person = (f'<div class="duo">{arche}</div><div class="card" style="display:flex;flex-direction:column;gap:14px">'
+              f'<div style="display:flex;gap:16px;flex-wrap:wrap"><span class="key"><i style="background:var(--brick)"></i>OCT. 26</span>'
+              f'<span class="key"><i style="background:var(--love)"></i>ห้าหมี</span></div>{sliders}</div>'
+              f'<div class="tbl"><table><thead><tr><th>เราเป็น</th><th>แต่ไม่</th></tr></thead><tbody>{isnot}</tbody></table></div>')
+    pillars = "".join(
+        f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><span class="eyebrow">เสาที่ {i}</span><h3>{E(h)}</h3><p class="cap">{E(sub)}</p>'
+        f'<ul>{"".join(f"<li>{E(x)}</li>" for x in pr)}</ul><p class="quote" style="font-size:15px">“{E(ex)}”</p></div>'
+        for i, (h, sub, pr, ex) in enumerate(V.PILLARS, 1))
+    tags = "".join(f'<tr><td><b>{E(w)}</b></td><td style="font-family:var(--logo);font-weight:700">{E(en)}</td><td>{E(th)}</td><td class="cap">{E(use)}</td></tr>' for w, en, th, use in V.TAGLINES)
+    pitch = "".join(f'<div class="card">{copybox(f"pitch{i}", t, f"{d} · {who}")}</div>' for i, (d, who, t) in enumerate(V.PITCH))
+    lex = "".join(f'<tr><td><span class="chip ok">ใช้</span> {E(u)}</td><td><span class="chip ext">เลี่ยง</span> {E(a)}</td><td class="cap">{E(w)}</td></tr>' for u, a, w in V.LEXICON)
+    msg = (f'<h3>สามเสาของสาร</h3><div class="grid">{pillars}</div><h3>สโลแกน</h3>'
+           f'<div class="tbl"><table><thead><tr><th>ใช้กับ</th><th>อังกฤษ</th><th>ไทย</th><th>ที่ใช้</th></tr></thead><tbody>{tags}</tbody></table></div>'
+           f'<h3>เล่าแบรนด์ในหนึ่งนาที</h3><div class="grid">{pitch}</div>'
+           f'<h3>คำที่ใช้ คำที่เลี่ยง</h3><div class="tbl"><table><tbody>{lex}</tbody></table></div>')
+    naming = "".join(f'<div class="card" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">{E(a)}</span><h3>{E(rule)}</h3>'
+                     f'<p style="font-size:14.5px">{E(how)}</p><p class="mono" style="font-family:var(--logo);font-weight:700;color:var(--brick)">{E(ex)}</p></div>' for a, rule, how, ex in V.NAMING)
+    codes = " · ".join(f'<span class="mono">{V.product_code(p)}</span> {E(p["name"])}' for p in B.PRODUCTS)
+    names = (f'<div class="grid">{naming}</div>'
+             f'<details><summary>รหัสสินค้าทั้ง 30 ตัว</summary><p style="font-size:14px;padding-bottom:12px">{codes}</p></details>')
+    dist = "".join(f'<div class="card" style="display:flex;flex-direction:column;gap:6px"><h3>{E(a)}</h3><p class="cap" style="font-size:14px">{E(w)}</p>'
+                   f'<p style="font-size:14.5px"><b>ใช้ที่</b> {E(where)}</p><p style="font-size:14.5px"><b>กติกา</b> {E(pr)}</p></div>' for a, w, where, pr in V.DISTINCTIVE)
+    photo = "".join(f'<div class="card"><h3>{E(h)}</h3><p class="cap" style="font-size:14px;margin-top:4px">{E(t)}</p></div>' for h, t in V.PHOTO_RULES)
+    shots = "".join(f'<tr><td><b>{E(a)}</b></td><td>{E(b_)}</td><td class="cap">{E(c)}</td></tr>' for a, b_, c in V.SHOTS)
+    visual = (f'<p class="lead">ลูกค้าจำแบรนด์จากสิ่งที่เห็นซ้ำ ๆ ห้าอย่างนี้คือสิ่งที่ต้องอยู่ในทุกงาน และห้ามเปลี่ยนเล่น</p>'
+              f'<div class="grid">{dist}</div>'
+              f'<h3>ลายปีกและร่อง</h3>{svgimg("pattern", "ลายพื้นจากชิ้นหนังจริงห้าแบบของ Soi 2", ratio="3/2")}'
+              f'<p class="cap">ลายจากเส้นตัดจริงของแพตเทิร์น 02–06 ใช้กับกระดาษห่อ พื้นหลังโพสต์ และผนังบูธ ไฟล์ bible/svg/pattern.svg</p>'
+              f'<h3>ภาพถ่าย</h3><div class="grid">{photo}</div>'
+              f'<div class="tbl"><table><thead><tr><th>ภาพ</th><th>ถ่ายอย่างไร</th><th>ใช้ที่</th></tr></thead><tbody>{shots}</tbody></table></div>')
+    touch = "".join(
+        f'<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px">{svgimg(f, n)}'
+        f'<figcaption><h3>{E(n)}</h3><p class="cap" style="font-size:14px">{E(sz)} · {E(mat)}</p><p class="cap">{E(use)}</p></figcaption></figure>'
+        for n, sz, mat, use, f in V.TOUCH)
+    pack = (f'<div class="grid">{touch}</div><div class="card"><h3>ลำดับเมื่อลูกค้าเปิดถุง</h3><ol style="margin-top:6px">{"".join(f"<li>{E(x)}</li>" for x in V.UNBOX)}</ol></div>'
+            f'<p class="cap">ป้ายห้อยตัวอย่างใช้สินค้าจริง {E(V.product_code(byn[18]))} และ {E(V.product_code(byn[23]))} ช่องสี่เหลี่ยมบนการ์ดคือที่วาง QR ของ Instagram เมื่อเปิดบัญชีแล้ว</p>')
+    journey = "".join(f'<div class="card"><span class="eyebrow">{i}. {E(a)}</span><p style="margin-top:4px">{E(b_)}</p><p class="cap">{E(c)}</p></div>'
+                      for i, (a, b_, c) in enumerate(V.JOURNEY, 1))
+    booth = (f'<div class="duo">{svgimg("booth", "ผังบูธ โต๊ะ Soi 2 ทางซ้าย โต๊ะห้าหมี Love ทางขวา จุดสาธิตหน้าโต๊ะ", ratio="76/70")}'
+             f'<div style="display:flex;flex-direction:column;gap:10px;min-width:0">{journey}</div></div>'
+             f'<p class="cap">ผังนี้สมมติบูธขนาด 2 × 2 เมตร ถ้าบูธจริงต่างไป ให้คงหลักเดิม แยกสองคอลเลกชันซ้ายขวา และวางของให้ลองดึงไว้ด้านหน้าเสมอ</p>')
+    mix = "".join(f'<span style="flex:{p} 1 0;background:var(--{"love" if c == "heart" else c})" title="{E(n)}">{p}%</span>' for n, p, d, c in V.CONTENT_MIX)
+    mixl = "".join(f'<tr><td><b>{E(n)}</b></td><td class="n">{p}%</td><td>{E(d)}</td></tr>' for n, p, d, c in V.CONTENT_MIX)
+    week = "".join(f'<div class="card tile"><b style="font-family:var(--display);font-size:20px;color:var(--ink)">{E(d)}</b><span class="cap" style="font-size:14px">{E(t)}</span></div>' for d, t in V.WEEK)
+    tone = "".join(f'<tr><td><b>{E(c)}</b></td><td>{E(t)}</td><td class="cap">{E(w)}</td></tr>' for c, t, w in V.CHANNEL_TONE)
+    content = (f'<div class="bar" role="img" aria-label="สัดส่วนคอนเทนต์">{mix}</div>'
+               f'<div class="tbl"><table><tbody>{mixl}</tbody></table></div><h3>สัปดาห์หนึ่ง</h3><div class="grid s">{week}</div>'
+               f'<h3>น้ำเสียงแต่ละช่องทาง</h3><div class="tbl"><table><thead><tr><th>ช่องทาง</th><th>พูดอย่างไร</th><th>คนที่เจอ</th></tr></thead><tbody>{tone}</tbody></table></div>')
+    year = "".join(f'<div class="d">{E(d)}</div><div><b>{E(t)}</b><span class="tag {k}">{"OCT. 26" if k == "oct" else "ห้าหมี"}</span><p class="cap" style="font-size:14px">{E(x)}</p></div>'
+                   for d, t, x, k in V.YEAR)
+    ritual = (f'<div class="duo"><div class="tl">{year}</div>{svgimg("edition", "การ์ดรุ่นวันเกิด No. 26 ชิ้นที่ 07 จาก 26", ratio="1")}</div>'
+              f'<p class="cap">วันที่ของเทศกาลที่ไม่ตายตัว เช่น ตรุษจีน ให้เช็กปฏิทินปีนั้นก่อนวางแผนผลิต</p>')
+    roles = "".join(f'<tr><td><b>{E(a)}</b></td><td>{E(b_)}</td></tr>' for a, b_ in V.ROLES)
+    checks = "".join(f"<li>{E(c)}</li>" for c in V.CHECKLIST)
+    health = "".join(f'<tr><td><b>{E(a)}</b></td><td>{E(b_)}</td><td class="cap" style="white-space:nowrap">{E(c)}</td></tr>' for a, b_, c in V.HEALTH)
+    care = (f'<div class="tbl"><table><thead><tr><th>ใคร</th><th>ดูแลอะไร</th></tr></thead><tbody>{roles}</tbody></table></div>'
+            f'<p class="cap">หน้าที่นี้เป็นข้อเสนอ ปรับได้ตามที่ทั้งบ้านตกลงกัน</p>'
+            f'<div class="card"><h3>เช็กก่อนโพสต์ทุกครั้ง</h3><ul class="check" style="margin-top:8px">{checks}</ul></div>'
+            f'<h3>วัดว่าแบรนด์โตไหม</h3><div class="tbl"><table><thead><tr><th>ดูอะไร</th><th>วัดอย่างไร</th><th>บ่อยแค่ไหน</th></tr></thead><tbody>{health}</tbody></table></div>'
+            f'<p class="cap">ทุกอย่างในคู่มือนี้แก้ได้ที่ไฟล์ brand-20261014/bible.py และ brand.py แล้วสร้างหน้าใหม่ ลิงก์เดิมไม่เปลี่ยน</p>')
+    chapters = [("core", "หัวใจแบรนด์", "ทำไมต้องมี OCT. 26", core),
+                ("position", "ตำแหน่งแบรนด์", "เราต่างจากทางเลือกอื่นอย่างไร", pos),
+                ("people", "ลูกค้า", "สี่กลุ่มที่เราขายให้", personas and f'<div class="duo">{personas}</div>'),
+                ("personality", "บุคลิก", "ถ้า OCT. 26 เป็นคน", person),
+                ("message", "สาร", "พูดอะไร และพูดอย่างไร", msg),
+                ("naming", "ระบบชื่อ", "ตั้งชื่อคอลเลกชันและสินค้า", names),
+                ("visual", "ภาษาภาพ", "สิ่งที่ลูกค้าจะจำได้", visual),
+                ("pack", "บรรจุภัณฑ์", "ป้ายห้อย การ์ด และถุง", pack),
+                ("booth", "บูธ", "ห้าขั้นจากทางเดินถึงลูกค้า", booth),
+                ("content", "คอนเทนต์", "โพสต์อะไร สัปดาห์ละเท่าไร", content),
+                ("year", "ปีแรก", "วันสำคัญของแบรนด์ ต.ค. 69 ถึง ต.ค. 70", ritual),
+                ("care", "ดูแลแบรนด์", "ใครดูแลอะไร และเช็กอะไร", care)]
+    nav = "".join(f'<a href="#{i}">{E(e)}</a>' for i, e, _, _ in chapters)
+    body = "".join(ch(n, i, e, t, b_) for n, (i, e, t, b_) in enumerate(chapters, 1))
+    return f"""{head("OCT. 26 Brand Bible")}<style>{BIBLE_CSS}</style>
+<div class="wrap">
+<nav class="top" aria-label="บท">{nav}</nav>
+<header style="padding-top:28px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center">
+ <div class="paper dark" style="aspect-ratio:1"><img src="logo/oct-stacked-reverse.svg" alt="โลโก้ OCT. 26 บนพื้นเกาลัด" style="max-height:100%"></div>
+ <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BIBLE · ฉบับแรก 15 ต.ค. 2569</span>
+ <h1 style="font-family:var(--logo);font-weight:700">OCT. 26</h1>
+ <p class="lead">คู่มือว่าแบรนด์นี้คิด พูด และทำอย่างไร ใช้คู่กับ {link("brandbook", "Brand Book")} ที่เก็บโลโก้ สี และไฟล์ ส่วนข้อความโพสต์และสินค้าอยู่ใน {link("launch", "Launch Kit")}</p>
+ <p class="cap">12 บท อ่านจบประมาณ 15 นาที บทที่ 1–5 คือความคิด บทที่ 6–12 คือการใช้งาน</p></div>
+</header>
+{body}
+</div>{COPY_JS}"""
+
 # ---------------------------------------------------------------- summary (CLAUDE.md)
 def summary():
     tot = B.event_totals()
-    rows = [("Brand Book", "brandbook", "ชื่อ เรื่องเล่า โลโก้ สี ฟอนต์ น้ำเสียง"),
+    rows = [("Brand Bible", "bible", "12 บท หัวใจแบรนด์ ตำแหน่ง ลูกค้า บุคลิก สาร ระบบชื่อ ภาษาภาพ บรรจุภัณฑ์ บูธ คอนเทนต์ ปีแรก การดูแล"),
+            ("Brand Book", "brandbook", "ชื่อ เรื่องเล่า โลโก้ สี ฟอนต์ น้ำเสียง"),
             ("Launch Kit", "launch", "แผนถึงวันงาน โซเชียล Shopee สินค้า 30 ตัวแบ่งตามคอลเลกชัน พร้อมโพสต์ 5 ช่องทาง คู่มือลูก ๆ ขายของ"),
             ("สไลด์ของขวัญวันเกิด", "deck", "พรีเซนต์ OCT. 26 ให้เธอในวันเกิด 26.10"),
             ("Google Sheet ต้นทุน", "sheet", "ต้นทุน ราคาขาย กำไร 3 แท็บ"),
@@ -328,7 +486,8 @@ def summary():
     files = [("brand-20261014/brand.py", "ข้อมูลทั้งหมดของแบรนด์ แก้ที่นี่ที่เดียว"),
              ("brand-20261014/logo/svg, logo/png", "โลโก้ 22 ไฟล์ OCT. 26 ป้าย Soi 2 ป้าย Love และห้าหมี แปลงตัวอักษรเป็นเส้นแล้ว"),
              ("brand-20261014/posters/png", "โปสเตอร์ How-to 30 ตัว × 2 ขนาด (60 ไฟล์)"),
-             ("brand-20261014/site", "ต้นฉบับหน้าเว็บทั้งสาม"),
+             ("brand-20261014/bible.py, bible/svg", "เนื้อหา Brand Bible และภาพประกอบ 8 ไฟล์ (ป้ายห้อย การ์ด ถุง ลาย ผังบูธ)"),
+             ("brand-20261014/site", "ต้นฉบับหน้าเว็บทั้งสี่"),
              ("brand-20261014/deck", "ต้นฉบับสไลด์"),
              ("brand-20261014/alternatives", "ทางเลือกแบรนด์ 55 แบบ โลโก้และป้ายห้อย")]
     ftable = "".join(f'<tr><td class="mono" style="white-space:nowrap">{E(f)}</td><td>{E(d)}</td></tr>' for f, d in files)
@@ -373,6 +532,6 @@ def assets():
     return out
 
 if __name__ == "__main__":
-    for name, fn in (("brandbook.html", brandbook), ("launch.html", launch), ("index.html", summary)):
+    for name, fn in (("brandbook.html", brandbook), ("launch.html", launch), ("bible.html", bible), ("index.html", summary)):
         open(os.path.join(HERE, name), "w").write(fn())
     print("built", URLS)
