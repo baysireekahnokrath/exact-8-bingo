@@ -340,7 +340,7 @@ def summary():
 <section><span class="eyebrow">คำตอบ</span><h2>หมี 5 ตัวเป็นซับแบรนด์ได้</h2>
 <p class="lead">OCT. 26 เป็นแบรนด์หลัก Soi 2 เป็นคอลเลกชันแรก และห้าหมี FIVE BEARS by OCT. 26 เป็นซับแบรนด์ที่มีคอลเลกชันแรกชื่อ Love</p>
 <div class="grid">
-<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="paper" style="aspect-ratio:5/3"><img src="logo/soi2-sign.svg" alt="ป้ายซอย Soi 2"></div><h3>OCT. 26 · Soi 2</h3><p class="cap">ของใช้ทุกวัน {sum(p["coll"] == "soi2" for p in B.PRODUCTS)} แบบ จากแพตเทิร์น 02–06</p></div>
+<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="paper" style="aspect-ratio:5/3"><img src="logo/soi2-sign.svg" alt="ป้ายซอย Soi 2"></div><h3>OCT. 26 · Soi 2</h3><p class="cap">ตั้งชื่อตามซอยบ้านเรา ของใช้ทุกวัน {sum(p["coll"] == "soi2" for p in B.PRODUCTS)} แบบ จากแพตเทิร์น 02–06</p></div>
 <div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="paper" style="aspect-ratio:5/3"><img src="logo/love-badge.svg" alt="ป้าย Love ห้าหมี"></div><h3>ห้าหมี by OCT. 26 · Love</h3><p class="cap">หัวหมีและสายหัวใจ {sum(p["coll"] == "love" for p in B.PRODUCTS)} แบบ จากแพตเทิร์น 01</p></div></div>
 <div class="grid">{"".join(f'<div class="card"><h3>{E(h)}</h3><p class="cap" style="font-size:14px;margin-top:4px">{E(t)}</p></div>' for h, t in B.SUB_ANSWER)}</div></section>
 <section><h2>เปิดดู</h2><div class="grid">{links}</div></section>
@@ -354,7 +354,6 @@ def summary():
 <section><h2>ไฟล์</h2><div class="tbl"><table><tbody>{ftable}</tbody></table></div></section>
 <section><h2>ต้องเช็กก่อน</h2><div class="card"><ol>
 <li>ชื่อ @{B.BRAND['handle']} ยังว่างทุกช่องทาง ถ้าไม่ว่าง เลือกชื่อใหม่แล้วแก้ใน brand.py ที่เดียว</li>
-<li>เลข 2 ใน Soi 2 มีความหมายอะไร (ซอยบ้าน หรือเหตุผลอื่น) บอกมาได้ จะเขียนลงเรื่องเล่าของคอลเลกชัน ตอนนี้เขียนแบบกลาง ๆ ไว้</li>
 <li>ค้นชื่อ OCT. 26 และห้าหมีในฐานข้อมูลเครื่องหมายการค้า ก่อนพิมพ์ของจำนวนมาก</li>
 <li>มีบล็อกแบบไหนแล้วบ้าง แบบที่ยังไม่มีต้องสั่งวันนี้</li>
 <li>สินค้าที่ติดป้าย “ลองต้นแบบก่อน” ต่อตัวอย่างหนึ่งชิ้นทุกตัว ก่อนลงขายใน Shopee</li>
