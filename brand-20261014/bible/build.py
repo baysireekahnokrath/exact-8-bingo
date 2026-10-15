@@ -81,8 +81,8 @@ def tag_shape(x, y, w, h, fill):
 def tag_soi2(p):
     """5 x 9 cm hang tag, front and back, at 60 px per cm."""
     W, H, w, h = 760, 600, 300, 540
-    kraft, ink = "#C9A27A", C["chestnut"]
-    g = [tag_shape(40, 30, w, h, kraft), hole(190, 80, "#FFFBF5"), tag_shape(420, 30, w, h, kraft), hole(570, 80, "#FFFBF5")]
+    paper, ink = "#F6EEE3", C["chestnut"]          # cream cotton paper, no kraft
+    g = [tag_shape(40, 30, w, h, paper), hole(190, 80, "#FFFFFF"), tag_shape(420, 30, w, h, ink), hole(570, 80, "#FFFFFF")]
     # front: mini soi sign, product name, code
     g.append(f'<rect x="75" y="140" width="230" height="138" rx="14" fill="{ink}"/>'
              f'<rect x="83" y="148" width="214" height="122" rx="9" fill="none" stroke="{C["oct_cream"]}" stroke-width="2.5"/>')
@@ -96,11 +96,12 @@ def tag_soi2(p):
     g.append(text(BB.product_code(p), 22, 190, 445, "#6E5440", SYNE, tracking=.1, anchor="middle")[0])
     wm, _, _ = wordmark(190, 520, 34, ink, C["brick"], anchor="middle"); g.append(wm)
     # back
-    g.append(text("our crafted things.", 26, 570, 170, ink, SYNE, anchor="middle")[0])
-    for i, t in enumerate(["เศษหนังวัวแท้ ทุกชิ้นสีไม่ซ้ำ", "ต่อด้วยปีกและร่อง", "ไม่ใช้กาว ไม่ต้องเย็บ", "เช็ดด้วยผ้าแห้ง เลี่ยงน้ำ"]):
-        g.append(text(t, 22, 570, 240 + i * 40, ink, PLEX, anchor="middle")[0])
-    g.append(text("ทำที่บ้าน ในซอย 2", 22, 570, 430, "#6E5440", TH, anchor="middle")[0])
-    g.append(text("@oct26.crafted", 22, 570, 510, ink, SYNE, anchor="middle")[0])
+    lt = C["oct_cream"]
+    g.append(text("From our root", 28, 570, 170, lt, SYNE, anchor="middle")[0])
+    for i, t in enumerate(["เศษหนังวัวแท้ ทุกชิ้นสีไม่ซ้ำ", "ชิ้นนี้ต่อด้วยปีกและร่อง", "ไม่ใช้กาว", "เช็ดด้วยผ้าแห้ง เลี่ยงน้ำ"]):
+        g.append(text(t, 22, 570, 240 + i * 40, lt, PLEX, anchor="middle")[0])
+    g.append(text("ทำกันเองทั้งบ้าน ในซอย 2", 22, 570, 430, C["brick"], TH, anchor="middle")[0])
+    g.append(text("@oct26.crafted", 22, 570, 510, lt, SYNE, anchor="middle")[0])
     return svg(W, H, "".join(g), None, "ป้ายห้อย Soi 2 หน้าและหลัง")
 
 def tag_love(p):
@@ -117,7 +118,7 @@ def tag_love(p):
     g.append(text("ห้าหมี FIVE BEARS", 22, 190, 495, ink, "Mitr-Medium.ttf", anchor="middle")[0])
     g.append(text("by OCT. 26", 18, 190, 525, C["caramel"], SYNE, tracking=.06, anchor="middle")[0])
     g.append(text("หัวใจอยู่ตรงกลางเสมอ", 26, 570, 190, "#FFFFFF", "Mitr-Medium.ttf", anchor="middle")[0])
-    for i, t in enumerate(["หมีตัวนี้ตัดจากเศษหนังแท้", "ต่อกันด้วยรัก ไม่ต้องเย็บ", "ประกอบโดยลูก ๆ บ้านห้าหมี"]):
+    for i, t in enumerate(["หมีตัวนี้ตัดจากเศษหนังแท้", "ต่อกันด้วยรัก", "ประกอบโดยลูก ๆ บ้านห้าหมี"]):
         g.append(text(t, 21, 570, 260 + i * 40, "#FFFFFF", PLEX, anchor="middle")[0])
     g.append(text(BB.product_code(p), 22, 570, 440, "#FFFFFF", SYNE, tracking=.1, anchor="middle")[0])
     g.append(text("@oct26.crafted", 22, 570, 510, "#FFFFFF", SYNE, anchor="middle")[0])
@@ -134,8 +135,8 @@ def card():
     g.append(text("ทำไมชื่อ OCT. 26", 34, 70, 580, C["chestnut"], TH)[0])
     lines = ["OCT. ย่อจาก our crafted things และคือเดือนตุลาคม",
              "26 คือวันเกิดของแม่ แบรนด์เกิดวันเดียวกัน",
-             "ทุกชิ้นตัดจากเศษหนังแท้ ต่อกันโดยไม่ต้องเย็บ",
-             "ทำ แพ็ค และขาย โดยครอบครัวเดียว ในซอย 2"]
+             "เศษหนังแท้ที่เกือบถูกขายไปเป็นกระสอบ",
+             "ทั้งห้าคนในบ้านช่วยกันทำ แพ็ค และขาย"]
     for i, t in enumerate(lines):
         g.append(text(t, 22, 70, 640 + i * 42, C["chestnut"], PLEX)[0])
     g.append(f'<rect x="560" y="790" width="130" height="130" rx="10" fill="#FFFFFF" stroke="{C["leaf"]}" stroke-width="2" stroke-dasharray="6 5"/>')
@@ -144,32 +145,29 @@ def card():
     return svg(W, H, "".join(g), None, "การ์ดเล่าเรื่อง หน้าและหลัง")
 
 def bag():
-    """Kraft bag with the round sticker and pattern tissue peeking out."""
-    W, H = 600, 640
-    tissue = pattern(400, 160, step=90, size=62)
-    tissue = re.sub(r"^<svg[^>]*>", '<svg x="100" y="40" width="400" height="160" viewBox="0 0 400 160">', tissue)
-    g = [tissue,
-         f'<path d="M80,150 L520,150 L540,620 L60,620 Z" fill="#C9A27A"/>',
-         f'<path d="M80,150 L520,150 L515,200 L85,200 Z" fill="#B88F66"/>',
-         f'<path d="M60,620 L540,620 L536,600 L64,600 Z" fill="#B88F66"/>']
-    wm, _, _ = wordmark(300, 395, 48, C["oct_cream"], C["brick"], two_lines=True, anchor="middle")
-    g.append(f'<circle cx="300" cy="380" r="95" fill="{C["chestnut"]}"/>' + wm)
-    g.append(text("สติกเกอร์ 3 ซม. ปิดปากถุง", 22, 300, 560, C["chestnut"], TH, anchor="middle")[0])
-    return svg(W, H, "".join(g), None, "ถุงคราฟต์กับสติกเกอร์")
+    """Matte dark paper bag with cotton rope handles and a printed label: no kraft."""
+    W, H = 600, 680
+    body, side, rope, ink = C["chestnut"], "#2A1910", "#EFE3D3", C["oct_cream"]
+    g = [f'<path d="M190,190 C190,60 410,60 410,190" fill="none" stroke="{rope}" stroke-width="12" stroke-linecap="round"/>',
+         f'<path d="M100,180 L500,180 L520,640 L80,640 Z" fill="{body}"/>',
+         f'<path d="M500,180 L540,200 L556,628 L520,640 Z" fill="{side}"/>',
+         f'<path d="M100,180 L500,180 L498,214 L102,214 Z" fill="#00000030"/>',
+         f'<circle cx="190" cy="200" r="7" fill="{rope}"/><circle cx="410" cy="200" r="7" fill="{rope}"/>']
+    wm, _, _ = wordmark(300, 395, 76, ink, C["brick"], anchor="middle"); g.append(wm)
+    g.append(text("our crafted things.", 26, 300, 450, "#CDB49E", SYNE, anchor="middle")[0])
+    g.append(text("อาร์ตการ์ดเคลือบด้าน · หูเชือกผ้าคอตตอน", 20, 300, 600, "#CDB49E", TH, anchor="middle")[0])
+    return svg(W, H, "".join(g), None, "ถุงกระดาษด้านสีเข้ม")
 
 def edition():
     W = 720
     g = [f'<rect x="20" y="20" width="680" height="680" rx="18" fill="{C["oct_cream"]}" stroke="#00000018" stroke-width="2"/>',
          f'<rect x="50" y="50" width="620" height="620" rx="10" fill="none" stroke="{C["chestnut"]}" stroke-width="3"/>']
-    d1, w1, b1 = L.text_path("No", 120, SYNE); d2, w2, b2 = L.text_path("26", 120, SYNE)
-    r = 120 * .085; total = b1[2] + 120 * .06 + 2 * r + 120 * .3 + b2[2]; x = 360 - total / 2
-    g.append(f'<path transform="translate({x:.1f},250)" d="{d1}" fill="{C["chestnut"]}"/>'
-             f'<circle cx="{x + b1[2] + 120 * .06 + r:.1f}" cy="{250 - r:.1f}" r="{r:.1f}" fill="{C["brick"]}"/>'
-             f'<path transform="translate({x + total - b2[2]:.1f},250)" d="{d2}" fill="{C["chestnut"]}"/>')
-    g.append(text("รุ่นวันเกิด · 2570", 34, 360, 380, C["chestnut"], TH, anchor="middle")[0])
-    g.append(text("07 / 26", 80, 360, 520, C["brick"], SYNE, anchor="middle")[0])
-    g.append(text("เลขชิ้นเขียนด้วยมือ ทำ 26 ชิ้น ไม่ทำซ้ำ", 24, 360, 610, "#6E5440", PLEX, anchor="middle")[0])
-    return svg(W, W, "".join(g), None, "การ์ดรุ่นวันเกิด No. 26")
+    wm, _, _ = wordmark(360, 190, 70, C["chestnut"], C["brick"], anchor="middle"); g.append(wm)
+    g.append(text("No. 42", 150, 360, 380, C["chestnut"], SYNE, anchor="middle")[0])
+    g.append(text("รุ่นวันเกิด · 26 ต.ค. 2569", 30, 360, 450, "#6E5440", TH, anchor="middle")[0])
+    g.append(text("07 / 42", 64, 360, 560, C["brick"], SYNE, anchor="middle")[0])
+    g.append(text("เลขรุ่นคืออายุของแม่ เลขชิ้นเขียนด้วยมือ ไม่ทำซ้ำ", 22, 360, 625, "#6E5440", PLEX, anchor="middle")[0])
+    return svg(W, W, "".join(g), None, "การ์ดรุ่นวันเกิด OCT. 26 – No. 42")
 
 def booth():
     """Top-down plan of a 2 m x 2 m booth: two tables, demo spot, workshop box, cash point."""

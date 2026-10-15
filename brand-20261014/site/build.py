@@ -361,11 +361,13 @@ def bible():
         f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><h3>{E(v)} <span class="cap" style="font-family:var(--logo);font-weight:700">{E(en)}</span></h3>'
         f'<p><span class="chip ok">เราทำ</span> {E(do)}</p><p><span class="chip ext">เราไม่ทำ</span> {E(dont)}</p></div>' for v, en, do, dont in V.VALUES)
     core = (f'<p class="big">{E(V.ESSENCE[0])} <span style="font-family:var(--logo);color:var(--brick)">{E(V.ESSENCE[1])}</span></p>'
-            f'<div class="duo"><div class="card"><span class="eyebrow">เหตุผลที่มีแบรนด์นี้</span><p style="margin-top:6px">{E(V.PURPOSE)}</p></div>'
-            f'<div class="card"><span class="eyebrow">ภาพในอีก 5 ปี</span><p style="margin-top:6px">{E(V.VISION)}</p></div></div>'
-            f'<div class="card"><span class="eyebrow">สิ่งที่ทำทุกวัน</span><ol style="margin-top:6px">{"".join(f"<li>{E(m)}</li>" for m in V.MISSION)}</ol></div>'
+            f'<div class="card"><span class="eyebrow">เหตุผลที่มีแบรนด์นี้</span><p style="margin-top:6px;font-size:17px">{E(V.PURPOSE)}</p>'
+            f'<p class="cap" style="margin-top:8px">ฉบับสั้น · {E(V.PURPOSE_SHORT)}</p></div>'
+            f'<div class="duo"><div class="card"><span class="eyebrow">ภาพในอีก 5 ปี</span><p style="margin-top:6px">{E(V.VISION)}</p></div>'
+            f'<div class="card"><span class="eyebrow">สิ่งที่ทำทุกวัน</span><ol style="margin-top:6px">{"".join(f"<li>{E(m)}</li>" for m in V.MISSION)}</ol></div></div>'
             f'<p class="quote"><b>คำสัญญากับลูกค้า</b><br>{E(V.PROMISE)}</p>'
-            f'<h3>คุณค่าสี่ข้อ</h3><div class="duo">{values}</div>')
+            f'<p class="cap">ตัวเลือกอื่น · {" · ".join(E(x) for x in V.PROMISE_ALT)}</p>'
+            f'<h3>คุณค่า {len(V.VALUES)} ข้อ</h3><div class="duo">{values}</div>')
     proof = "".join(f'<div class="card tile"><b>{E(n)}</b><span class="cap" style="font-size:14px">{E(t)}</span></div>' for n, t in V.PROOF)
     alts = "".join(
         f'<div class="card" style="display:flex;flex-direction:column;gap:6px{";border:2px solid var(--brick)" if o == "OCT. 26" else ""}">'
@@ -385,11 +387,15 @@ def bible():
     sliders = "".join(
         f'<div class="slider"><span>{E(l)}</span><div class="track"><i style="left:{(o-1)*25}%;background:var(--brick)" title="OCT. 26"></i>'
         f'<i style="left:{(f-1)*25}%;background:var(--love)" title="ห้าหมี"></i></div><span class="r">{E(r)}</span></div>' for l, r, o, f in V.SLIDERS)
-    isnot = "".join(f'<tr><td><b>{E(a)}</b></td><td><s>{E(b_)}</s></td></tr>' for a, b_ in V.IS_NOT)
+    isnot = "".join(f'<div class="tbl"><table><thead><tr><th>{E(k)} เป็น</th><th>แต่ไม่</th></tr></thead><tbody>'
+                    + "".join(f'<tr><td><b>{E(a)}</b></td><td><s>{E(b_)}</s></td></tr>' for a, b_ in v) + '</tbody></table></div>'
+                    for k, v in V.IS_NOT.items())
+    samples = "".join(f'<tr><td><b>{E(t)}</b></td><td>{E(o)}</td><td>{E(f)}</td></tr>' for t, o, f in V.VOICE_SAMPLES)
     person = (f'<div class="duo">{arche}</div><div class="card" style="display:flex;flex-direction:column;gap:14px">'
               f'<div style="display:flex;gap:16px;flex-wrap:wrap"><span class="key"><i style="background:var(--brick)"></i>OCT. 26</span>'
               f'<span class="key"><i style="background:var(--love)"></i>ห้าหมี</span></div>{sliders}</div>'
-              f'<div class="tbl"><table><thead><tr><th>เราเป็น</th><th>แต่ไม่</th></tr></thead><tbody>{isnot}</tbody></table></div>')
+              f'<div class="duo">{isnot}</div><h3>เรื่องเดียวกัน สองน้ำเสียง</h3>'
+              f'<div class="tbl"><table><thead><tr><th>เรื่อง</th><th>OCT. 26</th><th>ห้าหมี</th></tr></thead><tbody>{samples}</tbody></table></div>')
     pillars = "".join(
         f'<div class="card" style="display:flex;flex-direction:column;gap:8px"><span class="eyebrow">เสาที่ {i}</span><h3>{E(h)}</h3><p class="cap">{E(sub)}</p>'
         f'<ul>{"".join(f"<li>{E(x)}</li>" for x in pr)}</ul><p class="quote" style="font-size:15px">“{E(ex)}”</p></div>'
@@ -417,7 +423,7 @@ def bible():
               f'<h3>ภาพถ่าย</h3><div class="grid">{photo}</div>'
               f'<div class="tbl"><table><thead><tr><th>ภาพ</th><th>ถ่ายอย่างไร</th><th>ใช้ที่</th></tr></thead><tbody>{shots}</tbody></table></div>')
     touch = "".join(
-        f'<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px">{svgimg(f, n)}'
+        f'<figure class="card" style="margin:0;display:flex;flex-direction:column;gap:10px">{svgimg(f, n) if f else ""}'
         f'<figcaption><h3>{E(n)}</h3><p class="cap" style="font-size:14px">{E(sz)} · {E(mat)}</p><p class="cap">{E(use)}</p></figcaption></figure>'
         for n, sz, mat, use, f in V.TOUCH)
     pack = (f'<div class="grid">{touch}</div><div class="card"><h3>ลำดับเมื่อลูกค้าเปิดถุง</h3><ol style="margin-top:6px">{"".join(f"<li>{E(x)}</li>" for x in V.UNBOX)}</ol></div>'
@@ -436,7 +442,7 @@ def bible():
                f'<h3>น้ำเสียงแต่ละช่องทาง</h3><div class="tbl"><table><thead><tr><th>ช่องทาง</th><th>พูดอย่างไร</th><th>คนที่เจอ</th></tr></thead><tbody>{tone}</tbody></table></div>')
     year = "".join(f'<div class="d">{E(d)}</div><div><b>{E(t)}</b><span class="tag {k}">{"OCT. 26" if k == "oct" else "ห้าหมี"}</span><p class="cap" style="font-size:14px">{E(x)}</p></div>'
                    for d, t, x, k in V.YEAR)
-    ritual = (f'<div class="duo"><div class="tl">{year}</div>{svgimg("edition", "การ์ดรุ่นวันเกิด No. 26 ชิ้นที่ 07 จาก 26", ratio="1")}</div>'
+    ritual = (f'<div class="duo"><div class="tl">{year}</div>{svgimg("edition", "การ์ดรุ่นวันเกิด OCT. 26 – No. 42 ชิ้นที่ 07 จาก 42", ratio="1")}</div>'
               f'<p class="cap">วันที่ของเทศกาลที่ไม่ตายตัว เช่น ตรุษจีน ให้เช็กปฏิทินปีนั้นก่อนวางแผนผลิต</p>')
     roles = "".join(f'<tr><td><b>{E(a)}</b></td><td>{E(b_)}</td></tr>' for a, b_ in V.ROLES)
     checks = "".join(f"<li>{E(c)}</li>" for c in V.CHECKLIST)
@@ -446,12 +452,37 @@ def bible():
             f'<div class="card"><h3>เช็กก่อนโพสต์ทุกครั้ง</h3><ul class="check" style="margin-top:8px">{checks}</ul></div>'
             f'<h3>วัดว่าแบรนด์โตไหม</h3><div class="tbl"><table><thead><tr><th>ดูอะไร</th><th>วัดอย่างไร</th><th>บ่อยแค่ไหน</th></tr></thead><tbody>{health}</tbody></table></div>'
             f'<p class="cap">ทุกอย่างในคู่มือนี้แก้ได้ที่ไฟล์ brand-20261014/bible.py และ brand.py แล้วสร้างหน้าใหม่ ลิงก์เดิมไม่เปลี่ยน</p>')
+    def dm(d, big=False):
+        mon, day = d.split(". ")
+        return (f'<span style="font-family:var(--logo);font-weight:700;font-size:{30 if big else 22}px;white-space:nowrap">{E(mon)}'
+                f'<span style="color:var(--brick)">.</span> {E(day)}</span>')
+    fam = "".join(f'<div class="card" style="display:flex;flex-direction:column;gap:4px{";border:2px solid var(--brick)" if main else ""}">'
+                  f'{dm(d, main)}<b style="font-family:var(--display);font-weight:500">{E(who)}</b><span class="cap">{E(st)}</span></div>'
+                  for d, who, st, main in V.FAMILY_BRANDS)
+    ladder = "".join(f'<div class="card" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">ขั้นที่ {i} · {E(when)}</span><h3>{E(st)}</h3>'
+                     f'<p style="font-size:14.5px">{E(what)}</p><p class="cap">ลูก ๆ ทำ: {E(kids)}</p><p class="cap">ตัวอย่าง: {E(ex)}</p></div>'
+                     for i, (st, what, kids, ex, when) in enumerate(V.GROWTH, 1))
+    family = (f'<p class="lead">OCT. 26 เป็นบ้านหลังใหญ่ที่เรียบ ทุกคนในบ้านมีแบรนด์วันเกิดของตัวเองได้ ห้าหมีคือทั้งห้าคนรวมกัน</p>'
+              f'<div class="grid s">{fam}</div><div class="card"><ul>{"".join(f"<li>{E(r)}</li>" for r in V.FAMILY_RULES)}</ul></div>'
+              f'<h3>แบรนด์โตไปพร้อมลูก ๆ</h3><div class="grid">{ladder}</div>'
+              f'<p class="cap">กระเป๋าสะพายข้างสามแบบจากแพตเทิร์นที่มี พร้อมต้นทุนและราคาเทียบตลาด อยู่ใน {link("productlab", "หน้าวิจัยสินค้า")}</p>'
+              f'<div class="card" style="border:2px solid var(--brick)"><h3>เรื่องแพตเทิร์น</h3><p style="margin-top:6px">{E(V.PATTERN_NOTE)}</p></div>')
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("colorlab_build", os.path.join(ROOT, "colorlab", "build.py"))
+    CL = importlib.util.module_from_spec(spec); spec.loader.exec_module(CL)
+    colors = (f'<p class="lead">ยังไม่สรุป สีในคู่มือนี้คือชุดตั้งต้น October Warm ส่วนทางเลือกทั้งหมดอยู่ใน {link("colorlab", "Color Lab")} ให้คุยกันที่บ้านก่อนเลือก</p>'
+              f'<div class="grid s">' + "".join(
+                  f'<figure class="card" style="margin:0;padding:8px;display:flex;flex-direction:column;gap:6px"><img src="colorlab/{k}.svg" alt="แผงสี {E(n)}" style="border-radius:8px">'
+                  f'<figcaption class="cap"><b>{E(n)}</b> · {E(fam_)}</figcaption></figure>' for k, fam_, n, *_ in CL.OPTIONS) + '</div>'
+              f'<p class="cap">เมื่อเลือกได้แล้ว แก้สีใน brand.py ที่เดียว โลโก้ โปสเตอร์ ป้ายห้อย และทุกหน้าจะเปลี่ยนตาม</p>')
     chapters = [("core", "หัวใจแบรนด์", "ทำไมต้องมี OCT. 26", core),
+                ("family", "ครอบครัวแบรนด์", "แบรนด์วันเกิดของทุกคน และทางเติบโต", family),
                 ("position", "ตำแหน่งแบรนด์", "เราต่างจากทางเลือกอื่นอย่างไร", pos),
                 ("people", "ลูกค้า", "สี่กลุ่มที่เราขายให้", personas and f'<div class="duo">{personas}</div>'),
                 ("personality", "บุคลิก", "ถ้า OCT. 26 เป็นคน", person),
                 ("message", "สาร", "พูดอะไร และพูดอย่างไร", msg),
                 ("naming", "ระบบชื่อ", "ตั้งชื่อคอลเลกชันและสินค้า", names),
+                ("color", "สีแบรนด์", "ยังไม่สรุป มีเจ็ดทางเลือก", colors),
                 ("visual", "ภาษาภาพ", "สิ่งที่ลูกค้าจะจำได้", visual),
                 ("pack", "บรรจุภัณฑ์", "ป้ายห้อย การ์ด และถุง", pack),
                 ("booth", "บูธ", "ห้าขั้นจากทางเดินถึงลูกค้า", booth),
@@ -465,18 +496,111 @@ def bible():
 <nav class="top" aria-label="บท">{nav}</nav>
 <header style="padding-top:28px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:center">
  <div class="paper dark" style="aspect-ratio:1"><img src="logo/oct-stacked-reverse.svg" alt="โลโก้ OCT. 26 บนพื้นเกาลัด" style="max-height:100%"></div>
- <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BIBLE · ฉบับแรก 15 ต.ค. 2569</span>
+ <div style="display:flex;flex-direction:column;gap:12px;min-width:0"><span class="eyebrow">BRAND BIBLE · ฉบับที่ 2 · 15 ต.ค. 2569</span>
  <h1 style="font-family:var(--logo);font-weight:700">OCT. 26</h1>
  <p class="lead">คู่มือว่าแบรนด์นี้คิด พูด และทำอย่างไร ใช้คู่กับ {link("brandbook", "Brand Book")} ที่เก็บโลโก้ สี และไฟล์ ส่วนข้อความโพสต์และสินค้าอยู่ใน {link("launch", "Launch Kit")}</p>
- <p class="cap">12 บท อ่านจบประมาณ 15 นาที บทที่ 1–5 คือความคิด บทที่ 6–12 คือการใช้งาน</p></div>
+ <p class="cap">{len(chapters)} บท อ่านจบประมาณ 20 นาที ฉบับนี้ปรับตามความเห็นของเจ้าของแบรนด์ 19 ข้อ</p></div>
 </header>
 {body}
 </div>{COPY_JS}"""
 
+# ---------------------------------------------------------------- color lab
+def colorlab():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("colorlab_build", os.path.join(ROOT, "colorlab", "build.py"))
+    CL = importlib.util.module_from_spec(spec); spec.loader.exec_module(CL)
+    # our own read of each option, 1..3: eye-catching, looks premium, fits FIVE BEARS, fits real leather
+    SCORE = {"oct": (1, 2, 3, 3), "candy": (3, 1, 3, 2), "tropic": (3, 2, 2, 2), "saddle": (1, 3, 1, 3),
+             "oxblood": (1, 3, 1, 2), "grandjoke": (3, 3, 2, 2), "pistachio": (3, 2, 3, 2)}
+    dots = lambda n: "".join(f'<i style="display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:3px;background:{"var(--brick)" if i < n else "var(--line)"}"></i>' for i in range(3))
+    cards, rows, nav = "", "", ""
+    for key, fam, name, idea, c, note in CL.OPTIONS:
+        sw = [("พื้น", c["paper"]), ("ตัวหนังสือ", c["ink"]), ("จุด", c["dot"]), ("สีหลัก", c["deep"])]
+        sw += [(d, col) for d, col in zip(CL.BIRTHDAYS, c["fam"])]
+        swh = "".join(f'<div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="height:34px;border-radius:6px;border:1px solid var(--line);background:{h}"></span>'
+                      f'<span class="cap mono" style="font-size:11px">{E(l)}<br>{h}</span></div>' for l, h in sw)
+        cards += (f'<article class="card" id="{key}" style="display:flex;flex-direction:column;gap:10px;scroll-margin-top:60px">'
+                  f'<img src="colorlab/{key}.svg" alt="แผงสี {E(name)} บนโลโก้ ป้ายห้อย ห้าแบรนด์วันเกิด และห้าหมี" style="border-radius:10px">'
+                  f'<div><span class="chip">{E(fam)}</span></div><h3 style="font-family:var(--logo);font-weight:700;font-size:22px">{E(name)}</h3>'
+                  f'<p>{E(idea)}</p><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px">{swh}</div>'
+                  f'<p class="cap" style="font-size:14px">{E(note)}</p></article>')
+        e, p, f, l = SCORE[key]
+        nw = ' style="white-space:nowrap"'
+        rows += f'<tr><td><a href="#{key}"><b>{E(name)}</b></a></td><td{nw}>{dots(e)}</td><td{nw}>{dots(p)}</td><td{nw}>{dots(f)}</td><td{nw}>{dots(l)}</td></tr>'
+        nav += f'<a href="#{key}">{E(name)}</a>'
+    ask = ["ยืนห่างโต๊ะ 5 เมตร แบบไหนเห็นก่อน", "วางชิ้นหนังจริงบนสีพื้น หนังดูสวยขึ้นหรือจมหาย",
+           "ลูก ๆ ชอบแบบไหน และห้าหมีดูน่ารักในแบบไหน", "สีนี้จะใช้กับแบรนด์วันเกิดของทุกคนได้ไหม",
+           "ราคาที่อยากขายในอีกสองปี สีนี้รับได้ไหม", "พิมพ์ป้ายห้อยจริงสองแบบที่ชอบที่สุด แล้วค่อยตัดสิน"]
+    return f"""{head("OCT. 26 Color Lab")}
+<div class="wrap">
+<nav class="top" aria-label="ทางเลือกสี">{nav}<a href="#compare">เทียบ</a><a href="#ask">คำถาม</a></nav>
+<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">COLOR LAB · 15 ต.ค. 2569 · ยังไม่สรุป</span>
+<h1>สีของ OCT. 26 เจ็ดทางเลือก</h1>
+<p class="lead">ทุกแผงใช้ของชุดเดียวกัน โลโก้ รูปโปรไฟล์ ป้ายห้อย ห้าแบรนด์วันเกิด ห้าหมี และถุง เปลี่ยนแค่สี จะได้เทียบกันได้ตรง ๆ</p>
+<p class="cap">สามแนวที่ขอ สีสดสะดุดตา หรูแบบเงียบ และหรูแบบตลก แนวละสองแบบ บวกสีที่ใช้อยู่ตอนนี้เป็นตัวตั้งต้น แต่ละแบบให้สีห้าสีกับห้าแบรนด์วันเกิดไว้ด้วย</p></header>
+<section id="options" style="padding-top:28px"><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr))">{cards}</div></section>
+<section id="compare"><span class="eyebrow">เทียบ</span><h2>แต่ละแบบเด่นเรื่องไหน</h2>
+<div class="tbl"><table><thead><tr><th>แบบ</th><th>สะดุดตา</th><th>ดูหรู</th><th>ห้าหมี</th><th>หนังจริง</th></tr></thead><tbody>{rows}</tbody></table></div>
+<p class="cap">คะแนนเป็นความเห็นของเรา สามจุดคือเด่นที่สุด ใช้เป็นจุดเริ่มคุย ไม่ใช่คำตอบ</p></section>
+<section id="ask"><span class="eyebrow">ก่อนเลือก</span><h2>คำถามที่ควรคุยกันที่บ้าน</h2>
+<div class="card"><ol>{"".join(f"<li>{E(q)}</li>" for q in ask)}</ol></div>
+<p class="cap">เลือกได้แล้ว บอกชื่อแบบมาได้เลย หรือผสมกันก็ได้ เช่น พื้นของแบบหนึ่งกับจุดของอีกแบบ แล้วจะสร้างโลโก้ โปสเตอร์ และทุกหน้าใหม่ด้วยสีนั้น กลับไปที่ {link("bible", "Brand Bible")}</p></section>
+</div>"""
+
+# ---------------------------------------------------------------- product lab
+def productlab():
+    sys.path.insert(0, os.path.join(ROOT, "research"))
+    import research as R
+    src = lambda k: f'<a href="{R.SOURCES[k][1]}" target="_blank" rel="noopener">{E(R.SOURCES[k][0])}</a>'
+    finds = "".join(f'<div class="card" style="display:flex;flex-direction:column;gap:6px"><h3>{E(h)}</h3><p style="font-size:14.5px">{E(t)}</p><p class="cap">ที่มา: {src(k)}</p></div>'
+                    for h, t, k in R.FINDINGS)
+    prices = "".join(f'<tr><td><b>{E(w)}</b><br>{E(it)}<br><span class="cap">{E(n)} · {src(k)}</span></td><td class="n" style="white-space:normal;min-width:6.5em">{E(p)}</td></tr>'
+                     for w, it, p, k, n in R.BAG_PRICES)
+    bags = ""
+    for b in R.bag_rows():
+        c = b["cost"]
+        parts = " · ".join(f"{E(n)} {cc}×{rr}" for n, cc, rr in b["parts"])
+        bags += (f'<article class="card" style="display:flex;flex-direction:column;gap:10px">'
+                 f'<img src="research/bag-{b["key"]}.svg" alt="ภาพด้านหน้ากระเป๋า {E(b["name"])}" style="border-radius:10px">'
+                 f'<h3>{E(b["name"])}</h3><p>{E(b["idea"])}</p>'
+                 f'<p class="cap" style="font-size:14px">แบบ {b["code"]} ระยะชิ้น {b["module"]} ซม. · {E(parts)} · รวม {b["pieces"]} ชิ้น รอยต่อ {b["joints"]} จุด · ประกอบประมาณ {c["minutes"]} นาที</p>'
+                 f'<div class="tbl"><table><tbody>'
+                 f'<tr><td>ชิ้นหนัง</td><td class="n">{c["leather"]:.0f}</td></tr><tr><td>ค่าประกอบ</td><td class="n">{c["joints"]:.0f}</td></tr>'
+                 f'<tr><td>สายหัวใจ ตะขอ แม่เหล็ก ถุงผ้า</td><td class="n">{c["hw"]:.0f}</td></tr>'
+                 f'<tr><td><b>ต้นทุนรวม</b></td><td class="n"><b>{c["total"]:.0f} บาท</b></td></tr>'
+                 f'<tr><td>ถ้าซื้อสายสำเร็จแทน</td><td class="n">{c["with_bought"]:.0f} บาท</td></tr></tbody></table></div>'
+                 f'<p><b style="font-family:var(--logo);font-size:24px;color:var(--brick)">{b["price"]:,} บาท</b> <span class="cap">สำเร็จ · กำไรขั้นต้น {b["margin"]:.0%}</span></p>'
+                 f'<p class="cap">ชุดทำเอง {b["kit"]:,} บาท · เศษเล็กหนึ่งล็อตทำได้ {b["per_lot"]} ใบ</p></article>')
+    story = "".join(f'<div class="card" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">{E(stage)}</span><h3>{E(n)}</h3>'
+                    f'<p class="cap" style="font-size:14px">เรื่องที่เล่า: {E(link_)}</p><p style="font-size:14.5px">{E(note)}</p><p class="cap">ใส่ชื่อได้: {E(pers)}</p></div>'
+                    for n, link_, stage, pers, note in R.STORY_PRODUCTS)
+    srcs = "".join(f'<li><a href="{u}" target="_blank" rel="noopener">{E(t)}</a></li>' for t, u in dict(R.SOURCES.values()).items())
+    return f"""{head("OCT. 26 Product Lab")}
+<div class="wrap">
+<nav class="top" aria-label="หัวข้อ"><a href="#market">ตลาด</a><a href="#prices">ราคาเทียบ</a><a href="#bags">กระเป๋าสามแบบ</a><a href="#story">สินค้าที่เล่าเรื่อง</a><a href="#sources">ที่มา</a></nav>
+<header style="padding-top:28px;display:flex;flex-direction:column;gap:12px"><span class="eyebrow">PRODUCT LAB · 15 ต.ค. 2569</span>
+<h1>ขายอะไรดี และกระเป๋าสะพายข้างทำได้ไหม</h1>
+<p class="lead">ทำได้ และมีช่องว่างในตลาด กระเป๋าหนังแท้ใบเล็กในไทยเริ่มราว 890 บาท ส่วนกระเป๋าที่ต่อจากชิ้นหนังแบบของเรายังไม่เจอแบรนด์ไหนทำจริงจัง กระเป๋าสามแบบด้านล่างใช้แพตเทิร์นที่มี ต้นทุน 140–180 บาท ขาย 890–1,290 บาท</p></header>
+<section id="market"><span class="eyebrow">ตลาดบอกอะไร</span><h2>สินค้าหนังที่ขายดี</h2><div class="grid">{finds}</div><p class="cap">{E(R.CAVEAT)}</p></section>
+<section id="prices"><span class="eyebrow">ราคาเทียบ</span><h2>กระเป๋าคล้ายกันขายเท่าไร</h2>
+<div class="tbl"><table><thead><tr><th>ใคร · อะไร · ที่มา</th><th>ราคา</th></tr></thead><tbody>{prices}</tbody></table></div>
+<p class="cap">ราคาดอลลาร์เป็นราคาขายต่างประเทศ ไม่ได้แปลงเป็นบาท เพราะค่าเงินเปลี่ยนทุกวัน ราคาที่ลดแล้วอาจกลับไปราคาปกติ</p></section>
+<section id="bags"><span class="eyebrow">ออกแบบจากแพตเทิร์นที่มี</span><h2>กระเป๋าสะพายข้างสามแบบ</h2>
+<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))">{bags}</div>
+<div class="card"><h3>ต้องรู้ก่อนทำ</h3><ul style="margin-top:6px">{"".join(f"<li>{E(n)}</li>" for n in R.BAG_NOTES)}</ul></div>
+<p class="cap">แนะนำให้เริ่มที่ซองมือถือวงกลม ใช้ 12 ชิ้น ทำต้นแบบได้ในวันเดียว ถ้าขายได้ค่อยทำกล่องซอยกับลูกบาศก์ห้าหมี</p></section>
+<section id="story"><span class="eyebrow">ข้อ 16</span><h2>สินค้าที่เล่าเรื่องของแบรนด์</h2>
+<p class="lead">เมื่อชื่อและเรื่องเล่าลงตัว สินค้าควรพาเรื่องไปด้วย แปดชิ้นนี้ผูกกับวันเกิด ซอยบ้าน รากของครอบครัว และห้าหมี และเรียงตามทางเติบโตใน {link("bible", "Brand Bible")}</p>
+<div class="grid">{story}</div></section>
+<section id="sources"><span class="eyebrow">ที่มา</span><h2>แหล่งข้อมูล</h2><div class="card"><ul>{srcs}</ul></div></section>
+</div>"""
+
 # ---------------------------------------------------------------- summary (CLAUDE.md)
 def summary():
     tot = B.event_totals()
-    rows = [("Brand Bible", "bible", "12 บท หัวใจแบรนด์ ตำแหน่ง ลูกค้า บุคลิก สาร ระบบชื่อ ภาษาภาพ บรรจุภัณฑ์ บูธ คอนเทนต์ ปีแรก การดูแล"),
+    rows = [("Color Lab", "colorlab", "สีแบรนด์เจ็ดทางเลือก ยังไม่สรุป ให้คุยกันที่บ้าน"),
+            ("Product Lab", "productlab", "สินค้าหนังที่ขายดี ราคากระเป๋าเทียบตลาด กระเป๋าสะพายข้างสามแบบจากแพตเทิร์น และสินค้าที่เล่าเรื่อง"),
+            ("Brand Bible", "bible", "12 บท หัวใจแบรนด์ ตำแหน่ง ลูกค้า บุคลิก สาร ระบบชื่อ ภาษาภาพ บรรจุภัณฑ์ บูธ คอนเทนต์ ปีแรก การดูแล"),
             ("Brand Book", "brandbook", "ชื่อ เรื่องเล่า โลโก้ สี ฟอนต์ น้ำเสียง"),
             ("Launch Kit", "launch", "แผนถึงวันงาน โซเชียล Shopee สินค้า 30 ตัวแบ่งตามคอลเลกชัน พร้อมโพสต์ 5 ช่องทาง คู่มือลูก ๆ ขายของ"),
             ("สไลด์ของขวัญวันเกิด", "deck", "พรีเซนต์ OCT. 26 ให้เธอในวันเกิด 26.10"),
@@ -487,7 +611,9 @@ def summary():
              ("brand-20261014/logo/svg, logo/png", "โลโก้ 22 ไฟล์ OCT. 26 ป้าย Soi 2 ป้าย Love และห้าหมี แปลงตัวอักษรเป็นเส้นแล้ว"),
              ("brand-20261014/posters/png", "โปสเตอร์ How-to 30 ตัว × 2 ขนาด (60 ไฟล์)"),
              ("brand-20261014/bible.py, bible/svg", "เนื้อหา Brand Bible และภาพประกอบ 8 ไฟล์ (ป้ายห้อย การ์ด ถุง ลาย ผังบูธ)"),
-             ("brand-20261014/site", "ต้นฉบับหน้าเว็บทั้งสี่"),
+             ("brand-20261014/colorlab", "แผงสีเจ็ดแบบ แก้สีแต่ละแบบได้ใน colorlab/build.py"),
+             ("brand-20261014/research", "ข้อมูลวิจัยสินค้า ต้นทุนกระเป๋า และภาพกระเป๋าสามแบบ"),
+             ("brand-20261014/site", "ต้นฉบับหน้าเว็บทั้งหก"),
              ("brand-20261014/deck", "ต้นฉบับสไลด์"),
              ("brand-20261014/alternatives", "ทางเลือกแบรนด์ 55 แบบ โลโก้และป้ายห้อย")]
     ftable = "".join(f'<tr><td class="mono" style="white-space:nowrap">{E(f)}</td><td>{E(d)}</td></tr>' for f, d in files)
@@ -532,6 +658,6 @@ def assets():
     return out
 
 if __name__ == "__main__":
-    for name, fn in (("brandbook.html", brandbook), ("launch.html", launch), ("bible.html", bible), ("index.html", summary)):
+    for name, fn in (("brandbook.html", brandbook), ("launch.html", launch), ("bible.html", bible), ("colorlab.html", colorlab), ("productlab.html", productlab), ("index.html", summary)):
         open(os.path.join(HERE, name), "w").write(fn())
     print("built", URLS)
